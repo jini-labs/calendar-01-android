@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">期間・記念日探し</string>
+    <string name="app_start_name">期間計算</string>
+
+    <string name="duration_activity_title">期間計算履歴</string>
+    <string name="eventday_activity_title">記念日探し履歴</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">履歴</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="duration_fragment">Duratin date</string>
+    <string name="eventday_fragment">Event day</string>
+
+    <string name="label_start_date">開始日</string>
+    <string name="label_other_date">終了日</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="eventday_base">基準日</string>
+    <string name="eventday_no">の</string>
+
+    <string name="button_calc">計算</string>
+    <string name="eventday_result">です。</string>
+</resources>

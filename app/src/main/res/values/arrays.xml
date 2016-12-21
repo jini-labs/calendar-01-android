@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinner_duration_unit">
+        <item>年</item>
+        <item>カ月</item>
+        <item>週</item>
+        <item>日</item>
+    </string-array>
+    <string-array name="spinner_beforeafter">
+        <item>前</item>
+        <item>後</item>
+    </string-array>
+</resources>

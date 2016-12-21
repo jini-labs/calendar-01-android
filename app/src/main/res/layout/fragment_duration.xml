@@ -1,0 +1,317 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+    tools:context="com.doublesibi.utils.calc.datecalculator.DurationFragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="30dp">
+
+            <TextView
+                android:id="@+id/colorLabelStartDate"
+                android:text="@string/label_start_date"
+                android:textColor="@color/colorLabelStartDate"
+                android:layout_marginRight="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/styy"
+                android:text=""
+                android:hint="2015"
+                android:inputType="number"
+                android:textColor="@color/colorInputStartDate"
+                android:textColorHint="@color/colorHintYMD"
+                android:layout_marginRight="5dp"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/datesep1"
+                android:text="/"
+                android:textColor="@color/colorInputStartDate"
+                android:layout_marginRight="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/stmm"
+                android:text=""
+                android:hint="9"
+                android:inputType="number"
+                android:textColorHint="@color/colorHintYMD"
+                android:textColor="@color/colorInputStartDate"
+                android:layout_marginRight="5dp"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/datesep2"
+                android:text="/"
+                android:textColor="@color/colorInputStartDate"
+                android:layout_marginRight="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/stdd"
+                android:text=""
+                android:inputType="number"
+                android:hint="9"
+                android:textColorHint="@color/colorHintYMD"
+                android:textColor="@color/colorInputStartDate"
+                android:layout_marginRight="10dp"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"/>
+
+            <ImageButton
+                android:id="@+id/btnstdt"
+                app:srcCompat="@android:drawable/ic_menu_my_calendar"
+                android:layout_marginRight="5dp"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"/>
+
+            <ImageButton
+                android:id="@+id/btn_start_today"
+                app:srcCompat="@android:drawable/ic_menu_today"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="30dp">
+
+            <TextView
+                android:id="@+id/labelenddate"
+                android:text="@string/label_other_date"
+                android:textColor="@color/colorLabelEndDate"
+                android:layout_marginRight="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/enyy"
+                android:text=""
+                android:hint="2016"
+                android:textColorHint="@color/colorHintYMD"
+                android:textColor="@color/colorInputEndDate"
+                android:inputType="number"
+                android:layout_marginRight="5dp"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/datesep3"
+                android:text="/"
+                android:textColor="@color/colorInputEndDate"
+                android:layout_marginRight="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/enmm"
+                android:text=""
+                android:hint="11"
+                android:inputType="number"
+                android:textColorHint="@color/colorHintYMD"
+                android:textColor="@color/colorInputEndDate"
+                android:layout_marginRight="5dp"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/datesep4"
+                android:text="/"
+                android:textColor="@color/colorInputEndDate"
+                android:layout_marginRight="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/endd"
+                android:text=""
+                android:hint="13"
+                android:textColorHint="@color/colorHintYMD"
+                android:textColor="@color/colorInputEndDate"
+                android:inputType="number"
+                android:layout_marginRight="5dp"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"/>
+
+            <ImageButton
+                android:id="@+id/btnendt"
+                app:srcCompat="@android:drawable/ic_menu_my_calendar"
+                android:layout_marginRight="5dp"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"/>
+
+            <ImageButton
+                android:id="@+id/btn_end_today"
+                app:srcCompat="@android:drawable/ic_menu_today"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btnenter"
+                android:text="calculate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <View
+            android:background="@android:color/darker_gray"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/result_1_days"
+                android:text="__"
+                android:textColor="@color/colorResultValue1"
+                android:layout_marginRight="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="days."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="__"
+                android:id="@+id/result_2_weeks"
+                android:textColor="@color/colorResultValue1"
+                android:layout_marginRight="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="weeks, "
+                android:layout_marginRight="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/result_2_days"
+                android:text="__"
+                android:textColor="@color/colorResultValue1"
+                android:layout_marginRight="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="days."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/result_3_months"
+                android:text="__"
+                android:textColor="@color/colorResultValue1"
+                android:layout_marginRight="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="months, "
+                android:layout_marginRight="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/result_3_days"
+                android:text="__"
+                android:textColor="@color/colorResultValue1"
+                android:layout_marginRight="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="days."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/result_4_years"
+                android:text="__"
+                android:textColor="@color/colorResultValue1"
+                android:layout_marginRight="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="years, "
+                android:layout_marginRight="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/result_4_months"
+                android:text="__"
+                android:textColor="@color/colorResultValue1"
+                android:layout_marginRight="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="months, "
+                android:layout_marginRight="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/result_4_days"
+                android:text="__"
+                android:textColor="@color/colorResultValue1"
+                android:layout_marginRight="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="days."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>
