@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         initView();
+
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 
     public void initView() {
@@ -138,7 +140,6 @@ public class MainActivity extends AppCompatActivity
         item.setChecked(true);
         // Set action bar title
         setTitle(item.getTitle());
-        Log.d(LOGTAG, "title : " + item.getTitle().toString());
 
         // Close the navigation drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

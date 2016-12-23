@@ -35,6 +35,7 @@
             <TextView
                 android:id="@+id/styy"
                 android:text=""
+                android:maxLength="4"
                 android:hint="2015"
                 android:inputType="number"
                 android:textColor="@color/colorInputStartDate"
@@ -53,6 +54,7 @@
             <TextView
                 android:id="@+id/stmm"
                 android:text=""
+                android:maxLength="4"
                 android:hint="9"
                 android:inputType="number"
                 android:textColorHint="@color/colorHintYMD"
@@ -72,6 +74,7 @@
             <TextView
                 android:id="@+id/stdd"
                 android:text=""
+                android:maxLength="4"
                 android:inputType="number"
                 android:hint="9"
                 android:textColorHint="@color/colorHintYMD"
@@ -82,14 +85,14 @@
 
             <ImageButton
                 android:id="@+id/btnstdt"
-                app:srcCompat="@android:drawable/ic_menu_my_calendar"
+                android:src="@drawable/ic_calendar"
                 android:layout_marginRight="5dp"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"/>
 
             <ImageButton
                 android:id="@+id/btn_start_today"
-                app:srcCompat="@android:drawable/ic_menu_today"
+                android:src="@drawable/ic_today"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -113,6 +116,7 @@
             <TextView
                 android:id="@+id/enyy"
                 android:text=""
+                android:maxLength="4"
                 android:hint="2016"
                 android:textColorHint="@color/colorHintYMD"
                 android:textColor="@color/colorInputEndDate"
@@ -132,6 +136,7 @@
             <TextView
                 android:id="@+id/enmm"
                 android:text=""
+                android:maxLength="2"
                 android:hint="11"
                 android:inputType="number"
                 android:textColorHint="@color/colorHintYMD"
@@ -151,6 +156,7 @@
             <TextView
                 android:id="@+id/endd"
                 android:text=""
+                android:maxLength="2"
                 android:hint="13"
                 android:textColorHint="@color/colorHintYMD"
                 android:textColor="@color/colorInputEndDate"
@@ -161,14 +167,14 @@
 
             <ImageButton
                 android:id="@+id/btnendt"
-                app:srcCompat="@android:drawable/ic_menu_my_calendar"
+                android:src="@drawable/ic_calendar"
                 android:layout_marginRight="5dp"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"/>
 
             <ImageButton
                 android:id="@+id/btn_end_today"
-                app:srcCompat="@android:drawable/ic_menu_today"
+                android:src="@drawable/ic_today"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"/>
         </LinearLayout>

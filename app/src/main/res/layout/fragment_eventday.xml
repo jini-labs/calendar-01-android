@@ -33,7 +33,8 @@
 
             <TextView
                 android:id="@+id/styy"
-                android:text="____"
+                android:text=""
+                android:maxLength="4"
                 android:hint="2016"
                 android:textColor="@color/colorInputStartDate"
                 android:textColorHint="@color/colorHintYMD"
@@ -47,7 +48,8 @@
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/stmm"
-                android:text="____"
+                android:text=""
+                android:maxLength="2"
                 android:hint="10"
                 android:textColor="@color/colorInputStartDate"
                 android:textColorHint="@color/colorHintYMD"
@@ -60,7 +62,8 @@
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/stdd"
-                android:text="__"
+                android:text=""
+                android:maxLength="2"
                 android:hint="16"
                 android:textColor="@color/colorInputStartDate"
                 android:textColorHint="@color/colorHintYMD"
@@ -69,13 +72,13 @@
             <ImageButton
                 android:id="@+id/btnstdt"
                 android:layout_marginRight="5dp"
-                app:srcCompat="@android:drawable/ic_menu_my_calendar"
+                android:src="@drawable/ic_calendar"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"/>
 
             <ImageButton
                 android:id="@+id/btn_start_today"
-                app:srcCompat="@android:drawable/ic_menu_today"
+                android:src="@drawable/ic_today"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
