@@ -5,6 +5,11 @@
     <color name="colorAccent">#CDFCC5</color>
 
     <color name="colorBackground">#D0FCC8</color>
+    <color name="colorCalcButtonBg">#09742D</color>
+    <color name="colorCalcButton">#D0FCC8</color>
+
+    <color name="colorCalcButtonNormal">#09742D</color>
+    <color name="colorCalcButtonPress">#55A561</color>
 
     <color name="colorLabelStartDate">#000000</color>
     <color name="colorInputStartDate">#A1B100</color>

@@ -3,12 +3,14 @@ package com.doublesibi.utils.calc.datecalculator;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,6 +30,7 @@ import java.util.Calendar;
  * A simple {@link Fragment} subclass.
  */
 public class DurationFragment extends Fragment implements View.OnClickListener{
+    private final String LOGTAG = "DayCalc";
 
     TextView startYY, startMM, startDD;
     TextView endYY, endMM, endDD;
@@ -212,6 +215,21 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
         btnStToday= (ImageButton) view.findViewById(R.id.btn_start_today);
         btnEnToday= (ImageButton) view.findViewById(R.id.btn_end_today);
         btnCalc = (Button) view.findViewById(R.id.btnenter);
+
+        btnCalc.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    Log.d(LOGTAG,"btnCalc down.");
+                    btnCalc.setBackgroundResource(R.color.colorCalcButtonPress);
+
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    Log.d(LOGTAG,"btnCalc up.");
+                    btnCalc.setBackgroundResource(R.color.colorCalcButtonNormal);
+                }
+                return false;
+            }
+        });
 
         view.findViewById(R.id.btnstdt).setOnClickListener(this);
         view.findViewById(R.id.btnendt).setOnClickListener(this);
