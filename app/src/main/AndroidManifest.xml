@@ -11,6 +11,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_start_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,9 +21,11 @@
         </activity>
         <activity
             android:label="@string/duration_activity_title"
+            android:screenOrientation="portrait"
             android:name=".DurationHistActivity" />
         <activity
             android:label="@string/eventday_activity_title"
+            android:screenOrientation="portrait"
             android:name=".EventHistActivity"></activity>
     </application>
 
