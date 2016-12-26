@@ -12,12 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!--1st date-->
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <!--1st date-->
             <LinearLayout
                 android:gravity="center"
                 android:orientation="horizontal"
@@ -95,7 +96,7 @@
                     android:layout_height="wrap_content"/>
 
                 <ImageButton
-                    android:id="@+id/btnstdt"
+                    android:id="@+id/btn_durat_stdt"
                     android:src="@drawable/ic_calendar"
                     android:gravity="center"
                     android:layout_marginRight="5dp"
@@ -188,7 +189,7 @@
                     android:layout_height="wrap_content"/>
 
                 <ImageButton
-                    android:id="@+id/btnendt"
+                    android:id="@+id/btn_durat_endt"
                     android:src="@drawable/ic_calendar"
                     android:gravity="center"
                     android:layout_marginRight="5dp"
@@ -203,7 +204,7 @@
                     android:layout_height="wrap_content"/>
             </LinearLayout>
 
-            <!--計算Button-->
+            <!-- Button -->
             <Button
                 android:id="@+id/btnenter"
                 android:background="@color/colorCalcButtonNormal"
@@ -214,7 +215,7 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"/>
 
-            <!--境線-->
+            <!-- border line -->
             <View
                 android:background="@android:color/darker_gray"
                 android:layout_marginTop="16dp"
@@ -223,252 +224,220 @@
                 android:layout_height="2dp"/>
         </LinearLayout>
 
-        <!--結果表示-->
+        <!-- Output of result -->
         <LinearLayout
             android:orientation="vertical"
             android:background="@color/colorBackground"
             android:layout_marginTop="20dp"
+            android:weightSum="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            // 結果
-            <GridLayout
-                android:layout_gravity="center"
-                android:columnCount="6"
-                android:rowCount="4"
-                android:layout_width="280dp"
+            <TableLayout
+                android:weightSum="1"
+                android:padding="2dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                // 日数
-                <TextView
-                    android:layout_columnWeight="5"
-                    android:layout_column="0"
-                    android:layout_row="0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:layout_columnWeight="2"
-                    android:layout_column="1"
-                    android:layout_row="0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:layout_columnWeight="5"
-                    android:layout_column="2"
-                    android:layout_row="0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:layout_columnWeight="2"
-                    android:layout_column="3"
-                    android:layout_row="0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:id="@+id/result_1_days"
-                    android:layout_columnWeight="5"
-                    android:maxLength="8"
-                    android:textStyle="normal|bold"
-                    android:textSize="20sp"
-                    android:layout_gravity="end"
-                    android:textColor="@color/colorResultValue1"
-                    android:layout_column="4"
-                    android:layout_row="0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:layout_columnWeight="2"
-                    android:text="@string/label_result_days"
-                    android:textSize="20sp"
-                    android:layout_gravity="end"
-                    android:layout_marginBottom="16dp"
-                    android:layout_column="5"
-                    android:layout_row="0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                <!-- Header -->
+                <TableRow
+                    android:weightSum="25"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text=""
+                        android:layout_weight="5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+                    <TextView
+                        android:text="年"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <TextView
+                        android:text="月"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <TextView
+                        android:text="週"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <TextView
+                        android:text="日"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                </TableRow>
 
-                // 週日数
-                <TextView
-                    android:layout_columnWeight="5"
-                    android:layout_column="0"
-                    android:layout_row="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:layout_columnWeight="2"
-                    android:layout_column="1"
-                    android:layout_row="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:id="@+id/result_2_weeks"
-                    android:maxLength="8"
-                    android:textStyle="normal|bold"
-                    android:textSize="20sp"
-                    android:layout_gravity="end"
-                    android:textColor="@color/colorResultValue1"
-                    android:layout_columnWeight="5"
-                    android:layout_column="2"
-                    android:layout_row="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:text="@string/label_result_week"
-                    android:textSize="20sp"
-                    android:layout_gravity="end"
-                    android:layout_columnWeight="2"
-                    android:layout_column="3"
-                    android:layout_row="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:id="@+id/result_2_days"
-                    android:maxLength="8"
-                    android:textStyle="normal|bold"
-                    android:textSize="20sp"
-                    android:layout_gravity="end"
-                    android:textColor="@color/colorResultValue1"
-                    android:layout_columnWeight="5"
-                    android:layout_column="4"
-                    android:layout_row="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:text="@string/label_result_days"
-                    android:textSize="20sp"
-                    android:layout_gravity="end"
-                    android:layout_marginBottom="16dp"
-                    android:layout_columnWeight="2"
-                    android:layout_column="5"
-                    android:layout_row="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <!-- count of days -->
+                <TableRow
+                    android:weightSum="25"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="日"
+                        android:gravity="end"
+                        android:layout_weight="5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
 
-                // 結果　月、日数
-                <TextView
-                    android:layout_columnWeight="5"
-                    android:layout_column="0"
-                    android:layout_row="2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:layout_columnWeight="2"
-                    android:layout_column="1"
-                    android:layout_row="2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:id="@+id/result_3_months"
-                    android:maxLength="8"
-                    android:textStyle="normal|bold"
-                    android:textSize="20sp"
-                    android:layout_gravity="end"
-                    android:textColor="@color/colorResultValue1"
-                    android:layout_columnWeight="5"
-                    android:layout_column="2"
-                    android:layout_row="2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:text="@string/label_result_month"
-                    android:textSize="20sp"
-                    android:layout_gravity="end"
-                    android:layout_columnWeight="2"
-                    android:layout_column="3"
-                    android:layout_row="2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:id="@+id/result_3_days"
-                    android:maxLength="8"
-                    android:textStyle="normal|bold"
-                    android:textSize="20sp"
-                    android:textColor="@color/colorResultValue1"
-                    android:layout_gravity="end"
-                    android:layout_columnWeight="5"
-                    android:layout_column="4"
-                    android:layout_row="2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:text="@string/label_result_days"
-                    android:textSize="20sp"
-                    android:layout_gravity="end"
-                    android:layout_marginBottom="16dp"
-                    android:layout_columnWeight="2"
-                    android:layout_column="5"
-                    android:layout_row="2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    <EditText
+                        android:enabled="false"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:enabled="false"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:enabled="false"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:id="@+id/result_1_days"
+                        android:enabled="false"
+                        android:gravity="end"
+                        android:background="@drawable/custom_edittext"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                </TableRow>
 
-                // 結果　年、月、日数
-                <TextView
-                    android:id="@+id/result_4_years"
-                    android:maxLength="8"
-                    android:textStyle="normal|bold"
-                    android:textSize="20sp"
-                    android:layout_gravity="end"
-                    android:textColor="@color/colorResultValue1"
-                    android:layout_columnWeight="5"
-                    android:layout_column="0"
-                    android:layout_row="3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:text="@string/label_result_year"
-                    android:textSize="20sp"
-                    android:layout_gravity="end"
-                    android:layout_columnWeight="2"
-                    android:layout_column="1"
-                    android:layout_row="3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:id="@+id/result_4_months"
-                    android:maxLength="8"
-                    android:textStyle="normal|bold"
-                    android:textSize="20sp"
-                    android:layout_gravity="end"
-                    android:textColor="@color/colorResultValue1"
-                    android:layout_columnWeight="5"
-                    android:layout_column="2"
-                    android:layout_row="3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:text="@string/label_result_month"
-                    android:textSize="20sp"
-                    android:layout_gravity="end"
-                    android:layout_columnWeight="2"
-                    android:layout_column="3"
-                    android:layout_row="3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:id="@+id/result_4_days"
-                    android:textSize="20sp"
-                    android:maxLength="8"
-                    android:textStyle="normal|bold"
-                    android:textColor="@color/colorResultValue1"
-                    android:layout_gravity="end"
-                    android:layout_columnWeight="5"
-                    android:layout_column="4"
-                    android:layout_row="3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:text="@string/label_result_days"
-                    android:textSize="20sp"
-                    android:layout_gravity="end"
-                    android:layout_marginBottom="16dp"
-                    android:layout_columnWeight="2"
-                    android:layout_column="5"
-                    android:layout_row="3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </GridLayout>
+                <!-- count of days and weeks -->
+                <TableRow
+                    android:weightSum="25"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="週日"
+                        android:gravity="end"
+                        android:layout_weight="5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+
+                    <EditText
+                        android:enabled="false"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:enabled="false"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:id="@+id/result_2_weeks"
+                        android:enabled="false"
+                        android:gravity="end"
+                        android:background="@drawable/custom_edittext"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:id="@+id/result_2_days"
+                        android:enabled="false"
+                        android:gravity="end"
+                        android:background="@drawable/custom_edittext"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                </TableRow>
+
+                <!-- count of days and months -->
+                <TableRow
+                    android:weightSum="25"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="月日"
+                        android:gravity="end"
+                        android:layout_weight="5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+
+                    <EditText
+                        android:enabled="false"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:id="@+id/result_3_months"
+                        android:enabled="false"
+                        android:gravity="end"
+                        android:background="@drawable/custom_edittext"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:enabled="false"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:id="@+id/result_3_days"
+                        android:enabled="false"
+                        android:gravity="end"
+                        android:background="@drawable/custom_edittext"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                </TableRow>
+
+                <!-- count of days and months and years -->
+                <TableRow
+                    android:weightSum="25"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="年月日"
+                        android:gravity="end"
+                        android:layout_weight="5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:id="@+id/result_4_years"
+                        android:enabled="false"
+                        android:gravity="end"
+                        android:background="@drawable/custom_edittext"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:id="@+id/result_4_months"
+                        android:enabled="false"
+                        android:gravity="end"
+                        android:background="@drawable/custom_edittext"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:enabled="false"
+                        android:background="@drawable/custom_edittext"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:id="@+id/result_4_days"
+                        android:enabled="false"
+                        android:gravity="end"
+                        android:background="@drawable/custom_edittext"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                </TableRow>
+            </TableLayout>
+
         </LinearLayout>
 
-        <!--後でAddを追加-->
+        <!--arear of AddMob -->
         <LinearLayout
             android:orientation="vertical"
             android:background="@color/colorBackground"
