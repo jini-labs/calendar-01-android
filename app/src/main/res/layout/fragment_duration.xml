@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <LinearLayout
             android:orientation="vertical"
             android:layout_marginTop="20dp"
@@ -205,15 +204,31 @@
             </LinearLayout>
 
             <!-- Button -->
-            <Button
-                android:id="@+id/btnenter"
-                android:background="@color/colorCalcButtonNormal"
-                android:text="@string/label_calc_button"
-                android:textSize="20sp"
-                android:textColor="@color/colorCalcButton"
-                android:layout_gravity="center"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/btnDuraSave"
+                    android:background="@drawable/boxed_edittext_reverse"
+                    android:text="@string/label_dura_save_button"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorCalcButton"
+                    android:layout_gravity="center"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"/>
+                <Button
+                    android:id="@+id/btnenter"
+                    android:background="@drawable/boxed_edittext_reverse"
+                    android:text="@string/label_calc_button"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorCalcButton"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_gravity="center"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
 
             <!-- border line -->
             <View
@@ -228,208 +243,278 @@
         <LinearLayout
             android:orientation="vertical"
             android:background="@color/colorBackground"
-            android:layout_marginTop="20dp"
+            android:layout_margin="@dimen/fab_margin"
             android:weightSum="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TableLayout
-                android:weightSum="1"
+                android:weightSum="28"
                 android:padding="2dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <!-- Header -->
                 <TableRow
-                    android:weightSum="25"
+                    android:layout_weight="8"
+                    android:weightSum="30"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
                         android:text=""
+                        android:background="@drawable/boxed_edittext_reverse"
                         android:layout_weight="5"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"/>
                     <TextView
-                        android:text="年"
+                        android:text="@string/label_result_year"
+                        android:textSize="@dimen/dur_table_label_textsize"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/boxed_edittext_reverse"
                         android:gravity="center_vertical|center_horizontal"
                         android:layout_weight="5"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <TextView
-                        android:text="月"
+                        android:text="@string/label_result_month"
+                        android:textSize="@dimen/dur_table_label_textsize"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/boxed_edittext_reverse"
                         android:gravity="center_vertical|center_horizontal"
                         android:layout_weight="5"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <TextView
-                        android:text="週"
+                        android:text="@string/label_result_week"
                         android:gravity="center_vertical|center_horizontal"
-                        android:layout_weight="5"
+                        android:textSize="@dimen/dur_table_label_textsize"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/boxed_edittext_reverse"
+                        android:layout_weight="7"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <TextView
-                        android:text="日"
+                        android:text="@string/label_result_days"
                         android:gravity="center_vertical|center_horizontal"
-                        android:layout_weight="5"
+                        android:textSize="@dimen/dur_table_label_textsize"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/boxed_edittext_reverse"
+                        android:layout_weight="8"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                 </TableRow>
 
                 <!-- count of days -->
                 <TableRow
-                    android:weightSum="25"
+                    android:layout_weight="5"
+                    android:weightSum="30"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:text="日"
-                        android:gravity="end"
+                        android:text="@string/label_result_days"
+                        android:gravity="center"
+                        android:textSize="@dimen/dur_table_label_textsize"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/boxed_edittext_reverse"
+                        android:focusable="false"
                         android:layout_weight="5"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"/>
 
                     <EditText
                         android:enabled="false"
+                        android:background="@drawable/boxed_edittext_filled"
+                        android:focusable="false"
                         android:layout_weight="5"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <EditText
                         android:enabled="false"
+                        android:background="@drawable/boxed_edittext_filled"
+                        android:focusable="false"
                         android:layout_weight="5"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <EditText
                         android:enabled="false"
-                        android:layout_weight="5"
+                        android:background="@drawable/boxed_edittext_filled"
+                        android:focusable="false"
+                        android:layout_weight="7"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <EditText
                         android:id="@+id/result_1_days"
+                        android:textSize="@dimen/dur_result_textsize"
+                        android:textColor="@color/colorResultValue"
                         android:enabled="false"
                         android:gravity="end"
-                        android:background="@drawable/custom_edittext"
-                        android:layout_weight="5"
+                        android:background="@drawable/boxed_edittext_normal"
+                        android:focusable="false"
+                        android:layout_weight="8"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                 </TableRow>
 
                 <!-- count of days and weeks -->
                 <TableRow
-                    android:weightSum="25"
+                    android:layout_weight="5"
+                    android:weightSum="30"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:text="週日"
-                        android:gravity="end"
+                        android:text="@string/label_eventday_wwdd"
+                        android:gravity="center"
+                        android:textSize="@dimen/dur_table_label_textsize"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/boxed_edittext_reverse"
                         android:layout_weight="5"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"/>
 
                     <EditText
                         android:enabled="false"
+                        android:background="@drawable/boxed_edittext_filled"
+                        android:focusable="false"
                         android:layout_weight="5"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <EditText
                         android:enabled="false"
+                        android:background="@drawable/boxed_edittext_filled"
+                        android:focusable="false"
                         android:layout_weight="5"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <EditText
                         android:id="@+id/result_2_weeks"
+                        android:textSize="@dimen/dur_result_textsize"
+                        android:textColor="@color/colorResultValue"
                         android:enabled="false"
                         android:gravity="end"
-                        android:background="@drawable/custom_edittext"
-                        android:layout_weight="5"
+                        android:background="@drawable/boxed_edittext_normal"
+                        android:focusable="false"
+                        android:layout_weight="7"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <EditText
                         android:id="@+id/result_2_days"
+                        android:textSize="@dimen/dur_result_textsize"
+                        android:textColor="@color/colorResultValue"
                         android:enabled="false"
                         android:gravity="end"
-                        android:background="@drawable/custom_edittext"
-                        android:layout_weight="5"
+                        android:background="@drawable/boxed_edittext_normal"
+                        android:focusable="false"
+                        android:layout_weight="8"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                 </TableRow>
 
                 <!-- count of days and months -->
                 <TableRow
-                    android:weightSum="25"
+                    android:layout_weight="5"
+                    android:weightSum="30"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:text="月日"
-                        android:gravity="end"
+                        android:text="@string/label_eventday_mmdd"
+                        android:gravity="center"
+                        android:textSize="@dimen/dur_table_label_textsize"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/boxed_edittext_reverse"
                         android:layout_weight="5"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"/>
 
                     <EditText
                         android:enabled="false"
+                        android:background="@drawable/boxed_edittext_filled"
+                        android:focusable="false"
                         android:layout_weight="5"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <EditText
                         android:id="@+id/result_3_months"
+                        android:textSize="@dimen/dur_result_textsize"
+                        android:textColor="@color/colorResultValue"
                         android:enabled="false"
                         android:gravity="end"
-                        android:background="@drawable/custom_edittext"
+                        android:background="@drawable/boxed_edittext_normal"
+                        android:focusable="false"
                         android:layout_weight="5"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <EditText
                         android:enabled="false"
-                        android:layout_weight="5"
+                        android:background="@drawable/boxed_edittext_filled"
+                        android:focusable="false"
+                        android:layout_weight="7"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <EditText
                         android:id="@+id/result_3_days"
+                        android:textSize="@dimen/dur_result_textsize"
+                        android:textColor="@color/colorResultValue"
                         android:enabled="false"
                         android:gravity="end"
-                        android:background="@drawable/custom_edittext"
-                        android:layout_weight="5"
+                        android:background="@drawable/boxed_edittext_normal"
+                        android:focusable="false"
+                        android:layout_weight="8"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                 </TableRow>
 
                 <!-- count of days and months and years -->
                 <TableRow
-                    android:weightSum="25"
+                    android:layout_weight="5"
+                    android:weightSum="30"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:text="年月日"
-                        android:gravity="end"
+                        android:text="@string/label_eventday_yymmdd"
+                        android:gravity="center"
+                        android:textSize="@dimen/dur_table_label_textsize"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/boxed_edittext_reverse"
                         android:layout_weight="5"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"/>
                     <EditText
                         android:id="@+id/result_4_years"
+                        android:textSize="@dimen/dur_result_textsize"
+                        android:textColor="@color/colorResultValue"
                         android:enabled="false"
                         android:gravity="end"
-                        android:background="@drawable/custom_edittext"
+                        android:background="@drawable/boxed_edittext_normal"
+                        android:focusable="false"
                         android:layout_weight="5"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <EditText
                         android:id="@+id/result_4_months"
+                        android:textSize="@dimen/dur_result_textsize"
+                        android:textColor="@color/colorResultValue"
                         android:enabled="false"
                         android:gravity="end"
-                        android:background="@drawable/custom_edittext"
+                        android:background="@drawable/boxed_edittext_normal"
+                        android:focusable="false"
                         android:layout_weight="5"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <EditText
                         android:enabled="false"
-                        android:background="@drawable/custom_edittext"
-                        android:layout_weight="5"
+                        android:background="@drawable/boxed_edittext_filled"
+                        android:focusable="false"
+                        android:layout_weight="7"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <EditText
                         android:id="@+id/result_4_days"
+                        android:textSize="@dimen/dur_result_textsize"
+                        android:textColor="@color/colorResultValue"
                         android:enabled="false"
                         android:gravity="end"
-                        android:background="@drawable/custom_edittext"
-                        android:layout_weight="5"
+                        android:background="@drawable/boxed_edittext_normal"
+                        android:focusable="false"
+                        android:layout_weight="8"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                 </TableRow>

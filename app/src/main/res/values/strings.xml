@@ -16,10 +16,14 @@
 
     <string name="label_start_date">開始日</string>
     <string name="label_other_date">終了日</string>
-    <string name="label_result_days">日。</string>
-    <string name="label_result_week">週、</string>
-    <string name="label_result_month">カ月、</string>
-    <string name="label_result_year">年、</string>
+    <string name="label_result_days">日</string>
+    <string name="label_result_week">週</string>
+    <string name="label_result_month">月</string>
+    <string name="label_result_year">年</string>
+
+    <string name="label_eventday_wwdd">週日</string>
+    <string name="label_eventday_mmdd">月日</string>
+    <string name="label_eventday_yymmdd">年月日</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -27,8 +31,16 @@
     <string name="label_eventday_base">基準日</string>
     <string name="label_eventday_no">の</string>
     <string name="label_eventday_ha">は</string>
+    <string name="label_eventday_date">日</string>
+    <string name="label_eventday_week">週</string>
+    <string name="label_eventday_month">月</string>
+    <string name="label_eventday_year">年</string>
+
+
 
     <string name="label_calc_button">計算</string>
     <string name="button_calc">計算</string>
     <string name="eventday_result">です。</string>
+
+    <string name="label_dura_save_button">計算日付保存</string>
 </resources>

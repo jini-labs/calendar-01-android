@@ -2,6 +2,8 @@ package com.doublesibi.utils.calc.datecalculator.common;
 
 import android.util.Log;
 
+import com.doublesibi.utils.calc.datecalculator.util.MyCalendar;
+
 import java.util.Calendar;
 
 /**
@@ -25,7 +27,10 @@ public class CalcDurationDate {
     private int totalYearMonths= 0;
     private int totalYearDays = 0;
 
+    private MyCalendar c;
+
     public CalcDurationDate() {
+        c = new MyCalendar();
     }
 
     public CalcDurationDate(int styy, int stmm, int stdd, int enyy, int enmm, int endd) {
@@ -78,8 +83,8 @@ public class CalcDurationDate {
         int _sm = this.stmm;
         int _y, _m, _d, _w;
 
-        Calendar c = Calendar.getInstance();
-        c.set(this.styy, this.stmm - 1, this.stdd);
+
+        c.setCalendar(this.styy, this.stmm, this.stdd);
 
         if(this.stymd != this.enymd) {
 
@@ -130,7 +135,7 @@ public class CalcDurationDate {
 
     public boolean setInitDate(int startY, int startM, int startD, int endY, int endM, int endD) {
 
-        if (!CalcEventDate.isValidDate(startY, startM, startD) || !CalcEventDate.isValidDate(endY, endM, endD))
+        if (!MyCalendar.isValidDate(startY, startM, startD) || !MyCalendar.isValidDate(endY, endM, endD))
             return false;
 
         if ((startY * 10000 + startM * 100 + startD) <=
@@ -153,11 +158,11 @@ public class CalcDurationDate {
         this.stymd = this.styy * 10000 + this.stmm * 100 + this.stdd;
         this.enymd = this.enyy * 10000 + this.enmm * 100 + this.endd;
 
-        Calendar c = Calendar.getInstance();
-        c.set(styy, stmm-1, stdd);
+
+        c.setCalendar(styy, stmm, stdd);
         this.stw = c.get(Calendar.DAY_OF_WEEK);
 
-        c.set(enyy, enmm-1, endd);
+        c.setCalendar(enyy, enmm, endd);
         this.enw = c.get(Calendar.DAY_OF_WEEK);
 
         return true;

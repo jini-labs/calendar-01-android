@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:id="@+id/styy"
+                    android:id="@+id/event_styy"
                     android:text=""
                     android:textSize="24sp"
                     android:gravity="end"
@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:id="@+id/stmm"
+                    android:id="@+id/event_stmm"
                     android:text=""
                     android:textSize="24sp"
                     android:gravity="end"
@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:id="@+id/stdd"
+                    android:id="@+id/event_stdd"
                     android:text=""
                     android:textSize="24sp"
                     android:gravity="end"
@@ -98,7 +98,7 @@
                     android:layout_width="30dp"
                     android:layout_height="wrap_content"/>
                 <ImageButton
-                    android:id="@+id/btnstdt"
+                    android:id="@+id/btn_event_stdt"
                     android:layout_marginRight="5dp"
                     android:src="@drawable/ic_calendar"
                     android:layout_width="30dp"
@@ -113,7 +113,8 @@
         </LinearLayout>
         <TextView
             android:text="@string/label_eventday_no"
-            android:textColor="#000000"
+            android:textColor="@color/colorLabelStartDate"
+            android:textSize="20sp"
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
@@ -127,35 +128,110 @@
             android:layout_marginBottom="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/value1"
-                android:text="____"
-                android:inputType="number"
-                android:gravity="center"
-                android:textColor="@color/colorInputStartDate"
-                android:textColorHint="@color/colorHintYMD"
-                android:layout_marginRight="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
 
-            <Spinner
-                android:id="@+id/spinnerdurationunit"
-                android:gravity="center"
-                android:entries="@array/spinner_duration_unit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            <GridLayout
+                android:columnCount="4"
+                android:rowCount="4"
 
-            <Spinner
-                android:id="@+id/spinnerbeforeafter"
-                android:gravity="center"
-                android:entries="@array/spinner_beforeafter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:text="@string/label_eventday_ha"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/value1"
+                    android:inputType="number"
+                    android:ems="10"
+                    android:background="@drawable/custom_area"
+                    android:paddingBottom="5dp"
+                    android:layout_column="0"
+                    android:layout_row="0"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="@string/label_eventday_date"
+                    android:ems="10"
+                    android:gravity="end"
+                    android:layout_column="1"
+                    android:layout_row="0"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"/>
+
+                <EditText
+                    android:id="@+id/value2"
+                    android:inputType="number"
+                    android:ems="10"
+                    android:background="@drawable/custom_area"
+                    android:layout_column="0"
+                    android:layout_row="1"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="@string/label_eventday_week"
+                    android:ems="10"
+                    android:gravity="end"
+                    android:layout_column="1"
+                    android:layout_row="1"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"/>
+
+                <EditText
+                    android:id="@+id/value3"
+                    android:inputType="number"
+                    android:ems="10"
+                    android:background="@drawable/custom_area"
+                    android:layout_column="0"
+                    android:layout_row="2"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="@string/label_eventday_month"
+                    android:ems="10"
+                    android:gravity="end"
+                    android:layout_column="1"
+                    android:layout_row="2"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"/>
+
+                <EditText
+                    android:id="@+id/value4"
+                    android:inputType="number"
+                    android:ems="10"
+                    android:background="@drawable/custom_area"
+                    android:layout_column="0"
+                    android:layout_row="3"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="@string/label_eventday_year"
+                    android:ems="10"
+                    android:gravity="end"
+                    android:layout_column="1"
+                    android:layout_row="3"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"/>
+                <Spinner
+                    android:id="@+id/spinnerdurationunit"
+                    android:entries="@array/spinner_duration_unit"
+                    android:gravity="end"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:layout_gravity="fill_vertical"
+                    android:layout_column="2"
+                    android:layout_row="0"
+                    android:layout_rowSpan="4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <Spinner
+                    android:id="@+id/spinnerbeforeafter"
+                    android:entries="@array/spinner_beforeafter"
+                    android:gravity="end"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:layout_gravity="fill_vertical"
+                    android:layout_column="2"
+                    android:layout_row="0"
+                    android:layout_rowSpan="4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </GridLayout>
         </LinearLayout>
 
         <Button
@@ -178,11 +254,13 @@
             <TextView
                 android:id="@+id/result_eventday"
                 android:text=""
+                android:textSize="20sp"
                 android:textColor="@color/colorLabelStartDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:text="@string/eventday_result"
+                android:textSize="20sp"
                 android:textColor="@color/colorLabelStartDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

@@ -16,7 +16,11 @@
     <color name="colorLabelEndDate">#000000</color>
     <color name="colorInputEndDate">#AA0000</color>
 
+    <color name="colorFillBackground">#BBBBBB</color>
+    <color name="colorReverseBackground">#09742D</color>
+
     <color name="colorHintYMD">#BBBBBB</color>
+    <color name="colorResultValue">#AA5050</color>
     <color name="colorResultValue1">#AA5050</color>
 
 </resources>
