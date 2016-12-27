@@ -215,7 +215,7 @@
                     android:text="@string/label_dura_save_button"
                     android:textSize="16sp"
                     android:textColor="@color/colorCalcButton"
-                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"/>
                 <Button
@@ -224,8 +224,6 @@
                     android:text="@string/label_calc_button"
                     android:textSize="20sp"
                     android:textColor="@color/colorCalcButton"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_gravity="center"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
