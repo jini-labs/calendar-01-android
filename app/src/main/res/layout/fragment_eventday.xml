@@ -294,6 +294,7 @@
                 android:textSize="@dimen/eve_result_textsize"
                 android:textColor="@color/colorLabelEndDate"
                 android:background="@drawable/custom_edittext"
+                android:gravity="center"
                 android:layout_weight="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -306,12 +307,5 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
-
-    <Spinner
-        android:visibility="invisible"
-        android:id="@+id/spinnerdurationunit"
-        android:entries="@array/spinner_duration_unit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
 
 </FrameLayout>

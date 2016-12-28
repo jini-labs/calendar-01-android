@@ -1,30 +1,49 @@
 package com.doublesibi.utils.calc.datecalculator;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.doublesibi.utils.calc.datecalculator.util.MyCalendar;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private final String LOGTAG = "DayCalc";
     private int selectedMenu = 0;
+    private MyCalendar myCalendar;
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        myCalendar = new MyCalendar();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -37,12 +56,22 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View v = navigationView.getHeaderView(0);
+        ((TextView) v.findViewById(R.id.header_date)).setText(myCalendar.getCurrentYMD("-"));
+        Resources r = getResources();
+        String[] weekofName = r.getStringArray(R.array.nameOfWeek);
+        int weekOfNum = myCalendar.get(Calendar.DAY_OF_WEEK);
+        ((TextView) v.findViewById(R.id.header_wdate)).setText(weekofName[weekOfNum-1]);
+        if (weekOfNum == Calendar.SUNDAY || weekOfNum == Calendar.SATURDAY) {
+            ((TextView) v.findViewById(R.id.header_wdate)).setTextColor(Color.RED);
+        }
+
         initView();
 
-        navigationView.getMenu().getItem(0).setChecked(true);
     }
 
     public void initView() {
+
         Fragment fragment = null;
         Class fragmentClass = DurationFragment.class;
 
