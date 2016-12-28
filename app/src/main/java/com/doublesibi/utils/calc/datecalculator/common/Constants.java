@@ -14,6 +14,17 @@ public final class Constants {
     public final static int INPUT_END_MONTH = 12;
     public final static int INPUT_END_DATE  = 13;
 
+    public final static int DATE_TYPE_YMD = 1;
+    public final static int DATE_TYPE_MD  = 2;
+
+    public final static int  EVENT_UNIT_YEAR = 0;
+    public final static int  EVENT_UNIT_MONTH = 1;
+    public final static int  EVENT_UNIT_WEEK = 2;
+    public final static int  EVENT_UNIT_DATE = 3;
+
+    public final static int  EVENT_OLD_DATE = 0;
+    public final static int  EVENT_WILL_DATE = 1;
+
     public final static int[][] daysOfMonth = {
             {30,28,30,31,30,31,31,30,31,30,31,30},
             {30,29,30,31,30,31,31,30,31,30,31,30}};

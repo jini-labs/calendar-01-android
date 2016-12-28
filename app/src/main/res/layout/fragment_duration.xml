@@ -1,14 +1,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-
     tools:context="com.doublesibi.utils.calc.datecalculator.DurationFragment">
 
     <LinearLayout
@@ -17,301 +13,519 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:gravity="center"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:orientation="horizontal"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:layout_height="30dp">
+            android:layout_height="wrap_content">
+            <!--1st date-->
+            <LinearLayout
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginBottom="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="36dp">
 
-            <TextView
-                android:id="@+id/colorLabelStartDate"
-                android:text="@string/label_start_date"
-                android:textColor="@color/colorLabelStartDate"
-                android:layout_marginRight="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/colorLabelStartDate"
+                    android:text="@string/label_start_date"
+                    android:textSize="24sp"
+                    android:gravity="start"
+                    android:textColor="@color/colorLabelStartDate"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-            <TextView
-                android:id="@+id/styy"
-                android:text=""
-                android:hint="2015"
-                android:inputType="number"
-                android:textColor="@color/colorInputStartDate"
-                android:textColorHint="@color/colorHintYMD"
-                android:layout_marginRight="5dp"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/datesep1"
-                android:text="/"
-                android:textColor="@color/colorInputStartDate"
-                android:layout_marginRight="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/styy"
+                    android:text=""
+                    android:textSize="24sp"
+                    android:gravity="end"
+                    android:maxLength="4"
+                    android:hint="2015"
+                    android:textColor="@color/colorInputStartDate"
+                    android:textColorHint="@color/colorHintYMD"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"/>
 
-            <TextView
-                android:id="@+id/stmm"
-                android:text=""
-                android:hint="9"
-                android:inputType="number"
-                android:textColorHint="@color/colorHintYMD"
-                android:textColor="@color/colorInputStartDate"
-                android:layout_marginRight="5dp"
-                android:layout_width="20dp"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/datesep1"
+                    android:text="/"
+                    android:gravity="center"
+                    android:textSize="24sp"
+                    android:textColor="@color/colorInputStartDate"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-            <TextView
-                android:id="@+id/datesep2"
-                android:text="/"
-                android:textColor="@color/colorInputStartDate"
-                android:layout_marginRight="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/stmm"
+                    android:text=""
+                    android:textSize="24sp"
+                    android:gravity="end"
+                    android:maxLength="2"
+                    android:hint="9"
+                    android:textColorHint="@color/colorHintYMD"
+                    android:textColor="@color/colorInputStartDate"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"/>
 
-            <TextView
-                android:id="@+id/stdd"
-                android:text=""
-                android:inputType="number"
-                android:hint="9"
-                android:textColorHint="@color/colorHintYMD"
-                android:textColor="@color/colorInputStartDate"
-                android:layout_marginRight="10dp"
-                android:layout_width="20dp"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/datesep2"
+                    android:text="/"
+                    android:gravity="center"
+                    android:textSize="24sp"
+                    android:textColor="@color/colorInputStartDate"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-            <ImageButton
-                android:id="@+id/btnstdt"
-                app:srcCompat="@android:drawable/ic_menu_my_calendar"
-                android:layout_marginRight="5dp"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/stdd"
+                    android:text=""
+                    android:textSize="24sp"
+                    android:gravity="end"
+                    android:maxLength="2"
+                    android:hint="9"
+                    android:textColorHint="@color/colorHintYMD"
+                    android:textColor="@color/colorInputStartDate"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"/>
 
-            <ImageButton
-                android:id="@+id/btn_start_today"
-                app:srcCompat="@android:drawable/ic_menu_today"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"/>
+                <ImageButton
+                    android:id="@+id/btn_durat_stdt"
+                    android:src="@drawable/ic_calendar"
+                    android:gravity="center"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="36dp"
+                    android:layout_height="match_parent"/>
+
+                <ImageButton
+                    android:id="@+id/btn_start_today"
+                    android:src="@drawable/ic_today"
+                    android:gravity="center"
+                    android:layout_width="36dp"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+            <!--2nd date-->
+            <LinearLayout
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginBottom="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="36dp">
+
+                <TextView
+                    android:id="@+id/labelenddate"
+                    android:text="@string/label_other_date"
+                    android:textSize="24sp"
+                    android:gravity="start"
+                    android:textColor="@color/colorLabelEndDate"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/enyy"
+                    android:text=""
+                    android:textSize="24sp"
+                    android:gravity="end"
+                    android:maxLength="4"
+                    android:hint="2016"
+                    android:textColor="@color/colorInputEndDate"
+                    android:textColorHint="@color/colorHintYMD"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/datesep3"
+                    android:text="/"
+                    android:gravity="center"
+                    android:textSize="24sp"
+                    android:textColor="@color/colorInputEndDate"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/enmm"
+                    android:text=""
+                    android:textSize="24sp"
+                    android:gravity="end"
+                    android:maxLength="2"
+                    android:hint="11"
+                    android:textColorHint="@color/colorHintYMD"
+                    android:textColor="@color/colorInputEndDate"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/datesep4"
+                    android:text="/"
+                    android:gravity="center"
+                    android:textSize="24sp"
+                    android:textColor="@color/colorInputEndDate"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/endd"
+                    android:text=""
+                    android:textSize="24sp"
+                    android:gravity="end"
+                    android:maxLength="2"
+                    android:hint="13"
+                    android:textColorHint="@color/colorHintYMD"
+                    android:textColor="@color/colorInputEndDate"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"/>
+
+                <ImageButton
+                    android:id="@+id/btn_durat_endt"
+                    android:src="@drawable/ic_calendar"
+                    android:gravity="center"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="36dp"
+                    android:layout_height="wrap_content"/>
+
+                <ImageButton
+                    android:id="@+id/btn_end_today"
+                    android:src="@drawable/ic_today"
+                    android:gravity="center"
+                    android:layout_width="36dp"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <!-- Button -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/btnDuraSave"
+                    android:background="@drawable/boxed_edittext_reverse"
+                    android:text="@string/label_dura_save_button"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorCalcButton"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"/>
+                <Button
+                    android:id="@+id/btnenter"
+                    android:background="@drawable/boxed_edittext_reverse"
+                    android:text="@string/label_calc_button"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorCalcButton"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <!-- border line -->
+            <View
+                android:background="@android:color/darker_gray"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"/>
         </LinearLayout>
 
+        <!-- Output of result -->
         <LinearLayout
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="30dp">
-
-            <TextView
-                android:id="@+id/labelenddate"
-                android:text="@string/label_other_date"
-                android:textColor="@color/colorLabelEndDate"
-                android:layout_marginRight="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:id="@+id/enyy"
-                android:text=""
-                android:hint="2016"
-                android:textColorHint="@color/colorHintYMD"
-                android:textColor="@color/colorInputEndDate"
-                android:inputType="number"
-                android:layout_marginRight="5dp"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:id="@+id/datesep3"
-                android:text="/"
-                android:textColor="@color/colorInputEndDate"
-                android:layout_marginRight="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:id="@+id/enmm"
-                android:text=""
-                android:hint="11"
-                android:inputType="number"
-                android:textColorHint="@color/colorHintYMD"
-                android:textColor="@color/colorInputEndDate"
-                android:layout_marginRight="5dp"
-                android:layout_width="20dp"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:id="@+id/datesep4"
-                android:text="/"
-                android:textColor="@color/colorInputEndDate"
-                android:layout_marginRight="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:id="@+id/endd"
-                android:text=""
-                android:hint="13"
-                android:textColorHint="@color/colorHintYMD"
-                android:textColor="@color/colorInputEndDate"
-                android:inputType="number"
-                android:layout_marginRight="5dp"
-                android:layout_width="20dp"
-                android:layout_height="wrap_content"/>
-
-            <ImageButton
-                android:id="@+id/btnendt"
-                app:srcCompat="@android:drawable/ic_menu_my_calendar"
-                android:layout_marginRight="5dp"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"/>
-
-            <ImageButton
-                android:id="@+id/btn_end_today"
-                app:srcCompat="@android:drawable/ic_menu_today"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <LinearLayout
-            android:gravity="center"
-            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
+            android:background="@color/colorBackground"
+            android:layout_margin="@dimen/fab_margin"
+            android:weightSum="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/btnenter"
-                android:text="calculate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            <TableLayout
+                android:weightSum="28"
+                android:padding="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <!-- Header -->
+                <TableRow
+                    android:layout_weight="8"
+                    android:weightSum="30"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text=""
+                        android:background="@drawable/boxed_edittext_reverse"
+                        android:layout_weight="5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+                    <TextView
+                        android:text="@string/label_result_year"
+                        android:textSize="@dimen/dur_table_label_textsize"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/boxed_edittext_reverse"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <TextView
+                        android:text="@string/label_result_month"
+                        android:textSize="@dimen/dur_table_label_textsize"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/boxed_edittext_reverse"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <TextView
+                        android:text="@string/label_result_week"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:textSize="@dimen/dur_table_label_textsize"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/boxed_edittext_reverse"
+                        android:layout_weight="7"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <TextView
+                        android:text="@string/label_result_days"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:textSize="@dimen/dur_table_label_textsize"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/boxed_edittext_reverse"
+                        android:layout_weight="8"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                </TableRow>
+
+                <!-- count of days -->
+                <TableRow
+                    android:layout_weight="5"
+                    android:weightSum="30"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="@string/label_result_days"
+                        android:gravity="center"
+                        android:textSize="@dimen/dur_table_label_textsize"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/boxed_edittext_reverse"
+                        android:focusable="false"
+                        android:layout_weight="5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+
+                    <EditText
+                        android:enabled="false"
+                        android:background="@drawable/boxed_edittext_filled"
+                        android:focusable="false"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:enabled="false"
+                        android:background="@drawable/boxed_edittext_filled"
+                        android:focusable="false"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:enabled="false"
+                        android:background="@drawable/boxed_edittext_filled"
+                        android:focusable="false"
+                        android:layout_weight="7"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:id="@+id/result_1_days"
+                        android:textSize="@dimen/dur_result_textsize"
+                        android:textColor="@color/colorResultValue"
+                        android:enabled="false"
+                        android:gravity="end"
+                        android:background="@drawable/boxed_edittext_normal"
+                        android:focusable="false"
+                        android:layout_weight="8"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                </TableRow>
+
+                <!-- count of days and weeks -->
+                <TableRow
+                    android:layout_weight="5"
+                    android:weightSum="30"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="@string/label_eventday_wwdd"
+                        android:gravity="center"
+                        android:textSize="@dimen/dur_table_label_textsize"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/boxed_edittext_reverse"
+                        android:layout_weight="5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+
+                    <EditText
+                        android:enabled="false"
+                        android:background="@drawable/boxed_edittext_filled"
+                        android:focusable="false"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:enabled="false"
+                        android:background="@drawable/boxed_edittext_filled"
+                        android:focusable="false"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:id="@+id/result_2_weeks"
+                        android:textSize="@dimen/dur_result_textsize"
+                        android:textColor="@color/colorResultValue"
+                        android:enabled="false"
+                        android:gravity="end"
+                        android:background="@drawable/boxed_edittext_normal"
+                        android:focusable="false"
+                        android:layout_weight="7"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:id="@+id/result_2_days"
+                        android:textSize="@dimen/dur_result_textsize"
+                        android:textColor="@color/colorResultValue"
+                        android:enabled="false"
+                        android:gravity="end"
+                        android:background="@drawable/boxed_edittext_normal"
+                        android:focusable="false"
+                        android:layout_weight="8"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                </TableRow>
+
+                <!-- count of days and months -->
+                <TableRow
+                    android:layout_weight="5"
+                    android:weightSum="30"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="@string/label_eventday_mmdd"
+                        android:gravity="center"
+                        android:textSize="@dimen/dur_table_label_textsize"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/boxed_edittext_reverse"
+                        android:layout_weight="5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+
+                    <EditText
+                        android:enabled="false"
+                        android:background="@drawable/boxed_edittext_filled"
+                        android:focusable="false"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:id="@+id/result_3_months"
+                        android:textSize="@dimen/dur_result_textsize"
+                        android:textColor="@color/colorResultValue"
+                        android:enabled="false"
+                        android:gravity="end"
+                        android:background="@drawable/boxed_edittext_normal"
+                        android:focusable="false"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:enabled="false"
+                        android:background="@drawable/boxed_edittext_filled"
+                        android:focusable="false"
+                        android:layout_weight="7"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:id="@+id/result_3_days"
+                        android:textSize="@dimen/dur_result_textsize"
+                        android:textColor="@color/colorResultValue"
+                        android:enabled="false"
+                        android:gravity="end"
+                        android:background="@drawable/boxed_edittext_normal"
+                        android:focusable="false"
+                        android:layout_weight="8"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                </TableRow>
+
+                <!-- count of days and months and years -->
+                <TableRow
+                    android:layout_weight="5"
+                    android:weightSum="30"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="@string/label_eventday_yymmdd"
+                        android:gravity="center"
+                        android:textSize="@dimen/dur_table_label_textsize"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/boxed_edittext_reverse"
+                        android:layout_weight="5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:id="@+id/result_4_years"
+                        android:textSize="@dimen/dur_result_textsize"
+                        android:textColor="@color/colorResultValue"
+                        android:enabled="false"
+                        android:gravity="end"
+                        android:background="@drawable/boxed_edittext_normal"
+                        android:focusable="false"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:id="@+id/result_4_months"
+                        android:textSize="@dimen/dur_result_textsize"
+                        android:textColor="@color/colorResultValue"
+                        android:enabled="false"
+                        android:gravity="end"
+                        android:background="@drawable/boxed_edittext_normal"
+                        android:focusable="false"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:enabled="false"
+                        android:background="@drawable/boxed_edittext_filled"
+                        android:focusable="false"
+                        android:layout_weight="7"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                    <EditText
+                        android:id="@+id/result_4_days"
+                        android:textSize="@dimen/dur_result_textsize"
+                        android:textColor="@color/colorResultValue"
+                        android:enabled="false"
+                        android:gravity="end"
+                        android:background="@drawable/boxed_edittext_normal"
+                        android:focusable="false"
+                        android:layout_weight="8"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                </TableRow>
+            </TableLayout>
+
         </LinearLayout>
 
-        <View
-            android:background="@android:color/darker_gray"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"/>
-
+        <!--arear of AddMob -->
         <LinearLayout
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginBottom="15dp"
+            android:orientation="vertical"
+            android:background="@color/colorBackground"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/result_1_days"
-                android:text="__"
-                android:textColor="@color/colorResultValue1"
-                android:layout_marginRight="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:text="days."
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginBottom="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:text="__"
-                android:id="@+id/result_2_weeks"
-                android:textColor="@color/colorResultValue1"
-                android:layout_marginRight="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:text="weeks, "
-                android:layout_marginRight="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/result_2_days"
-                android:text="__"
-                android:textColor="@color/colorResultValue1"
-                android:layout_marginRight="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:text="days."
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginBottom="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/result_3_months"
-                android:text="__"
-                android:textColor="@color/colorResultValue1"
-                android:layout_marginRight="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:text="months, "
-                android:layout_marginRight="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/result_3_days"
-                android:text="__"
-                android:textColor="@color/colorResultValue1"
-                android:layout_marginRight="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:text="days."
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginBottom="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/result_4_years"
-                android:text="__"
-                android:textColor="@color/colorResultValue1"
-                android:layout_marginRight="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:text="years, "
-                android:layout_marginRight="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/result_4_months"
-                android:text="__"
-                android:textColor="@color/colorResultValue1"
-                android:layout_marginRight="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:text="months, "
-                android:layout_marginRight="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/result_4_days"
-                android:text="__"
-                android:textColor="@color/colorResultValue1"
-                android:layout_marginRight="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:text="days."
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            android:layout_height="20dp">
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#09742D</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#CDFCC5</color>
+
+    <color name="colorBackground">#D0FCC8</color>
+    <color name="colorCalcButtonBg">#09742D</color>
+    <color name="colorCalcButton">#D0FCC8</color>
+
+    <color name="colorCalcButtonNormal">#09742D</color>
+    <color name="colorCalcButtonPress">#55A561</color>
 
     <color name="colorLabelStartDate">#000000</color>
     <color name="colorInputStartDate">#A1B100</color>
     <color name="colorLabelEndDate">#000000</color>
     <color name="colorInputEndDate">#AA0000</color>
 
+    <color name="colorFillBackground">#BBBBBB</color>
+    <color name="colorReverseBackground">#09742D</color>
+
     <color name="colorHintYMD">#BBBBBB</color>
+    <color name="colorResultValue">#AA5050</color>
     <color name="colorResultValue1">#AA5050</color>
 
 </resources>

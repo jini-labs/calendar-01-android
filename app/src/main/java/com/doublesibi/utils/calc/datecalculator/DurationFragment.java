@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.doublesibi.utils.calc.datecalculator.common.Constants;
 import com.doublesibi.utils.calc.datecalculator.common.CalcEventDate;
 import com.doublesibi.utils.calc.datecalculator.common.CalcDurationDate;
+import com.doublesibi.utils.calc.datecalculator.util.MyCalendar;
 
 import java.util.Calendar;
 
@@ -28,22 +30,23 @@ import java.util.Calendar;
  * A simple {@link Fragment} subclass.
  */
 public class DurationFragment extends Fragment implements View.OnClickListener{
+    private final String LOGTAG = "DayCalc";
 
-    TextView startYY, startMM, startDD;
-    TextView endYY, endMM, endDD;
-    TextView result1_days;
-    TextView result2_weeks, result2_days;
-    TextView result3_months, result3_days;
-    TextView result4_years, result4_months, result4_days;
+    private TextView startYY, startMM, startDD;
+    private TextView endYY, endMM, endDD;
+    private TextView result1_days;
+    private TextView result2_weeks, result2_days;
+    private TextView result3_months, result3_days;
+    private TextView result4_years, result4_months, result4_days;
 
-    ImageButton btnStDate, btnEnDate, btnStToday, btnEnToday;
-    Button btnCalc;
+    private ImageButton btnStDate, btnEnDate, btnStToday, btnEnToday;
+    private Button btnCalc;
 
-    DatePickerDialog datePickerDialog;
+    private DatePickerDialog datePickerDialog;
 
-    int startymd = 0, endymd = 0;
-    int styy = 0, stmm = 0, stdd = 0;
-    int enyy = 0, enmm = 0, endd = 0;
+    private int startymd = 0, endymd = 0;
+    private int styy = 0, stmm = 0, stdd = 0;
+    private int enyy = 0, enmm = 0, endd = 0;
 
     public DurationFragment() {
         // Required empty public constructor
@@ -80,7 +83,7 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                     numberPickerDilaog(1, 12, stmm, Constants.INPUT_START_MONTH, "月を選択下さい。");
                     break;
                 case R.id.stdd:
-                    maxDays = CalcEventDate.getMaxDayOfMonth(enyy, enmm);
+                    maxDays = MyCalendar.getMaxDayOfMonth(enyy, enmm);
                     numberPickerDilaog(1, maxDays, stdd, Constants.INPUT_START_DATE, "日を選択下さい。");
                     Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
                     break;
@@ -91,12 +94,12 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                     numberPickerDilaog(1, 12, enmm, Constants.INPUT_END_MONTH, "月を選択下さい。");
                     break;
                 case R.id.endd:
-                    maxDays = CalcEventDate.getMaxDayOfMonth(enyy, enmm);
+                    maxDays = MyCalendar.getMaxDayOfMonth(enyy, enmm);
                     numberPickerDilaog(1, maxDays, endd, Constants.INPUT_END_DATE, "日を選択下さい。");
                     Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
                     break;
                 // button
-                case R.id.btnstdt:
+                case R.id.btn_durat_stdt:
                     datePickerDialog = new DatePickerDialog(
                             getContext(),
                             android.R.style.Theme_Holo_Light_Dialog_MinWidth,
@@ -115,7 +118,7 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                     datePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                     datePickerDialog.show();
                     break;
-                case R.id.btnendt:
+                case R.id.btn_durat_endt:
                     if (enyy == 0 || enmm == 0 || endd == 0) {
                         Calendar c = Calendar.getInstance();
                         enyy = c.get(Calendar.YEAR);
@@ -206,21 +209,36 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    public void setButtonId(View view) {
-        btnStDate = (ImageButton) view.findViewById(R.id.btnstdt);
-        btnEnDate = (ImageButton) view.findViewById(R.id.btnendt);
+    private void setButtonId(View view) {
+        btnStDate = (ImageButton) view.findViewById(R.id.btn_durat_stdt);
+        btnEnDate = (ImageButton) view.findViewById(R.id.btn_durat_endt);
         btnStToday= (ImageButton) view.findViewById(R.id.btn_start_today);
         btnEnToday= (ImageButton) view.findViewById(R.id.btn_end_today);
         btnCalc = (Button) view.findViewById(R.id.btnenter);
 
-        view.findViewById(R.id.btnstdt).setOnClickListener(this);
-        view.findViewById(R.id.btnendt).setOnClickListener(this);
+        btnCalc.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    Log.d(LOGTAG,"btnCalc down.");
+                    btnCalc.setBackgroundResource(R.color.colorCalcButtonPress);
+
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    Log.d(LOGTAG,"btnCalc up.");
+                    btnCalc.setBackgroundResource(R.color.colorCalcButtonNormal);
+                }
+                return false;
+            }
+        });
+
+        btnCalc.setOnClickListener(this);
+        view.findViewById(R.id.btn_durat_stdt).setOnClickListener(this);
+        view.findViewById(R.id.btn_durat_endt).setOnClickListener(this);
         view.findViewById(R.id.btn_start_today).setOnClickListener(this);
         view.findViewById(R.id.btn_end_today).setOnClickListener(this);
-        view.findViewById(R.id.btnenter).setOnClickListener(this);
     }
 
-    public void setTextId(View view) {
+    private void setTextId(View view) {
         startYY = (TextView) view.findViewById(R.id.styy);
         startMM = (TextView) view.findViewById(R.id.stmm);
         startDD = (TextView) view.findViewById(R.id.stdd);
@@ -244,7 +262,7 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
         endDD.setOnClickListener(this);
     }
 
-    public void setStartDate(int yy, int mm, int dd) {
+    private void setStartDate(int yy, int mm, int dd) {
         startYY.setText(String.valueOf(yy));
         startMM.setText(String.valueOf(mm));
         startDD.setText(String.valueOf(dd));
