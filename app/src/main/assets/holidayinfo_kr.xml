@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<holidays country="Japan">
+    <holiday name="">
+        <engname></engname>
+        <date></date>
+        <monthofyear></monthofyear>
+        <weekofmonth></weekofmonth>
+        <dayofweek></dayofweek>
+    </holiday>
+    <holiday></holiday>
+
+    <substitutes>
+        <substitute>
+            <startdate></startdate>
+            <enddate></enddate>
+        </substitute>
+    </substitutes>
+
+    <temporary>
+        <date name="">
+            <date></date>
+        </date>
+        <date name="">
+            <date></date>
+        </date>
+    </temporary>
+</holidays>

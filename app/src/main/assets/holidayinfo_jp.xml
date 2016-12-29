@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<holidays country="Japan">
+    <substitutes>
+        <substitute>
+            <startdate></startdate>
+            <enddate></enddate>
+        </substitute>
+    </substitutes>
+
+    <betweens>
+        <between>
+            <startdate></startdate>
+            <enddate></enddate>
+        </between>
+        <between>
+            <startdate></startdate>
+            <enddate></enddate>
+        </between>
+    </betweens>
+
+    <holiday name="元日">
+        <engname></engname>
+        <date></date>
+        <monthofyear></monthofyear>
+        <weekofmonth></weekofmonth>
+        <dayofweek></dayofweek>
+    </holiday>
+    <holiday></holiday>
+
+</holidays>
