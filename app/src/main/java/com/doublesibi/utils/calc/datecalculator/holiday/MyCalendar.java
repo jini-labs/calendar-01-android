@@ -1,7 +1,5 @@
 package com.doublesibi.utils.calc.datecalculator.holiday;
 
-import android.util.Log;
-
 import com.doublesibi.utils.calc.datecalculator.common.Constants;
 
 import java.text.SimpleDateFormat;
@@ -15,7 +13,7 @@ import java.util.TimeZone;
 
 public final class MyCalendar extends Calendar {
 
-    private Calendar c;
+    private final Calendar c;
 
     public MyCalendar() {
         this.c = Calendar.getInstance();
@@ -51,18 +49,34 @@ public final class MyCalendar extends Calendar {
     }
 
     public int getCurrentYMD() {
-        return c.get(Calendar.YEAR) * 10000 +
-                (c.get(Calendar.MONTH) + 1) * 100 +
-                c.get(Calendar.DATE);
+        return this.c.get(Calendar.YEAR) * 10000 +
+                (this.c.get(Calendar.MONTH) + 1) * 100 +
+                this.c.get(Calendar.DATE);
+    }
+
+    public int getCurrentYMD(Calendar calendar) {
+        return calendar.get(Calendar.YEAR) * 10000 +
+                (calendar.get(Calendar.MONTH) + 1) * 100 +
+                calendar.get(Calendar.DATE);
     }
 
     public String getCurrentYMD(String delm) {
         if (delm != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy" + delm + "MM" + delm + "dd");
-            return sdf.format(c.getTime());
+            return sdf.format(this.c.getTime());
         } else {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-            return sdf.format(c.getTime());
+            return sdf.format(this.c.getTime());
+        }
+    }
+
+    public String getCurrentYMD(Calendar calendar, String delm) {
+        if (delm != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy" + delm + "MM" + delm + "dd");
+            return sdf.format(calendar.getTime());
+        } else {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            return sdf.format(calendar.getTime());
         }
     }
 
@@ -84,26 +98,23 @@ public final class MyCalendar extends Calendar {
             case Constants.DATE_TYPE_MD:
                 if (delm != null) {
                     SimpleDateFormat sdf = new SimpleDateFormat("MM" + delm + "dd");
-                    return sdf.format(c.getTime());
+                    return sdf.format(this.c.getTime());
                 } else {
                     SimpleDateFormat sdf = new SimpleDateFormat("MMdd");
-                    return sdf.format(c.getTime());
+                    return sdf.format(this.c.getTime());
                 }
             default:
                 return "";
         }
     }
 
-
-
     public void setCalendar(int y, int m, int d) {
-        c.set(y, m-1, d);
+        this.c.set(y, m-1, d);
     }
 
     public void setCalendar(String y, String m, String d) {
-        c.set(Integer.parseInt(y), Integer.parseInt(m) - 1, Integer.parseInt(d));
+        this.c.set(Integer.parseInt(y), Integer.parseInt(m) - 1, Integer.parseInt(d));
     }
-
 
     public static int getMaxDayOfMonth(int y, int m) {
         if (y > 0 && y < 9999) {
@@ -152,7 +163,7 @@ public final class MyCalendar extends Calendar {
 
     @Override
     public void add(int field, int amount) {
-        c.add(field, amount);
+        this.c.add(field, amount);
     }
 
     @Override
