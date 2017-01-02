@@ -1,27 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<holidays country="Japan">
-    <holiday name="">
-        <engname></engname>
-        <date></date>
-        <monthofyear></monthofyear>
-        <weekofmonth></weekofmonth>
-        <dayofweek></dayofweek>
+<holidays country="Korea">
+    <holiday name="신정">
+        <date>101</date>
+        <startyear>1949</startyear>
     </holiday>
-    <holiday></holiday>
+    <holiday name="신정">
+        <date>102</date>
+        <startyear>1949</startyear>
+        <endyear>1999</endyear>
+    </holiday>
+    <holiday name="신정">
+        <date>103</date>
+        <startyear>1949</startyear>
+        <endyear>1990</endyear>
+    </holiday>
+    <holiday name="민속의날">
+        <startyear>1985</startyear>
+        <endyear>1988</endyear>
+        <specialFunction>LunarFirstday</specialFunction>
+    </holiday>
+    <holiday name="설날">
+        <startyear>1989</startyear>
+        <specialFunction>LunarFirstPrevday</specialFunction>
+        <substitute>true</substitute>
+    </holiday>
+    <holiday name="설날">
+        <startyear>1989</startyear>
+        <specialFunction>LunarFirstday</specialFunction>
+        <substitute>true</substitute>
+    </holiday>
+    <holiday name="설날">
+        <startyear>1989</startyear>
+        <specialFunction>LunarFirstNextday</specialFunction>
+        <substitute>true</substitute>
+    </holiday>
+    <holiday name="3.1절">
+        <date>301</date>
+        <startyear>1949</startyear>
+    </holiday>
+    <holiday name="식목일">
+        <date>405</date>
+        <startyear>1949</startyear>
+        <endyear>1959</endyear>
+    </holiday>
+    <holiday name="사방의날">
+        <date>3155</date>
+        <startyear>1960</startyear>
+        <endyear>1960</endyear>
+    </holiday>
+    <holiday name="식목일">
+        <date>405</date>
+        <startyear>1960</startyear>
+        <endyear>2005</endyear>
+    </holiday>
+    <holiday name="석가탄신일">
+        <specialFunction>BuddhaBirth</specialFunction>
+    </holiday>
+    <holiday name="어린이날">
+        <date>505</date>
+        <startyear>1975</startyear>
+        <substitute>true</substitute>
+    </holiday>
+    <holiday name="제헌절">
+        <date>717</date>
+        <startyear>1949</startyear>
+        <endyear>2007</endyear>
+    </holiday>
+    <holiday name="현충일">
+        <date>606</date>
+        <startyear>1956</startyear>
+    </holiday>
+    <holiday name="광복절">
+        <date>815</date>
+        <startyear>1950</startyear>
+    </holiday>
+    <holiday name="추석">
+        <startyear>1989</startyear>
+        <specialFunction>SuperMoonPrevday</specialFunction>
+        <substitute>true</substitute>
+    </holiday>
+    <holiday name="추석">
+        <startyear>1949</startyear>
+        <specialFunction>SuperMoonday</specialFunction>
+        <substitute>true</substitute>
+    </holiday>
+    <holiday name="추석">
+        <startyear>1986</startyear>
+        <specialFunction>SuperMoonNextday</specialFunction>
+        <substitute>true</substitute>
+    </holiday>
+    <holiday name="국군의날">
+        <date>1001</date>
+        <startyear>1976</startyear>
+        <endyear>1990</endyear>
+    </holiday>
+    <holiday name="개천절">
+        <date>1003</date>
+        <startyear>1949</startyear>
+    </holiday>
+    <holiday name="한글날">
+        <date>1009</date>
+        <startyear>1949</startyear>
+        <startyear>1990</startyear>
+    </holiday>
+    <holiday name="한글날">
+        <date>1009</date>
+        <startyear>2013</startyear>
+    </holiday>
+    <holiday name="국제연합일">
+        <date>1024</date>
+        <startyear>1950</startyear>
+        <endyear>1975</endyear>
+    </holiday>
+    <holiday name="성탄절">
+        <date>1225</date>
+        <startyear>1949</startyear>
+    </holiday>
 
     <substitutes>
         <substitute>
-            <startdate></startdate>
-            <enddate></enddate>
+            <startdate>19590327</startdate>
+            <enddate>19601230</enddate>
+        </substitute>
+        <substitute>
+            <startdate>20131105</startdate>
         </substitute>
     </substitutes>
 
     <temporary>
-        <date name="">
-            <date></date>
-        </date>
-        <date name="">
-            <date></date>
-        </date>
+        <dates>
+            <date name="이승만 대통령 탄신일">                 19570326</date>
+            <date name="신정부 경축의 날">                     19601001</date>
+            <date name="4.19 혁명 기념일">                     19610419</date>
+            <date name="5.16 군사정변 기념일">                 19620516</date>
+            <date name="헌법 개정 국민투표일">                 19621217</date>
+            <date name="제5대 박정희 대통령 취임식">           19631217</date>
+            <date name="국군의 날">                            19661001</date>
+            <date name="신정/일요일 중복">                     19670104</date>
+            <date name="제6대 박정희 대통령 취임식">           19670701</date>
+            <date name="아폴로 11호 달 착륙 기념">             19690721</date>
+            <date name="헌법 개정 국민투표일">                 19691017</date>
+            <date name="제7대 박정희 대통령 취임식">           19710701</date>
+            <date name="헌법 개정 국민투표일">                 19721123</date>
+            <date name="제8대 박정희 대통령 취임식">           19721227</date>
+            <date name="육영수 영부인 국민장일">               19740819</date>
+            <date name="헌법 찬반 국민투표일">                 19750212</date>
+            <date name="제9대 박정희 대통령 취임식">           19781227</date>
+            <date name="박정희 대통령 국장일">                 19791103</date>
+            <date name="제10대 최규하 대통령 취임식">          19791221</date>
+            <date name="제11대 전두환 대통령 취임식">          19800901</date>
+            <date name="헌법 개정 국민투표일">                 19801020</date>
+            <date name="제12대 전두환 대통령 취임식">          19810303</date>
+            <date name="추석/국군의 날중복">                   19821002</date>
+            <date name="헌법 개정 국민투표일">                 19871027</date>
+            <date name="제13대 노태우 대통령 취임식">          19880225</date>
+            <date name="1988 서울 올림픽 개막식">              19880917</date>
+            <date name="월드컵 성공개최 기념">                 20020701</date>
+            <date name="광복절 70주년">                        20150814</date>
+            <date name="어린이날 징검다리">                    20160506</date>
+        </dates>
     </temporary>
+
 </holidays>
+
+

@@ -11,6 +11,8 @@ public class HolidayItem {
     public int startyear;
     public int endyear;
 
+    public String name;
+    public String engname;
     public String extendFunc;
 
     public int monthofyear;

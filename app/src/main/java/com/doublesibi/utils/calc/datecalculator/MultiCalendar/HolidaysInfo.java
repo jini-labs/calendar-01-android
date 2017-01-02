@@ -111,6 +111,11 @@ public class HolidaysInfo {
                 Element element = (Element)node;
                 if (element.getNodeName().equals("holiday")) {
                     //TODO
+                    HolidayItem item = new HolidayItem();
+                    item.name = element.getAttribute("name");
+
+                    NodeList nodeList = node.getChildNodes();
+
                 } else if (element.getNodeName().equals("substitutes")) {
                     //TODO
                 } else if (element.getNodeName().equals("betweens")) {
