@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -25,7 +24,7 @@ import android.widget.Toast;
 
 import com.doublesibi.utils.calc.datecalculator.common.CalcEventDate;
 import com.doublesibi.utils.calc.datecalculator.common.Constants;
-import com.doublesibi.utils.calc.datecalculator.util.MyCalendar;
+import com.doublesibi.utils.calc.datecalculator.holiday.MyCalendar;
 
 import java.util.Calendar;
 

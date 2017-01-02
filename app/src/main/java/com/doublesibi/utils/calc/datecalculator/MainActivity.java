@@ -18,7 +18,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.doublesibi.utils.calc.datecalculator.util.MyCalendar;
+import com.doublesibi.utils.calc.datecalculator.holiday.MyCalendar;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity

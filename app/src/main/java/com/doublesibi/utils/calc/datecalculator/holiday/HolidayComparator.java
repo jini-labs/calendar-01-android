@@ -1,4 +1,4 @@
-package com.doublesibi.utils.calc.datecalculator.MultiCalendar;
+package com.doublesibi.utils.calc.datecalculator.holiday;
 
 import java.util.Comparator;
 

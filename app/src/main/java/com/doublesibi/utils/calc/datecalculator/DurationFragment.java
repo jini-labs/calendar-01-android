@@ -20,9 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.doublesibi.utils.calc.datecalculator.common.Constants;
-import com.doublesibi.utils.calc.datecalculator.common.CalcEventDate;
 import com.doublesibi.utils.calc.datecalculator.common.CalcDurationDate;
-import com.doublesibi.utils.calc.datecalculator.util.MyCalendar;
+import com.doublesibi.utils.calc.datecalculator.holiday.MyCalendar;
 
 import java.util.Calendar;
 
