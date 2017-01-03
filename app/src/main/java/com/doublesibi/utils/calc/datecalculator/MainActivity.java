@@ -12,13 +12,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.doublesibi.utils.calc.datecalculator.holiday.HolidaysInfo;
 import com.doublesibi.utils.calc.datecalculator.holiday.MyCalendar;
+
+import org.xmlpull.v1.XmlPullParser;
+
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
@@ -68,6 +73,58 @@ public class MainActivity extends AppCompatActivity
 
         initView();
 
+
+        // TODO : activityと連携する。
+        XmlPullParser xmlPullParser = getResources().getXml(R.xml.holidayinfo_kr);
+        HolidaysInfo holidaysInfo = new HolidaysInfo();
+        holidaysInfo.setCountry("Korea");
+        holidaysInfo.setHolidayYear(xmlPullParser, 2017);
+        holidaysInfo.setHolidayCalendar();
+        holidaysInfo.printHolidayCalendar();
+        int[][] _monthDays = holidaysInfo.getHolidayCalendar(1);
+
+        String msg = "";
+        for (int i = 0; i < 6; i++) {
+            msg = null;
+            for (int j = 0; j < 7; j++) {
+                msg = msg + "  " + _monthDays[i][j];
+            }
+            Log.d(LOGTAG,msg);
+        }
+    }
+
+    private static class Item {
+        private String title;
+        private String description;
+    }
+
+    public void printCalendar(int cal[][][], int year) {
+        String weekStr = "";
+
+        Log.d(LOGTAG, "[ " + year + " ]");
+        for (int i = 0; i < 12; i++) {
+            Log.d(LOGTAG, "[ " + year + " ] (" + (i+1) + ")");
+            weekStr = "";
+            for (int j = 0; j < 6; j++) {
+                weekStr = "";
+                for (int k = 0; k < 7; k++) {
+                    if (cal[i][j][k] == 0) {
+                        String s = String.format("    ");
+                        weekStr = weekStr + "    ";
+                    } else {
+                        if (cal[i][j][k] > 1000) {
+                            String s = String.format(" *%2d", (cal[i][j][k] - 1000));
+                            weekStr = weekStr + s;
+                        }
+                        else {
+                            String s = String.format("  %2d", cal[i][j][k]);
+                            weekStr = weekStr + s;
+                        }
+                    }
+                }
+                Log.d(LOGTAG, weekStr);
+            }
+        }
     }
 
     public void initView() {
