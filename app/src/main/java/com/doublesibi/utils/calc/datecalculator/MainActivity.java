@@ -33,21 +33,9 @@ public class MainActivity extends AppCompatActivity
     private MyCalendar myCalendar;
 
     @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        myCalendar = new MyCalendar();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -58,11 +46,15 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        if (myCalendar == null) {
+            myCalendar = new MyCalendar();
+        }
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         View v = navigationView.getHeaderView(0);
-        ((TextView) v.findViewById(R.id.header_date)).setText(myCalendar.getCurrentYMD("-"));
+        ((TextView) v.findViewById(R.id.header_date)).setText(myCalendar.getTodayYMD("-"));
         Resources r = getResources();
         String[] weekofName = r.getStringArray(R.array.nameOfWeek);
         int weekOfNum = myCalendar.get(Calendar.DAY_OF_WEEK);
@@ -72,25 +64,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         initView();
-
-
-        // TODO : activityと連携する。
-        XmlPullParser xmlPullParser = getResources().getXml(R.xml.holidayinfo_kr);
-        HolidaysInfo holidaysInfo = new HolidaysInfo();
-        holidaysInfo.setCountry("Korea");
-        holidaysInfo.setHolidayYear(xmlPullParser, 2017);
-        holidaysInfo.setHolidayCalendar();
-        holidaysInfo.printHolidayCalendar();
-        int[][] _monthDays = holidaysInfo.getHolidayCalendar(1);
-
-        String msg = "";
-        for (int i = 0; i < 6; i++) {
-            msg = null;
-            for (int j = 0; j < 7; j++) {
-                msg = msg + "  " + _monthDays[i][j];
-            }
-            Log.d(LOGTAG,msg);
-        }
     }
 
     private static class Item {
@@ -130,7 +103,7 @@ public class MainActivity extends AppCompatActivity
     public void initView() {
 
         Fragment fragment = null;
-        Class fragmentClass = DurationFragment.class;
+        Class fragmentClass = ThismonthFragment.class;
 
         try {
             fragment = (Fragment) fragmentClass.newInstance();
@@ -198,17 +171,21 @@ public class MainActivity extends AppCompatActivity
         Class fragmentClass;
 
         switch(item.getItemId()) {
-            case R.id.calc_duration_fragment:
+            case R.id.calendar_fragment:
                 selectedMenu = 0;
+                fragmentClass = ThismonthFragment.class;
+                break;
+            case R.id.calc_duration_fragment:
+                selectedMenu = 1;
                 fragmentClass = DurationFragment.class;
                 break;
             case R.id.calc_eventday__fragment:
-                selectedMenu = 1;
+                selectedMenu = 2;
                 fragmentClass = EventdayFragment.class;
                 break;
             default:
                 selectedMenu = 0;
-                fragmentClass = DurationFragment.class;
+                fragmentClass = ThismonthFragment.class;
                 break;
         }
 

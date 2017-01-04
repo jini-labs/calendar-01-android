@@ -3,6 +3,9 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/calendar_fragment"
+            android:title="カレンダー" />
+        <item
             android:id="@+id/calc_duration_fragment"
             android:title="期間を計算" />
         <item

@@ -109,6 +109,41 @@ public final class MyCalendar extends Calendar {
         }
     }
 
+    public int getYearMonth(int value) {
+        Calendar cal = Calendar.getInstance();
+
+        cal.add(Calendar.MONTH, value);
+
+        return cal.get(Calendar.YEAR) * 100
+                + (cal.get(Calendar.MONTH) + 1);
+    }
+
+    public int getYearMonth(int ymd, int value) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(ymd / 10000, (ymd % 10000 / 100) - 1, ymd % 100);
+
+        cal.add(Calendar.MONTH, value);
+
+        return cal.get(Calendar.YEAR) * 100
+                + (cal.get(Calendar.MONTH) + 1);
+    }
+
+    public int getCurrentPrevMonth(int value) {
+        int year = this.c.get(Calendar.YEAR);
+        int month = this.c.get(Calendar.MONTH) + 1;
+        int day = this.c.get(Calendar.DATE);
+
+        this.c.add(Calendar.MONTH, value);
+
+        int retYearMonth = this.c.get(Calendar.YEAR) * 100
+                + (this.c.get(Calendar.MONTH) + 1);
+
+        // 戻す。
+        this.c.set(year, month-1, day);
+
+        return retYearMonth;
+    }
+
     public void setCalendar(int y, int m, int d) {
         this.c.set(y, m-1, d);
     }
