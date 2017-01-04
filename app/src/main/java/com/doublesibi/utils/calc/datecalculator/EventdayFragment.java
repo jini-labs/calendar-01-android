@@ -114,10 +114,11 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                     break;
 
                 case R.id.btn_start_today:
-                    int date[] = getToday();
-                    styy = date[0];
-                    stmm = date[1];
-                    stdd = date[2];
+                    int date = MyCalendar.getTodayYMD();
+
+                    styy = date / 10000;
+                    stmm = date % 10000 / 100;
+                    stdd = date % 100;
                     eventStartYY.setText("" + styy);
                     eventStartMM.setText("" + stmm);
                     eventStartDD.setText("" + stdd);
@@ -274,8 +275,6 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setSpinnerId(View view) {
-
-
         spnBeAf = (Spinner) view.findViewById(R.id.spinnerbeforeafter);
     }
 
@@ -286,15 +285,5 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
         styy = yy;
         stmm = mm;
         stdd = dd;
-    }
-
-    // 0:ymd, 1:dayofweek(1~7)
-    public int[] getToday() {
-        int ret[] = new int[3];
-        Calendar c = Calendar.getInstance();
-        ret[0] = c.get(Calendar.YEAR);
-        ret[1] = c.get(Calendar.MONTH) + 1;
-
-        return ret;
     }
 }

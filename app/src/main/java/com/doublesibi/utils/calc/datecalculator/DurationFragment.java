@@ -145,10 +145,10 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                     break;
 
                 case R.id.btn_start_today: {
-                    int date[] = getToday();
-                    styy = date[0];
-                    stmm = date[1];
-                    stdd = date[2];
+                    int date = MyCalendar.getTodayYMD();
+                    styy = date / 10000;
+                    stmm = date % 10000 / 100;
+                    stdd = date % 100;
                     startYY.setText("" + styy);
                     startMM.setText("" + stmm);
                     startDD.setText("" + stdd);
@@ -156,10 +156,10 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                 break;
 
                 case R.id.btn_end_today: {
-                    int date[] = getToday();
-                    enyy = date[0];
-                    enmm = date[1];
-                    endd = date[2];
+                    int date = MyCalendar.getTodayYMD();
+                    enyy = date / 10000;
+                    enmm = date % 10000 / 100;
+                    endd = date % 100;
                     endYY.setText("" + enyy);
                     endMM.setText("" + enmm);
                     endDD.setText("" + endd);
@@ -277,16 +277,6 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
         enyy = yy;
         enmm = mm;
         endd = dd;
-    }
-
-    public int[] getToday() {
-        int ret[] = new int[3];
-        Calendar c = Calendar.getInstance();
-        ret[0] = c.get(Calendar.YEAR);
-        ret[1] = c.get(Calendar.MONTH) + 1;
-        ret[2] = c.get(Calendar.DAY_OF_MONTH);
-
-        return ret;
     }
 
     private void calcDateDiff(int styy, int stmm, int stdd, int enyy, int enmm, int endd) {

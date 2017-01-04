@@ -28,7 +28,7 @@ public final class MyCalendar extends Calendar {
         this.c = c;
     }
 
-    public int getTodayYMD() {
+    public static int getTodayYMD() {
         Calendar cal = Calendar.getInstance();
 
         return cal.get(Calendar.YEAR) * 10000 +
@@ -36,7 +36,7 @@ public final class MyCalendar extends Calendar {
                 cal.get(Calendar.DATE);
     }
 
-    public String getTodayYMD(String delm) {
+    public static String getTodayYMD(String delm) {
         Calendar cal = Calendar.getInstance();
 
         if (delm != null) {
