@@ -1,10 +1,8 @@
 package com.doublesibi.utils.calc.datecalculator.common;
 
-import android.content.res.Resources;
 import android.util.Log;
 
-import com.doublesibi.utils.calc.datecalculator.R;
-import com.doublesibi.utils.calc.datecalculator.util.MyCalendar;
+import com.doublesibi.utils.calc.datecalculator.holiday.MyCalendar;
 
 import java.util.Calendar;
 

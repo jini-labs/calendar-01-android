@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<holiday_info country="Korea">
+    <holidays>
+        <item>
+            <name>신정</name>
+            <date>101</date>
+            <startDate>19490101</startDate>
+        </item>
+        <item>
+            <name>신정</name>
+            <date>102</date>
+            <startDate>19490101</startDate>
+            <endDate>19891231</endDate>
+        </item>
+        <item>
+            <name>신정</name>
+            <date>103</date>
+            <startDate>19490101</startDate>
+            <endDate>19901231</endDate>
+        </item>
+        <item>
+            <name>민속의날</name>
+            <startDate>19850101</startDate>
+            <endDate>19891231</endDate>
+            <specialFunction>LunarFirstday</specialFunction>
+        </item>
+        <item>
+            <name>설날</name>
+            <startDate>19900101</startDate>
+            <specialFunction>LunarFirstPrevday</specialFunction>
+            <substitute>true</substitute>
+        </item>
+        <item>
+            <name>설날</name>
+            <startDate>19900101</startDate>
+            <specialFunction>LunarFirstday</specialFunction>
+            <substitute>true</substitute>
+        </item>
+        <item>
+            <name>설날</name>
+            <startDate>19900101</startDate>
+            <specialFunction>LunarFirstNextday</specialFunction>
+            <substitute>true</substitute>
+        </item>
+        <item>
+            <name>3.1절</name>
+            <date>301</date>
+            <startDate>19490101</startDate>
+        </item>
+        <item>
+            <name>식목일</name>
+            <date>405</date>
+            <startDate>19490101</startDate>
+            <endDate>19591231</endDate>
+        </item>
+        <item>
+            <name>사방의날</name>
+            <date>3155</date>
+            <startDate>19600101</startDate>
+            <endDate>19601231</endDate>
+        </item>
+        <item>
+            <name>식목일</name>
+            <date>405</date>
+            <startDate>19600101</startDate>
+            <endDate>20051231</endDate>
+        </item>
+        <item>
+            <name>석가탄신일</name>
+            <startDate>19750127</startDate>
+            <specialFunction>BuddhaBirth</specialFunction>
+        </item>
+        <item>
+            <name>어린이날</name>
+            <date>505</date>
+            <startDate>19750127</startDate>
+            <substitute>true</substitute>
+        </item>
+        <item>
+            <name>제헌절</name>
+            <date>717</date>
+            <startDate>19490101</startDate>
+            <endDate>20071231</endDate>
+        </item>
+        <item>
+            <name>현충일</name>
+            <date>606</date>
+            <startDate>19560419</startDate>
+        </item>
+        <item>
+            <name>광복절</name>
+            <date>815</date>
+            <startDate>19500101</startDate>
+        </item>
+        <item>
+            <name>추석</name>
+            <startDate>19890101</startDate>
+            <specialFunction>SuperMoonPrevday</specialFunction>
+            <substitute>true</substitute>
+        </item>
+        <item>
+            <name>추석</name>
+            <startDate>19490101</startDate>
+            <specialFunction>SuperMoonday</specialFunction>
+            <substitute>true</substitute>
+        </item>
+        <item>
+            <name>추석</name>
+            <startDate>19860101</startDate>
+            <specialFunction>SuperMoonNextday</specialFunction>
+            <substitute>true</substitute>
+        </item>
+        <item>
+            <name>국군의날</name>
+            <date>1001</date>
+            <startDate>19760903</startDate>
+            <endDate>19901231</endDate>
+        </item>
+        <item>
+            <name>개천절</name>
+            <date>1003</date>
+            <startDate>19490101</startDate>
+        </item>
+        <item>
+            <name>한글날</name>
+            <date>1009</date>
+            <startDate>19490101</startDate>
+            <endDate>19901231</endDate>
+        </item>
+        <item>
+            <name>한글날</name>
+            <date>1009</date>
+            <startDate>20130101</startDate>
+        </item>
+        <item>
+            <name>국제연합일</name>
+            <date>1024</date>
+            <startDate>19500918</startDate>
+            <endDate>19751231</endDate>
+        </item>
+        <item>
+            <name>성탄절</name>
+            <date>1225</date>
+            <startDate>19490101</startDate>
+        </item>
+    </holidays>
+
+    <substitutes>
+        <item>
+            <startDate>19590327</startDate>
+            <endDate>19601230</endDate>
+        </item>
+        <item>
+            <startDate>20131105</startDate>
+        </item>
+    </substitutes>
+
+    <temporarys>
+        <item>
+            <name>제5대 박정희 대통령 취임식</name>
+            <date>19631217</date>
+        </item>
+        <item>
+            <name>제6대 박정희 대통령 취임식</name>
+            <date>19670701</date>
+        </item>
+        <item>
+            <name>제7대 박정희 대통령 취임식</name>
+            <date>19710701</date>
+        </item>
+        <item>
+            <name>제8대 박정희 대통령 취임식</name>
+            <date>19721227</date>
+        </item>
+        <item>
+            <name>제9대 박정희 대통령 취임식</name>
+            <date>19781227</date>
+        </item>
+        <item>
+            <name>제10대 최규하 대통령 취임식</name>
+            <date>19791221</date>
+        </item>
+        <item>
+            <name>제11대 전두환 대통령 취임식</name>
+            <date>19800901</date>
+        </item>
+        <item>
+            <name>제12대 전두환 대통령 취임식</name>
+            <date>19810303</date>
+        </item>
+        <item>
+            <name>제13대 노태우 대통령 취임식</name>
+            <date>19880225</date>
+        </item>
+
+        <item>
+            <name>제15대 대통령선거</name>
+            <date>19971218</date>
+        </item>
+        <item>
+            <name>제16대 대통령선거</name>
+            <date>20021219</date>
+        </item>
+        <item>
+            <name>제17대 대통령선거</name>
+            <date>20071219</date>
+        </item>
+        <item>
+            <name>제18대 대통령선거</name>
+            <date>20121219</date>
+        </item>
+        <item>
+            <name>제19대 대통령선거</name>
+            <date>20171220</date>
+        </item>
+
+        <item>
+            <name>제16대 국회의원선거</name>
+            <date>20000413</date>
+        </item>
+        <item>
+            <name>제17대 국회의원선거</name>
+            <date>20040415</date>
+        </item>
+        <item>
+            <name>제18대 국회의원선거</name>
+            <date>20080530</date>
+        </item>
+        <item>
+            <name>제19대 국회의원선거</name>
+            <date>20120411</date>
+        </item>
+        <item>
+            <name>제20대 국회의원선거</name>
+            <date>20160413</date>
+        </item>
+
+        <item>
+            <name>헌법 개정 국민투표일</name>
+            <date>19621217</date>
+        </item>
+        <item>
+            <name>헌법 개정 국민투표일</name>
+            <date>19691017</date>
+        </item>
+        <item>
+            <name>헌법 개정 국민투표일</name>
+            <date>19721123</date>
+        </item>
+        <item>
+            <name>헌법 찬반 국민투표일</name>
+            <date>19750212</date>
+        </item>
+        <item>
+            <name>헌법 개정 국민투표일</name>
+            <date>19801020</date>
+        </item>
+        <item>
+            <name>헌법 개정 국민투표일</name>
+            <date>19871027</date>
+        </item>
+
+        <item>
+            <name>제1회 지방 선거</name>
+            <date>19950627</date>
+        </item>
+        <item>
+            <name>제2회 지방 선거</name>
+            <date>19980604</date>
+        </item>
+        <item>
+            <name>제3회 지방 선거</name>
+            <date>20020613</date>
+        </item>
+        <item>
+            <name>제4회 지방 선거</name>
+            <date>20060531</date>
+        </item>
+        <item>
+            <name>제5회 지방 선거</name>
+            <date>20120602</date>
+        </item>
+        <item>
+            <name>제6회 지방 선거</name>
+            <date>20140604</date>
+        </item>
+        <item>
+            <name>제7회 지방 선거</name>
+            <date>20180613</date>
+        </item>
+
+
+        <item>
+            <name>이승만 대통령 탄신일</name>
+            <date>19570326</date>
+        </item>
+        <item>
+            <name>신정부 경축의 날</name>
+            <date>19601001</date>
+        </item>
+        <item>
+            <name>4.19 혁명 기념일</name>
+            <date>19610419</date>
+        </item>
+        <item>
+            <name>5.16 군사정변 기념일</name>
+            <date>19620516</date>
+        </item>
+        <item>
+            <name>아폴로 11호 달 착륙 기념</name>
+            <date>19690721</date>
+        </item>
+        <item>
+            <name>육영수 영부인 국민장일</name>
+            <date>19740819</date>
+        </item>
+        <item>
+            <name>박정희 대통령 국장일</name>
+            <date>19791103</date>
+        </item>
+        <item>
+            <name>국군의 날</name>
+            <date>19661001</date>
+        </item>
+        <item>
+            <name>신정/일요일 중복</name>
+            <date>19670104</date>
+        </item>
+        <item>
+            <name>추석/국군의 날중복</name>
+            <date>19821002</date>
+        </item>
+
+        <item>
+            <name>1988 서울 올림픽 개막식</name>
+            <date>19880917</date>
+        </item>
+        <item>
+            <name>월드컵 성공개최 기념</name>
+            <date>20020701</date>
+        </item>
+        <item>
+            <name>광복절 70주년</name>
+            <date>20150814</date>
+        </item>
+        <item>
+            <name>어린이날 징검다리</name>
+            <date>20160506</date>
+        </item>
+    </temporarys>
+
+</holiday_info>
