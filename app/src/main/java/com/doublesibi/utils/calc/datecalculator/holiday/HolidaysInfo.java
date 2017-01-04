@@ -270,22 +270,22 @@ public class HolidaysInfo {
                     }
                 } if (this.country.equals("Korea")) {
                     if (item.extendFunc.equals("LunarFirstPrevday")) {
-                        int tmp = LunarSolar.getSolar(year, 1, 1);
+                        int tmp = MyCalendar.getSolar(year, 1, 1);
                         this.cal.setCalendar(year, (tmp % 10000 / 100), tmp % 100);
                         this.cal.add(Calendar.DATE, -1);
                         item.ymd = this.cal.getCurrentYMD();
                     } else if (item.extendFunc.equals("LunarFirstday")) {
-                        item.ymd = LunarSolar.getSolar(year, 1, 1);
+                        item.ymd = MyCalendar.getSolar(year, 1, 1);
                     } else if (item.extendFunc.equals("LunarFirstNextday")) {
-                        item.ymd = LunarSolar.getSolar(year, 1, 2);
+                        item.ymd = MyCalendar.getSolar(year, 1, 2);
                     } else if (item.extendFunc.equals("BuddhaBirth")) {
-                        item.ymd = LunarSolar.getSolar(year, 4, 8);
+                        item.ymd = MyCalendar.getSolar(year, 4, 8);
                     } else if (item.extendFunc.equals("SuperMoonPrevday")) {
-                        item.ymd = LunarSolar.getSolar(year, 8, 14);
+                        item.ymd = MyCalendar.getSolar(year, 8, 14);
                     } else if (item.extendFunc.equals("SuperMoonday")) {
-                        item.ymd = LunarSolar.getSolar(year, 8, 15);
+                        item.ymd = MyCalendar.getSolar(year, 8, 15);
                     } else if (item.extendFunc.equals("SuperMoonNextday")) {
-                        item.ymd = LunarSolar.getSolar(year, 8, 16);
+                        item.ymd = MyCalendar.getSolar(year, 8, 16);
                     }
 
                     if (item.ymd != 0) {
