@@ -29,6 +29,15 @@ public final class MyCalendar extends Calendar {
         this.c = c;
     }
 
+    public void setToday() {
+        Calendar cal = Calendar.getInstance();
+        if (this.c != null) {
+            this.c.set(cal.get(Calendar.YEAR),
+                    cal.get(Calendar.MONTH),
+                    cal.get(Calendar.DATE));
+        }
+    }
+
     public static int getTodayYMD() {
         Calendar cal = Calendar.getInstance();
 

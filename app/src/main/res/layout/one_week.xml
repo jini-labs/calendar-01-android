@@ -3,61 +3,61 @@
     android:weightSum="7"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="36sp">
 
-    <EditText
+    <TextView
         android:id="@+id/day_1"
-        android:enabled="false"
         android:background="@drawable/boxed_edittext_filled"
-        android:focusable="false"
+        android:gravity="end"
+        android:paddingLeft="5dp"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="match_parent"/>
-    <EditText
+    <TextView
         android:id="@+id/day_2"
-        android:enabled="false"
         android:background="@drawable/boxed_edittext_filled"
-        android:focusable="false"
+        android:gravity="end"
+        android:paddingLeft="5dp"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="match_parent"/>
-    <EditText
+    <TextView
         android:id="@+id/day_3"
-        android:enabled="false"
         android:background="@drawable/boxed_edittext_filled"
-        android:focusable="false"
+        android:gravity="end"
+        android:paddingLeft="5dp"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="match_parent"/>
-    <EditText
+    <TextView
         android:id="@+id/day_4"
-        android:enabled="false"
         android:background="@drawable/boxed_edittext_filled"
-        android:focusable="false"
+        android:gravity="end"
+        android:paddingLeft="5dp"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="match_parent"/>
-    <EditText
+    <TextView
         android:id="@+id/day_5"
-        android:enabled="false"
         android:background="@drawable/boxed_edittext_filled"
-        android:focusable="false"
+        android:gravity="end"
+        android:paddingLeft="5dp"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="match_parent"/>
-    <EditText
+    <TextView
         android:id="@+id/day_6"
-        android:enabled="false"
         android:background="@drawable/boxed_edittext_filled"
-        android:focusable="false"
+        android:gravity="end"
+        android:paddingLeft="5dp"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="match_parent"/>
-    <EditText
+    <TextView
         android:id="@+id/day_7"
-        android:enabled="false"
         android:background="@drawable/boxed_edittext_filled"
-        android:focusable="false"
+        android:gravity="end"
+        android:paddingLeft="5dp"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="match_parent"/>
