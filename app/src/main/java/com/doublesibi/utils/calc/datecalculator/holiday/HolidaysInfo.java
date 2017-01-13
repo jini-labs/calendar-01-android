@@ -220,178 +220,25 @@ public class HolidaysInfo {
         } finally {
             // 処理なし
             // Debug log
-            Log.d(LOGTAG, "\tBase information of holiday in " + this.country + ".");
-            Log.d(LOGTAG, "\t\tHoliday information");
-            for (HolidayItem item: this.baseHolidaysInfo) {
-                Log.d(LOGTAG, "\t\t" + item.toString());
-            }
-
-            if (this.substitutes != null && this.substitutes.size() > 0 ) {
-                Log.d(LOGTAG, "\t\tSubstitute information");
-                for (RangeDate item : this.substitutes) {
-                    Log.d(LOGTAG, "\t\t\t" + item.startDate + " ~ " + item.endDate);
-                }
-            }
-            if (this.betweens != null && this.betweens.size() > 0 ) {
-                Log.d(LOGTAG, "\t\tBetween information");
-                for (RangeDate item : this.betweens) {
-                    Log.d(LOGTAG, "\t\t\t" + item.startDate + " ~ " + item.endDate);
-                }
-            }
+//            Log.d(LOGTAG, "\tBase information of holiday in " + this.country + ".");
+//            Log.d(LOGTAG, "\t\tHoliday information");
+//            for (HolidayItem item: this.baseHolidaysInfo) {
+//                Log.d(LOGTAG, "\t\t" + item.toString());
+//            }
+//
+//            if (this.substitutes != null && this.substitutes.size() > 0 ) {
+//                Log.d(LOGTAG, "\t\tSubstitute information");
+//                for (RangeDate item : this.substitutes) {
+//                    Log.d(LOGTAG, "\t\t\t" + item.startDate + " ~ " + item.endDate);
+//                }
+//            }
+//            if (this.betweens != null && this.betweens.size() > 0 ) {
+//                Log.d(LOGTAG, "\t\tBetween information");
+//                for (RangeDate item : this.betweens) {
+//                    Log.d(LOGTAG, "\t\t\t" + item.startDate + " ~ " + item.endDate);
+//                }
+//            }
         }
-    }
-
-    public ArrayList<HolidayItem> getPreference(XmlPullParser xpp) {
-        final int ITEM_HOLIDAY = 1;
-        final int ITEM_TEMPORARY = 2;
-        final int ITEM_DIVISION = 10;
-        final int ITEM_SUBSTITUTE = 11;
-        final int ITEM_BETWEEN = 12;
-
-        int itemType = 0;
-        ArrayList<HolidayItem> holidaysInfo = new ArrayList<>();
-
-        Log.d(LOGTAG, "xml parsing start....");
-        try {
-            HolidayItem holidayItem = null;
-            RangeDate rangeDate = null;
-
-            int eventType = xpp.getEventType();
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-                final String name = xpp.getName();
-                switch(eventType) {
-                    case XmlPullParser.START_DOCUMENT:
-                        break;
-                    case XmlPullParser.START_TAG:
-                        if ("holidays".equals(name)) {
-                            itemType = ITEM_HOLIDAY;
-                        } else if ("substitutes".equals(name)) {
-                            itemType = ITEM_SUBSTITUTE;
-                        } else if ("betweens".equals(name)) {
-                            itemType = ITEM_BETWEEN;
-                        } else if ("temporarys".equals(name)) {
-                            itemType = ITEM_TEMPORARY;
-                        } else {
-                            if ("item".equals(name)) {
-                                switch (itemType) {
-                                    case ITEM_HOLIDAY:
-                                    case ITEM_TEMPORARY:
-                                        holidayItem = new HolidayItem();
-                                        break;
-                                    case ITEM_SUBSTITUTE:
-                                    case ITEM_BETWEEN:
-                                        rangeDate = new RangeDate();
-                                        break;
-                                    default:
-                                        Log.w(LOGTAG, "unknown itemType.(" + itemType + ")");
-                                        break;
-                                }
-                            } else {
-                                if ("name".equals(name)) {
-                                    holidayItem.name = xpp.nextText().trim();
-                                } else if ("engname".equals(name)) {
-                                    // TODO: next version.
-                                } else if ("date".equals(name)) {
-                                    switch (itemType) {
-                                        case ITEM_HOLIDAY:
-                                            holidayItem.md = Integer.parseInt(xpp.nextText().trim());
-                                            break;
-                                        case ITEM_TEMPORARY:
-                                            holidayItem.ymd = Integer.parseInt(xpp.nextText().trim());
-                                            holidayItem.md = holidayItem.ymd % 10000;
-                                            break;
-                                        default:
-                                            Log.w(LOGTAG, "check itemType on tag 'date'.(" + itemType + ")");
-                                            break;
-                                    }
-                                } else if ("monthOfYear".equals(name)) {
-                                    holidayItem.monthOfYear = Integer.parseInt(xpp.nextText().trim());
-                                } else if ("weekOfMonth".equals(name)) {
-                                    holidayItem.weekOfMonth = Integer.parseInt(xpp.nextText().trim());
-                                } else if ("dayOfWeek".equals(name)) {
-                                    holidayItem.dayOfWeek= Integer.parseInt(xpp.nextText().trim());
-                                } else if ("substitute".equals(name)) {
-                                    holidayItem.substitute = Boolean.valueOf(xpp.nextText().trim());
-                                } else if ("specialFunction".equals(name)) {
-                                    holidayItem.extendFunc = xpp.nextText().trim();
-                                } else if ("startDate".equals(name)) {
-                                    if (itemType < ITEM_DIVISION) {
-                                        holidayItem.startDate = Integer.parseInt(xpp.nextText().trim());
-                                    } else {
-                                        rangeDate.startDate  = Integer.parseInt(xpp.nextText().trim());
-                                    }
-                                } else if ("endDate".equals(name)) {
-                                    if (itemType < ITEM_DIVISION) {
-                                        holidayItem.endDate = Integer.parseInt(xpp.nextText().trim());
-                                    } else {
-                                        rangeDate.endDate  = Integer.parseInt(xpp.nextText().trim());
-                                    }
-                                } else {
-                                    if (name != null)
-                                        Log.d(LOGTAG, "etc:(tagname)" + name);
-                                }
-                            }
-                        }
-                        break;
-                    case XmlPullParser.END_TAG:
-                        if ("item".equals(name)) {
-                            switch (itemType) {
-                                case ITEM_HOLIDAY:
-                                    holidaysInfo.add(holidayItem);
-                                    break;
-                                case ITEM_TEMPORARY:
-                                    this.temporaryHolidays.add(holidayItem);
-                                    break;
-                                case ITEM_SUBSTITUTE:
-                                    this.substitutes.add(rangeDate);
-                                    break;
-                                case ITEM_BETWEEN:
-                                    this.betweens.add(rangeDate);
-                                    break;
-                                default:
-                                    Log.w(LOGTAG, "unknown itemType on END_TAG.()" + itemType + ")");
-                                    break;
-                            }
-                        }
-                        break;
-                    default:
-                        if (name != null)
-                            Log.d(LOGTAG,"not implemented eventType.(tagname:" + name + ", eventType:" + eventType);
-                        break;
-                }
-
-                eventType = xpp.next();
-            }
-        }  catch (XmlPullParserException e) {
-            Log.e(LOGTAG, e.toString());
-            Log.e(LOGTAG, e.getStackTrace().toString());
-        } catch (Exception e) {
-            Log.e(LOGTAG, e.toString());
-            Log.e(LOGTAG, e.getStackTrace().toString());
-        } finally {
-            // 処理なし
-            // Debug log
-        Log.d(LOGTAG, "\tBase information of holiday in " + this.country + ".");
-        Log.d(LOGTAG, "\t\tHoliday information");
-        for (HolidayItem item: holidaysInfo) {
-            Log.d(LOGTAG, "\t\t" + item.toString());
-        }
-
-        if (this.substitutes != null && this.substitutes.size() > 0 ) {
-            Log.d(LOGTAG, "\t\tSubstitute information");
-            for (RangeDate item : this.substitutes) {
-                Log.d(LOGTAG, "\t\t\t" + item.startDate + " ~ " + item.endDate);
-            }
-        }
-        if (this.betweens != null && this.betweens.size() > 0 ) {
-            Log.d(LOGTAG, "\t\tBetween information");
-            for (RangeDate item : this.betweens) {
-                Log.d(LOGTAG, "\t\t\t" + item.startDate + " ~ " + item.endDate);
-            }
-        }
-        }
-
-        return holidaysInfo;
     }
 
     public void clearHolidays() {
@@ -399,6 +246,13 @@ public class HolidaysInfo {
             this.holidays.clear();
         if (this.holidaysMap != null)
             this.holidaysMap.clear();
+        for (int i = 0; i < 12; i++) {
+            for (int j = 0; j < 6; j++) {
+                for (int k = 0; k < 7; k++) {
+                    this.holidayCalendar[i][j][k] = 0;
+                }
+            }
+        }
     }
 
     public boolean setHolidayYear(int year) {
@@ -507,10 +361,10 @@ public class HolidaysInfo {
         }
 
         // debug
-        Log.d(LOGTAG, year + "'s holiday");
-        for (HolidayItem item : this.holidays) {
-            Log.d(LOGTAG, "\t\t" + item.toString());
-        }
+//        Log.d(LOGTAG, year + "'s holiday");
+//        for (HolidayItem item : this.holidays) {
+//            Log.d(LOGTAG, "\t\t" + item.toString());
+//        }
 
         return false;
     }
