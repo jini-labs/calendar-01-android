@@ -63,7 +63,8 @@ public class MainActivity extends AppCompatActivity
             ((TextView) v.findViewById(R.id.header_wdate)).setTextColor(Color.RED);
         }
 
-        initView();
+        onNavigationItemSelected(navigationView.getMenu().getItem(0));
+
     }
 
     private static class Item {
@@ -98,26 +99,6 @@ public class MainActivity extends AppCompatActivity
                 Log.d(LOGTAG, weekStr);
             }
         }
-    }
-
-    public void initView() {
-
-        Fragment fragment = null;
-        Class fragmentClass = ThismonthFragment.class;
-
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-
-        // Close the navigation drawer
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
     }
 
     @Override
