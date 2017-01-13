@@ -130,30 +130,29 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                 case R.id.btn_calc_eventday:
                     CalcEventDate calcEventDate = new CalcEventDate();
                     int[] params = new int[8];
-                    params[0] = styy;
-                    params[1] = stmm;
-                    params[2] = stdd;
+                    for (int i = 0; i < 8; i++) {
+                        params[i] = 0;
+                    }
+                    params[0] = Integer.parseInt(eventStartYY.getText().toString().trim());
+                    params[1] = Integer.parseInt(eventStartMM.getText().toString().trim());
+                    params[2] = Integer.parseInt(eventStartDD.getText().toString().trim());
                     params[3] = spnBeAf.getSelectedItemPosition();
+
                     // num of day
                     if (value1.getText().length() > 0)
-                        params[4] = Integer.parseInt(value1.getText().toString());
-                    else
-                        params[4] = 0;
+                        params[4] = Integer.parseInt(value1.getText().toString().trim());
+
                     // num of week
                     if (value2.getText().length() > 0)
-                        params[5] = Integer.parseInt(value2.getText().toString());
-                    else
-                        params[5] = 0;
+                        params[5] = Integer.parseInt(value2.getText().toString().trim());
+
                     // num of month
                     if (value3.getText().length() > 0)
-                        params[6] = Integer.parseInt(value3.getText().toString());
-                    else
-                        params[6] = 0;
+                        params[6] = Integer.parseInt(value3.getText().toString().trim());
+
                     // num of year
                     if (value4.getText().length() > 0)
-                        params[7] = Integer.parseInt(value4.getText().toString());
-                    else
-                        params[7] = 0;
+                        params[7] = Integer.parseInt(value4.getText().toString().trim());
 
                     String[] retYmd = calcEventDate.getEventYmd(params);
 

@@ -23,20 +23,20 @@ public class CalcEventDate {
     // 4:numofday, 5:numofweek, 6:numofmonth, 7:numofyear
     public String[] getEventYmd(int[] params) {
 
-        Log.d(LOGTAG, "--->" + params[0] + ", " +
-                params[1] + ", " +
-                params[2] + ", " +
-                params[3] + ", " +
-                params[4] + ", " +
-                params[5] + ", " +
-                params[6] + ", " +
-                params[7]);
+        Log.d(LOGTAG, "--->y:" + params[0] +
+                ", m:" + params[1] +
+                ", d:" + params[2] +
+                ", a/b:" + params[3] +
+                ", ds:" + params[4] +
+                ", ws" + params[5] +
+                ", ms" + params[6] +
+                ", ys" + params[7]);
 
-        c.set(params[0], params[0] - 1, params[0]);
-        c.add(Calendar.YEAR, params[7]);
-        c.add(Calendar.MONTH, params[6]);
-        c.add(Calendar.DATE, params[5]);
-        c.add(Calendar.DATE, params[4]);
+        c.setCalendar(params[0], params[1], params[2]);
+        c.add(Calendar.YEAR, (params[3]==0? -1 : 1) * params[7]);
+        c.add(Calendar.MONTH, (params[3]==0? -1 : 1) * params[6]);
+        c.add(Calendar.WEEK_OF_MONTH, (params[3]==0? -1 : 1) * params[5]);
+        c.add(Calendar.DATE, (params[3]==0? -1 : 1) * params[4]);
 
         String[] result = new String[2];
         result[0] = c.getCurrentYMD("-");
