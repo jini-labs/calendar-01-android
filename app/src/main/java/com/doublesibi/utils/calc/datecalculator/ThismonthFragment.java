@@ -1,6 +1,7 @@
 package com.doublesibi.utils.calc.datecalculator;
 
 
+import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +22,7 @@ import org.xmlpull.v1.XmlPullParser;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 
@@ -28,9 +31,12 @@ import java.util.HashMap;
  */
 public class ThismonthFragment extends Fragment implements View.OnClickListener {
     private final String LOGTAG = "DayCalc";
-    private MyCalendar myCalendar;
 
-    TextView tvYear, tvMonth, tvJpName, tvJpYear;
+    private MyCalendar myCalendar;
+    private XmlPullParser xmlPullParser;
+    private HolidaysInfo holidaysInfo;
+
+    private TextView tvYear, tvMonth, tvJpName, tvJpYear;
     private TextView[][] textViews;
 
 
@@ -44,26 +50,45 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
 
         final View view = inflater.inflate(R.layout.fragment_thismonth, container, false);
 
+        setTextViews(view);
+
         if (myCalendar == null) {
             myCalendar = new MyCalendar();
         }
 
-
-        setTextViews(view);
-        setDays(view);
+        setHoliday("Japan");
+        setDays(myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH)+1);
 
         return view;
     }
 
     @Override
     public void onClick(View v) {
-
+        final int l_year = Integer.parseInt(this.tvYear.getText().toString().trim());
+        final int l_month = Integer.parseInt(this.tvMonth.getText().toString().trim());
         switch(v.getId()) {
             case R.id.this_year_solar:
-                Toast.makeText(getContext(), "click year", Toast.LENGTH_SHORT).show();
-                break;
             case R.id.this_month_solar:
-                Toast.makeText(getContext(), "click month", Toast.LENGTH_SHORT).show();
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(
+                        getContext(),
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                try {
+                                    if (l_year != year || l_month != monthOfYear - 1) {
+                                        setDays(year, monthOfYear + 1);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, l_year, l_month - 1, 1);
+
+                datePickerDialog.getDatePicker().setCalendarViewShown(false);
+                datePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                datePickerDialog.show();
                 break;
             case R.id.this_year_jpname:
                 Toast.makeText(getContext(), "click japan year name", Toast.LENGTH_SHORT).show();
@@ -74,30 +99,38 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         }
     }
 
-    public void setYearMonth(View view, int currYM) {
+    private void setYearMonth(int currYM) {
         tvYear.setText("" + currYM/100);
         tvMonth.setText(" " + currYM%100);
         tvJpName.setText("平成 ");
         tvJpYear.setText("" + 29);
     }
 
-    public void setDays(View view) {
-
-        XmlPullParser xmlPullParser = getResources().getXml(R.xml.holidayinfo_jp);
-
-        HolidaysInfo holidaysInfo = new HolidaysInfo();
-        holidaysInfo.setCountry("Japan");
+    private void setHoliday(String country) {
+        xmlPullParser = getResources().getXml(R.xml.holidayinfo_jp);
+        holidaysInfo = new HolidaysInfo();
+        holidaysInfo.setCountry(country);
         holidaysInfo.setBaseHolidaysInfo(xmlPullParser);
+    }
 
+    private void setDays(int year, int month) {
         int[][] prevMonthDays = new int[6][7];
         int[][] currMonthDays = new int[6][7];
         int[][] nextMonthDays = new int[6][7];
 
         int prevYM = 0, nextYM = 0;
 
-        int currYM = myCalendar.getYearMonth(0);
+        myCalendar.setCalendar(year, month, 1);
+        int currYM = myCalendar.getCurrentYMD()/100;
+        Log.d(LOGTAG, "setDays ->  " + "year:" + year + ", month:" + month);
+        Log.d(LOGTAG, "            currYM:" + currYM);
+
+        this.tvYear.setText("" + year);
+        this.tvMonth.setText("" + month);
+
         if (currYM%100 == 1) {
-            prevYM = myCalendar.getYearMonth(-1);
+            myCalendar.add(Calendar.MONTH, -1);
+            prevYM = myCalendar.getCurrentYMD() / 100;
             Log.d(LOGTAG,"----->prev year month :" + prevYM);
             holidaysInfo.clearHolidays();
             holidaysInfo.setHolidayYear(prevYM/100);
@@ -113,11 +146,12 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
             nextYM = myCalendar.getYearMonth(1);
             nextMonthDays = holidaysInfo.getHolidayCalendar(nextYM%100);
 
-            setYearMonth(view, currYM);
+            setYearMonth(currYM);
         } else if (currYM%100 == 12) {
-            nextYM = myCalendar.getYearMonth(1);
+            myCalendar.add(Calendar.MONTH, 1);
+            nextYM = myCalendar.getCurrentYMD() / 100;
+
             holidaysInfo.clearHolidays();
-            holidaysInfo = new HolidaysInfo();
             holidaysInfo.setHolidayYear(nextYM/100);
             holidaysInfo.setHolidayCalendar();
             nextMonthDays = holidaysInfo.getHolidayCalendar(nextYM%100);
@@ -130,11 +164,11 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
             prevYM = myCalendar.getYearMonth(-1);
             prevMonthDays = holidaysInfo.getHolidayCalendar(prevYM%100);
 
-            setYearMonth(view, currYM);
+            setYearMonth(currYM);
 
         } else {
-            prevYM = myCalendar.getYearMonth(-1);
-            nextYM = myCalendar.getYearMonth(1);
+            prevYM = currYM - 1;
+            nextYM = currYM + 1;
 
             holidaysInfo.clearHolidays();
             holidaysInfo.setHolidayYear(currYM/100);
@@ -144,33 +178,31 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
             prevMonthDays = holidaysInfo.getHolidayCalendar(prevYM%100);
             nextMonthDays = holidaysInfo.getHolidayCalendar(nextYM%100);
 
-            setYearMonth(view, currYM);
+            setYearMonth(currYM);
         }
 
-        for (int i = 1; i < 6; i++) {
+        for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 7; j++) {
+                textViews[i][j].setText("");
 
-                //Log.d(LOGTAG, "i:" + (i-1) + ", j:" + j + "->" + currMonthDays[i-1][j]);
-
-
-                if (currMonthDays[i-1][j] != 0) {
-                    if (currMonthDays[i-1][j] > 100) {
-                        textViews[i][j].setText("" + currMonthDays[i-1][j]%100);
-                        if (j != 0 && j != 6) {
+                if (currMonthDays[i][j] != 0) {
+                    if (currMonthDays[i][j] > 100) {
+                        textViews[i][j].setText("" + currMonthDays[i][j]%100);
+                        if (j == 0) {
+                            textViews[i][j].setTextColor(Color.RED);
+                        } else if (j == 6) {
                             textViews[i][j].setTextColor(Color.YELLOW);
                         } else {
-                            if (j == 0) {
-                                textViews[i][j].setTextColor(Color.RED);
-                            } else if (j == 6) {
-                                textViews[i][j].setTextColor(Color.YELLOW);
-                            }
+                            textViews[i][j].setTextColor(Color.YELLOW);
                         }
                     } else {
-                        textViews[i][j].setText("" + currMonthDays[i-1][j]);
+                        textViews[i][j].setText("" + currMonthDays[i][j]);
                         if (j == 0) {
                             textViews[i][j].setTextColor(Color.RED);
                         } else if (j == 6) {
                             textViews[i][j].setTextColor(Color.BLUE);
+                        } else {
+                            textViews[i][j].setTextColor(Color.BLACK);
                         }
                     }
                 }
@@ -178,7 +210,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         }
     }
 
-    public void setTextViews(View view) {
+    private void setTextViews(View view) {
         tvYear = ((TextView)view.findViewById(R.id.this_year_solar));
         tvMonth = ((TextView)view.findViewById(R.id.this_month_solar));
         tvJpName = ((TextView)view.findViewById(R.id.this_year_jpname));
