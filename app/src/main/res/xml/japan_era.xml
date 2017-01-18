@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<era>
+    <ears>
+        <item><name>平成</name><startDate>19890108</startDate><endDate>30010101</endDate><pronunciation>へいせい    </pronunciation></item>
+        <item><name>昭和</name><startDate>19261225</startDate><endDate>19890107</endDate><pronunciation>しょうわ    </pronunciation></item>
+        <item><name>大正</name><startDate>19120730</startDate><endDate>19261224</endDate><pronunciation>たいしょう  </pronunciation></item>
+        <item><name>明治</name><startDate>18680125</startDate><endDate>19120729</endDate><pronunciation>めいじ      </pronunciation></item>
+        <item><name>慶応</name><startDate>18650501</startDate><endDate>18681023</endDate><pronunciation>けいおう    </pronunciation></item>
+        <item><name>元和</name><startDate>16150905</startDate><endDate>16240417</endDate><pronunciation>げんな      </pronunciation></item>
+        <item><name>寛永</name><startDate>16240417</startDate><endDate>16450113</endDate><pronunciation>かんえい    </pronunciation></item>
+        <item><name>正保</name><startDate>16450113</startDate><endDate>16480407</endDate><pronunciation>しょうほう  </pronunciation></item>
+        <item><name>慶安</name><startDate>16480407</startDate><endDate>16521020</endDate><pronunciation>けいあん    </pronunciation></item>
+        <item><name>承応</name><startDate>16521020</startDate><endDate>16550518</endDate><pronunciation>じょうおう  </pronunciation></item>
+        <item><name>明暦</name><startDate>16550518</startDate><endDate>16580821</endDate><pronunciation>めいれき    </pronunciation></item>
+        <item><name>万治</name><startDate>16580821</startDate><endDate>16610523</endDate><pronunciation>まんじ      </pronunciation></item>
+        <item><name>寛文</name><startDate>16610523</startDate><endDate>16731030</endDate><pronunciation>かんぶん    </pronunciation></item>
+        <item><name>延宝</name><startDate>16731030</startDate><endDate>16811109</endDate><pronunciation>えんぽう    </pronunciation></item>
+        <item><name>天和</name><startDate>16811109</startDate><endDate>16840405</endDate><pronunciation>てんな      </pronunciation></item>
+        <item><name>貞享</name><startDate>16840405</startDate><endDate>16881023</endDate><pronunciation>じょうきょう</pronunciation></item>
+        <item><name>元禄</name><startDate>16881023</startDate><endDate>17040416</endDate><pronunciation>げんろく    </pronunciation></item>
+        <item><name>宝永</name><startDate>17040416</startDate><endDate>17110611</endDate><pronunciation>ほうえい    </pronunciation></item>
+        <item><name>正徳</name><startDate>17110611</startDate><endDate>17160809</endDate><pronunciation>しょうとく  </pronunciation></item>
+        <item><name>享保</name><startDate>17160809</startDate><endDate>17360607</endDate><pronunciation>きょうほう  </pronunciation></item>
+        <item><name>元文</name><startDate>17360607</startDate><endDate>17410412</endDate><pronunciation>げんぶん    </pronunciation></item>
+        <item><name>寛保</name><startDate>17410412</startDate><endDate>17440403</endDate><pronunciation>かんぽう    </pronunciation></item>
+        <item><name>延享</name><startDate>17440403</startDate><endDate>17480805</endDate><pronunciation>えんきょう  </pronunciation></item>
+        <item><name>寛延</name><startDate>17480805</startDate><endDate>17511214</endDate><pronunciation>かんえん    </pronunciation></item>
+        <item><name>宝暦</name><startDate>17511214</startDate><endDate>17640630</endDate><pronunciation>ほうれき    </pronunciation></item>
+        <item><name>明和</name><startDate>17640630</startDate><endDate>17721210</endDate><pronunciation>めいわ      </pronunciation></item>
+        <item><name>安永</name><startDate>17721210</startDate><endDate>17810425</endDate><pronunciation>あんえい    </pronunciation></item>
+        <item><name>天明</name><startDate>17810425</startDate><endDate>17890219</endDate><pronunciation>てんめい    </pronunciation></item>
+        <item><name>寛政</name><startDate>17890219</startDate><endDate>18010319</endDate><pronunciation>かんせい    </pronunciation></item>
+        <item><name>享和</name><startDate>18010319</startDate><endDate>18040322</endDate><pronunciation>きょうわ    </pronunciation></item>
+        <item><name>文化</name><startDate>18040322</startDate><endDate>18180526</endDate><pronunciation>ぶんか      </pronunciation></item>
+        <item><name>文政</name><startDate>18180526</startDate><endDate>18310123</endDate><pronunciation>ぶんせい    </pronunciation></item>
+        <item><name>天保</name><startDate>18310123</startDate><endDate>18450109</endDate><pronunciation>てんぽう    </pronunciation></item>
+        <item><name>弘化</name><startDate>18450109</startDate><endDate>18480401</endDate><pronunciation>こうか      </pronunciation></item>
+        <item><name>嘉永</name><startDate>18480401</startDate><endDate>18550115</endDate><pronunciation>かえい      </pronunciation></item>
+        <item><name>安政</name><startDate>18550115</startDate><endDate>18600408</endDate><pronunciation>あんせい    </pronunciation></item>
+        <item><name>万延</name><startDate>18600408</startDate><endDate>18610329</endDate><pronunciation>まんえん    </pronunciation></item>
+        <item><name>文久</name><startDate>18610329</startDate><endDate>18640327</endDate><pronunciation>ぶんきゅう  </pronunciation></item>
+        <item><name>元治</name><startDate>18640327</startDate><endDate>18650501</endDate><pronunciation>げんじ      </pronunciation></item>
+        <item><name>慶応</name><startDate>18650501</startDate><endDate>18681023</endDate><pronunciation>けいおう    </pronunciation></item>
+    </ears>
+</era>
