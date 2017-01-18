@@ -2,14 +2,20 @@ package com.doublesibi.utils.calc.datecalculator;
 
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +23,8 @@ import android.widget.Toast;
 import com.doublesibi.utils.calc.datecalculator.holiday.HolidayItem;
 import com.doublesibi.utils.calc.datecalculator.holiday.HolidaysInfo;
 import com.doublesibi.utils.calc.datecalculator.holiday.MyCalendar;
+import com.doublesibi.utils.calc.datecalculator.holiday.RangeDate;
+import com.doublesibi.utils.calc.datecalculator.holiday.YearName;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -35,10 +43,14 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
     private MyCalendar myCalendar;
     private XmlPullParser xmlPullParser;
     private HolidaysInfo holidaysInfo;
+    private YearName yearName;
+    private ArrayList<RangeDate> yearNameList;
+    private AlertDialog alertDialog;
+    private int selectedIndex = 0;
+    private ArrayAdapter<String> adapter;
 
     private TextView tvYear, tvMonth, tvJpName, tvJpYear;
     private TextView[][] textViews;
-
 
     public ThismonthFragment() {
     }
@@ -56,6 +68,13 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
             myCalendar = new MyCalendar();
         }
 
+        if (yearName == null) {
+            yearName = new YearName();
+            yearName.setCountry("Japan");
+            yearName.setyearNameList(getResources().getXml(R.xml.japan_era));
+            yearNameList = yearName.getYearNameList();
+        }
+
         setHoliday("Japan");
         setDays(myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH)+1);
 
@@ -64,46 +83,136 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
+        int tempYM;
         final int l_year = Integer.parseInt(this.tvYear.getText().toString().trim());
         final int l_month = Integer.parseInt(this.tvMonth.getText().toString().trim());
         switch(v.getId()) {
             case R.id.this_year_solar:
             case R.id.this_month_solar:
-
-                DatePickerDialog datePickerDialog = new DatePickerDialog(
-                        getContext(),
-                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                try {
-                                    if (l_year != year || l_month != monthOfYear - 1) {
-                                        setDays(year, monthOfYear + 1);
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }, l_year, l_month - 1, 1);
-
-                datePickerDialog.getDatePicker().setCalendarViewShown(false);
-                datePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                datePickerDialog.show();
+                showYearMonthDialog();
                 break;
+
+            case R.id.btnPrevMonth:
+                myCalendar.setCalendar(l_year, l_month, 1);
+                tempYM = myCalendar.getCurrentPrevMonth(-1);
+                setDays(tempYM/100, tempYM%100);
+                break;
+
+            case R.id.btnNextMonth:
+                myCalendar.setCalendar(l_year, l_month, 1);
+                tempYM = myCalendar.getCurrentPrevMonth(1);
+                setDays(tempYM/100, tempYM%100);
+                break;
+
             case R.id.this_year_jpname:
                 Toast.makeText(getContext(), "click japan year name", Toast.LENGTH_SHORT).show();
+                // TODO : spinner or dialogで
                 break;
+
             case R.id.this_year_japanes:
                 Toast.makeText(getContext(), "click japan year", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
 
+    private void showYearMonthDialog() {
+        this.tvYear.getText().toString();
+
+        LayoutInflater dialog = LayoutInflater.from(getContext());
+        final View dialogLayout = dialog.inflate(R.layout.yearmonth_picker_dialog, null);
+        final Dialog myDialog = new Dialog(getContext());
+
+        //myDialog.setTitle("Dialog title");
+        myDialog.setContentView(dialogLayout);
+        myDialog.show();
+
+        final TextView selYear  = (TextView)dialogLayout.findViewById(R.id.textViewYear);
+        final TextView selMonth = (TextView)dialogLayout.findViewById(R.id.textViewMonth);
+
+        selYear.setText(this.tvYear.getText().toString());
+        selMonth.setText(this.tvMonth.getText().toString());
+
+        Button btn_upYY = (Button)dialogLayout.findViewById(R.id.increaseYear);
+        Button btn_upMM = (Button)dialogLayout.findViewById(R.id.increaseMonth);
+        Button btn_dnYY = (Button)dialogLayout.findViewById(R.id.decreaseYear);
+        Button btn_dnMM = (Button)dialogLayout.findViewById(R.id.decreaseMonth);
+        Button btn_ok = (Button)dialogLayout.findViewById(R.id.btnOk);
+        Button btn_cancel = (Button)dialogLayout.findViewById(R.id.btnCancel);
+
+        btn_upYY.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String str = selYear.getText().toString().trim();
+                selYear.setText("" + (Integer.parseInt(str) + 1));
+            }
+        });
+
+        btn_dnYY.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String str = selYear.getText().toString().trim();
+                int temp = Integer.parseInt(str) - 1;
+                if (Integer.parseInt(str) <= 0) temp = 1;
+
+                selYear.setText("" + temp);
+            }
+        });
+
+        btn_upMM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String str = selMonth.getText().toString().trim();
+                int temp = Integer.parseInt(str) + 1;
+                if (temp > 12) temp = 1;
+
+                selMonth.setText("" + temp);
+            }
+        });
+
+        btn_dnMM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String str = selMonth.getText().toString().trim();
+                int temp = Integer.parseInt(str) - 1;
+                if (temp < 1) temp = 12;
+
+                selMonth.setText("" + temp);
+            }
+        });
+
+        btn_ok.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                setTvYearMonth(selYear.getText().toString().trim(), selMonth.getText().toString().trim());
+                myDialog.dismiss();
+            }
+        });
+
+        btn_cancel.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                myDialog.cancel();
+            }
+        });
+    }
+
+    private void setTvYearMonth(String year, String month) {
+        setDays(Integer.parseInt(year), Integer.parseInt(month));
+    }
+
     private void setYearMonth(int currYM) {
         tvYear.setText("" + currYM/100);
         tvMonth.setText(" " + currYM%100);
-        tvJpName.setText("平成 ");
-        tvJpYear.setText("" + 29);
+
+        for (RangeDate item : yearNameList) {
+            if (currYM*100+1 >= item.startDate && currYM*100+1 < item.endDate) {
+                tvJpName.setText(item.name);
+                tvJpYear.setText("" + (currYM/100 - item.startDate/10000 + 1));
+            }
+        }
     }
 
     private void setHoliday(String country) {
@@ -211,10 +320,16 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
     }
 
     private void setTextViews(View view) {
+
         tvYear = ((TextView)view.findViewById(R.id.this_year_solar));
         tvMonth = ((TextView)view.findViewById(R.id.this_month_solar));
         tvJpName = ((TextView)view.findViewById(R.id.this_year_jpname));
         tvJpYear = ((TextView)view.findViewById(R.id.this_year_japanes));
+
+        ((ImageButton) view.findViewById(R.id.btnPrevMonth)).setOnClickListener(this);
+        ((ImageButton) view.findViewById(R.id.btnNextMonth)).setOnClickListener(this);
+        ((TextView) view.findViewById(R.id.lbThisYear)).setOnClickListener(this);
+        ((TextView) view.findViewById(R.id.lbThisMonth)).setOnClickListener(this);
 
         tvYear.setOnClickListener(this);
         tvMonth.setOnClickListener(this);
