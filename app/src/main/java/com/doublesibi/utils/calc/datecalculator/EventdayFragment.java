@@ -43,6 +43,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
 
     private CalcEventDate calcEventDate;
     private DatePickerDialog datePickerDialog;
+    private MyCalendar myCalendar;
 
     private int styy = 0, stmm = 0, stdd = 0;
     private int startymd = 0;
@@ -61,6 +62,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        myCalendar = new MyCalendar();
         View view = inflater.inflate(R.layout.fragment_eventday, container, false);
 
         setTextId(view);
@@ -88,7 +90,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                         Toast.makeText(getContext(), "年と月から入力下さい。", Toast.LENGTH_SHORT).show();
                         break;
                     }
-                    maxDays = MyCalendar.getMaxDayOfMonth(styy, stmm);
+                    maxDays = myCalendar.getMaxDayOfMonth(styy, stmm);
                     numberPickerDilaog(1, maxDays, stdd, Constants.INPUT_START_DATE, "日を選択下さい。");
                     Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
                     break;
@@ -114,7 +116,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                     break;
 
                 case R.id.btn_start_today:
-                    int date = MyCalendar.getTodayYMD();
+                    int date = myCalendar.getTodayYMD();
 
                     styy = date / 10000;
                     stmm = date % 10000 / 100;

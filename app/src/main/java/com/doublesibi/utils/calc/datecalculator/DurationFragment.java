@@ -42,6 +42,7 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
     private Button btnCalc;
 
     private DatePickerDialog datePickerDialog;
+    private MyCalendar myCalendar;
 
     private int startymd = 0, endymd = 0;
     private int styy = 0, stmm = 0, stdd = 0;
@@ -60,6 +61,7 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        MyCalendar myCalendar = new MyCalendar();
         View view = inflater.inflate(R.layout.fragment_duration, container, false);
 
         setTextId(view);
@@ -82,7 +84,7 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                     numberPickerDilaog(1, 12, stmm, Constants.INPUT_START_MONTH, "月を選択下さい。");
                     break;
                 case R.id.stdd:
-                    maxDays = MyCalendar.getMaxDayOfMonth(enyy, enmm);
+                    maxDays = myCalendar.getMaxDayOfMonth(enyy, enmm);
                     numberPickerDilaog(1, maxDays, stdd, Constants.INPUT_START_DATE, "日を選択下さい。");
                     Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
                     break;
@@ -93,7 +95,7 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                     numberPickerDilaog(1, 12, enmm, Constants.INPUT_END_MONTH, "月を選択下さい。");
                     break;
                 case R.id.endd:
-                    maxDays = MyCalendar.getMaxDayOfMonth(enyy, enmm);
+                    maxDays = myCalendar.getMaxDayOfMonth(enyy, enmm);
                     numberPickerDilaog(1, maxDays, endd, Constants.INPUT_END_DATE, "日を選択下さい。");
                     Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
                     break;
@@ -145,7 +147,7 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                     break;
 
                 case R.id.btn_start_today: {
-                    int date = MyCalendar.getTodayYMD();
+                    int date = myCalendar.getTodayYMD();
                     styy = date / 10000;
                     stmm = date % 10000 / 100;
                     stdd = date % 100;
@@ -156,7 +158,7 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                 break;
 
                 case R.id.btn_end_today: {
-                    int date = MyCalendar.getTodayYMD();
+                    int date = myCalendar.getTodayYMD();
                     enyy = date / 10000;
                     enmm = date % 10000 / 100;
                     endd = date % 100;

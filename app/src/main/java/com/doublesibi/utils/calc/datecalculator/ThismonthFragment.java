@@ -290,6 +290,11 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
             setYearMonth(currYM);
         }
 
+        boolean includeToday = false;
+        int today = myCalendar.getTodayYMD();
+        if (today/100 == currYM) {
+            includeToday = true;
+        }
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 7; j++) {
                 textViews[i][j].setText("");
@@ -315,6 +320,13 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
                         }
                     }
                 }
+
+                if(includeToday && textViews[i][j].getText().toString().equals("" + today % 100)) {
+                    textViews[i][j].setBackgroundColor(Color.CYAN);
+                } else {
+                    textViews[i][j].setBackground(getResources().getDrawable(R.drawable.boxed_edittext_filled));
+                }
+
             }
         }
     }

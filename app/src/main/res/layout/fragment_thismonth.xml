@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:weightSum="7"
+        android:weightSum="8"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -87,9 +87,73 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_weight="6"
+            android:layout_weight="7"
+            android:weightSum="7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <LinearLayout
+                android:weightSum="7"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="36dp">
+
+                <TextView
+                    android:text="@string/sunday"
+                    android:textColor="@android:color/holo_red_light"
+                    android:background="@drawable/boxed_edittext_filled"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="@string/monday"
+                    android:textColor="@android:color/black"
+                    android:background="@drawable/boxed_edittext_filled"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="@string/tuesday"
+                    android:textColor="@android:color/black"
+                    android:background="@drawable/boxed_edittext_filled"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="@string/wednesday"
+                    android:textColor="@android:color/black"
+                    android:background="@drawable/boxed_edittext_filled"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="@string/thursday"
+                    android:textColor="@android:color/black"
+                    android:background="@drawable/boxed_edittext_filled"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="@string/friday"
+                    android:textColor="@android:color/black"
+                    android:background="@drawable/boxed_edittext_filled"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="@string/saturday"
+                    android:textColor="@android:color/holo_blue_dark"
+                    android:background="@drawable/boxed_edittext_filled"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
 
             <include
                 android:id="@+id/week_0"
