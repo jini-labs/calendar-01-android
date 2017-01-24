@@ -256,7 +256,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
-                android:id="@+id/btnDuraSave"
+                android:id="@+id/btnEventdaySave"
                 android:background="@drawable/boxed_edittext_reverse"
                 android:text="@string/label_dura_save_button"
                 android:textSize="16sp"

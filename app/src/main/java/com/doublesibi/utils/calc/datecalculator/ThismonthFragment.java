@@ -1,26 +1,24 @@
 package com.doublesibi.utils.calc.datecalculator;
 
 
-import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.doublesibi.utils.calc.datecalculator.holiday.HolidayItem;
 import com.doublesibi.utils.calc.datecalculator.holiday.HolidaysInfo;
 import com.doublesibi.utils.calc.datecalculator.holiday.MyCalendar;
 import com.doublesibi.utils.calc.datecalculator.holiday.RangeDate;
@@ -28,10 +26,8 @@ import com.doublesibi.utils.calc.datecalculator.holiday.YearName;
 
 import org.xmlpull.v1.XmlPullParser;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 
 
 /**
@@ -55,6 +51,18 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
     public ThismonthFragment() {
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.main, menu);
+        menu.findItem(R.id.action_settings).setVisible(false);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

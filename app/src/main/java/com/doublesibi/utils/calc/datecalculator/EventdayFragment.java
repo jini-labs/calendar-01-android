@@ -4,6 +4,7 @@ package com.doublesibi.utils.calc.datecalculator;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,6 +25,8 @@ import android.widget.Toast;
 
 import com.doublesibi.utils.calc.datecalculator.common.CalcEventDate;
 import com.doublesibi.utils.calc.datecalculator.common.Constants;
+import com.doublesibi.utils.calc.datecalculator.hist.EventdayItemOpenHelper;
+import com.doublesibi.utils.calc.datecalculator.hist.HistItem;
 import com.doublesibi.utils.calc.datecalculator.holiday.MyCalendar;
 
 import java.util.Calendar;
@@ -38,7 +41,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
     private TextView eventStartYY, eventStartMM, eventStartDD;
     private EditText value1, value2, value3, value4;
     private TextView result_eventday, result_eventday_week;
-    private Button btnCalcEvent;
+    private Button btnCalcEvent, btnEventDaySave;
     private Spinner spnBeAf;
 
     private CalcEventDate calcEventDate;
@@ -178,6 +181,37 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
 
 
                     break;
+                case R.id.btnEventdaySave:
+
+                    HistItem histItem = new HistItem();
+
+                    int saveDate = Integer.valueOf(eventStartYY.getText().toString()) * 10000 +
+                            Integer.valueOf(eventStartMM.getText().toString()) * 100 +
+                            Integer.valueOf(eventStartDD.getText().toString());
+                    histItem.stDate = "" + saveDate;
+
+                    histItem.days = value1.getText().toString();
+                    histItem.weeks = value2.getText().toString();
+                    histItem.months = value3.getText().toString();
+                    histItem.years = value4.getText().toString();
+                    histItem.beOrAf = "" + spnBeAf.getSelectedItemPosition();
+
+                    String endDateStr = result_eventday.getText().toString().trim();
+                    String[] splitedStr = endDateStr.split("-");
+
+                    saveDate = Integer.valueOf(splitedStr[0]) * 10000 +
+                            Integer.valueOf(splitedStr[1]) * 100 +
+                            Integer.valueOf(splitedStr[2]);
+                    histItem.enDate = "" + saveDate;
+
+
+                    EventdayItemOpenHelper helper = new EventdayItemOpenHelper(getActivity());
+                    final SQLiteDatabase db = helper.getWritableDatabase();
+
+                    long ret = helper.insertEventday(db, histItem);
+                    Log.d(LOGTAG, "(eventday) inserted id :" + ret);
+                    Toast.makeText(getContext(), "(eventday) inserted id :" + ret, Toast.LENGTH_SHORT).show();
+                    break;
             }
         }
     }
@@ -254,6 +288,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
 
     private void setButtonId(View view) {
         btnCalcEvent = (Button) view.findViewById(R.id.btn_calc_eventday);
+        btnEventDaySave = (Button) view.findViewById(R.id.btnEventdaySave);
 
         btnCalcEvent.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -271,6 +306,8 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
         });
 
         btnCalcEvent.setOnClickListener(this);
+        btnEventDaySave.setOnClickListener(this);
+
         view.findViewById(R.id.btn_event_stdt).setOnClickListener(this);
         view.findViewById(R.id.btn_start_today).setOnClickListener(this);
     }

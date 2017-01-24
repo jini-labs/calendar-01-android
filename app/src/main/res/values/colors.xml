@@ -23,4 +23,5 @@
     <color name="colorResultValue">#AA5050</color>
     <color name="colorResultValue1">#AA5050</color>
 
+    <color name="boxed_edittext_filled_color">#09742D</color>
 </resources>

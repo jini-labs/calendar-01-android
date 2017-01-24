@@ -19,10 +19,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.doublesibi.utils.calc.datecalculator.holiday.HolidaysInfo;
 import com.doublesibi.utils.calc.datecalculator.holiday.MyCalendar;
-
-import org.xmlpull.v1.XmlPullParser;
 
 import java.util.Calendar;
 
@@ -30,6 +27,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private final String LOGTAG = "DayCalc";
     private int selectedMenu = 0;
+    private Menu mMenu;
     private MyCalendar myCalendar;
 
     @Override
@@ -114,6 +112,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+
+        this.mMenu = menu;
+        //this.mMenu.getItem(0).setVisible(false);
+        Log.d(LOGTAG, "onCreateOptionsMenu, " + mMenu.size() );
+
+
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -130,13 +134,16 @@ public class MainActivity extends AppCompatActivity
             Intent intent;
             Toast.makeText(this,"selected action menu.(" + selectedMenu + ")", Toast.LENGTH_SHORT).show();
             switch(selectedMenu) {
-                case 0:
+                case 1:
                     intent = new Intent(MainActivity.this, DurationHistActivity.class);
                     startActivity(intent);
                     break;
-                case 1:
+                case 2:
                     intent = new Intent(MainActivity.this, EventHistActivity.class);
                     startActivity(intent);
+                    break;
+                case 0:
+                default:
                     break;
             }
             return true;
@@ -188,6 +195,7 @@ public class MainActivity extends AppCompatActivity
         // Close the navigation drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
 }
