@@ -290,21 +290,6 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
         btnCalcEvent = (Button) view.findViewById(R.id.btn_calc_eventday);
         btnEventDaySave = (Button) view.findViewById(R.id.btnEventdaySave);
 
-        btnCalcEvent.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    Log.d(LOGTAG,"btnCalcEvent down.");
-                    btnCalcEvent.setBackgroundResource(R.color.colorCalcButtonPress);
-
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    Log.d(LOGTAG,"btnCalcEvent up.");
-                    btnCalcEvent.setBackgroundResource(R.color.colorCalcButtonNormal);
-                }
-                return false;
-            }
-        });
-
         btnCalcEvent.setOnClickListener(this);
         btnEventDaySave.setOnClickListener(this);
 

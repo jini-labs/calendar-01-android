@@ -251,21 +251,6 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
         btnCalc = (Button) view.findViewById(R.id.btnenter);
         btnDuraSave = (Button) view.findViewById(R.id.btnDuraSave);
 
-//        btnCalc.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//                    Log.d(LOGTAG,"btnCalc down.");
-//                    btnCalc.setBackgroundResource(R.color.colorCalcButtonPress);
-//
-//                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-//                    Log.d(LOGTAG,"btnCalc up.");
-//                    btnCalc.setBackgroundResource(R.color.colorCalcButtonNormal);
-//                }
-//                return false;
-//            }
-//        });
-
         btnCalc.setOnClickListener(this);
         btnDuraSave.setOnClickListener(this);
 

@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -346,8 +345,8 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         tvJpName = ((TextView)view.findViewById(R.id.this_year_jpname));
         tvJpYear = ((TextView)view.findViewById(R.id.this_year_japanes));
 
-        ((ImageButton) view.findViewById(R.id.btnPrevMonth)).setOnClickListener(this);
-        ((ImageButton) view.findViewById(R.id.btnNextMonth)).setOnClickListener(this);
+        ((Button) view.findViewById(R.id.btnPrevMonth)).setOnClickListener(this);
+        ((Button) view.findViewById(R.id.btnNextMonth)).setOnClickListener(this);
         ((TextView) view.findViewById(R.id.lbThisYear)).setOnClickListener(this);
         ((TextView) view.findViewById(R.id.lbThisMonth)).setOnClickListener(this);
 

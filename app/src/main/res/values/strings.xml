@@ -50,4 +50,7 @@
     <string name="thursday">木</string>
     <string name="friday">金</string>
     <string name="saturday">土</string>
+
+    <string name="arrow_left">&lt;</string>
+    <string name="arrow_right">&gt;</string>
 </resources>

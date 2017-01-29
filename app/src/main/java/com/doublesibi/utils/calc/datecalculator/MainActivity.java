@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity
         Resources r = getResources();
         String[] weekofName = r.getStringArray(R.array.nameOfWeek);
         int weekOfNum = myCalendar.get(Calendar.DAY_OF_WEEK);
-        ((TextView) v.findViewById(R.id.header_wdate)).setText(weekofName[weekOfNum-1]);
+        ((TextView) v.findViewById(R.id.header_wdate)).setText("("+weekofName[weekOfNum-1]+")");
         if (weekOfNum == Calendar.SUNDAY || weekOfNum == Calendar.SATURDAY) {
             ((TextView) v.findViewById(R.id.header_wdate)).setTextColor(Color.RED);
         }

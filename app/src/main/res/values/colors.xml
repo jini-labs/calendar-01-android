@@ -23,5 +23,9 @@
     <color name="colorResultValue">#AA5050</color>
     <color name="colorResultValue1">#AA5050</color>
 
+    <color name="colorButtonNormal">#09742D</color>
+    <color name="colorButtonPressed">#69D266</color>
+    <color name="colorButtonFocused">#69D266</color>
+
     <color name="boxed_edittext_filled_color">#09742D</color>
 </resources>

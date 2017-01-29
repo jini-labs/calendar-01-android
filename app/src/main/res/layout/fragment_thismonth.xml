@@ -18,13 +18,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageButton
+            <Button
                 android:id="@+id/btnPrevMonth"
-                app:srcCompat="@drawable/ic_action_prev"
+                android:background="@drawable/custombutton"
+                android:text="@string/arrow_left"
+                android:textSize="24sp"
+                android:textColor="@color/colorCalcButton"
                 android:layout_gravity="center_vertical|start"
                 android:layout_width="48dp"
                 android:layout_height="52dp"/>
-
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_margin="6dp"
@@ -77,9 +79,12 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
-            <ImageButton
+            <Button
                 android:id="@+id/btnNextMonth"
-                app:srcCompat="@drawable/ic_action_next"
+                android:background="@drawable/custombutton"
+                android:text="@string/arrow_right"
+                android:textSize="24sp"
+                android:textColor="@color/colorCalcButton"
                 android:layout_gravity="center_vertical|end"
                 android:layout_width="48dp"
                 android:layout_height="52dp"/>
