@@ -1,5 +1,9 @@
 package com.doublesibi.utils.calc.datecalculator.holiday;
 
+import android.content.res.Resources;
+import android.widget.TextView;
+
+import com.doublesibi.utils.calc.datecalculator.R;
 import com.doublesibi.utils.calc.datecalculator.common.Constants;
 import com.ibm.icu.util.ChineseCalendar;
 
@@ -293,4 +297,24 @@ public final class MyCalendar extends Calendar {
 
         return l_year * 10000 + l_month * 100 + l_date;
     }
+
+    public static String convertDateWeekName(Resources r, int ymd, String delm) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(ymd/10000, ymd%10000/100 - 1, ymd%100);
+
+
+        String[] weekofName = r.getStringArray(R.array.nameOfWeek);
+        int weekOfNum = calendar.get(Calendar.DAY_OF_WEEK);
+
+
+        if (delm != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy" + delm + "MM" + delm + "dd");
+            return sdf.format(calendar.getTime()) + "("+weekofName[weekOfNum-1]+")";
+        } else {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            return sdf.format(calendar.getTime()) + "("+weekofName[weekOfNum-1]+")";
+        }
+    }
+
+
 }

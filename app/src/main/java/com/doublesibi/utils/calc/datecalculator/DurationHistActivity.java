@@ -1,21 +1,30 @@
 package com.doublesibi.utils.calc.datecalculator;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.doublesibi.utils.calc.datecalculator.hist.DurationHistItem;
 import com.doublesibi.utils.calc.datecalculator.hist.DurationItemOpenHelper;
+import com.doublesibi.utils.calc.datecalculator.holiday.MyCalendar;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -23,64 +32,75 @@ import java.util.ArrayList;
 public class DurationHistActivity extends AppCompatActivity {
     private final String LOGTAG = "DayCalc";
 
-    // 1ページ辺りの項目数
-    Integer per_page = 10;
+    private Integer per_page = 10;
     private int recordCount = 0;
     private int selectKey = 0;
 
-    // フッターのプログレスバー（クルクル）
-    View mFooter;
-
-    // 予報表示用リストビューのアダプター
-    //ArrayAdapter<String> adapter;
+    private View mFooter;
     private DurationHistAdaptor adapter;
+    private ListView listview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_duration_hist);
 
-        // リスト用のアダプターを準備
-        //adapter = new ArrayAdapter<String>(this, R.layout.duration_hist_listview_item);
         adapter = new DurationHistAdaptor(DurationHistActivity.this);
-
-                // アダプターにアイテムを追加します
-//        for (int i = 0; i < per_page; i++) {
-//            adapter.add("リストビュー：" + i);
-//        }
         getDurationHistData(selectKey);
 
-        // リストビューへ紐付け
-        ListView listview = (ListView)findViewById(R.id.listView);
+        listview = (ListView)findViewById(R.id.listView);
+        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-        // リストビューにアダプターを設定します
+                final DurationHistItem selItem=(DurationHistItem)listview.getItemAtPosition(position);
+                final TextView v1 = (TextView) view.findViewById(R.id.durationStart);
+                final TextView v2 = (TextView) view.findViewById(R.id.durationEnd);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setTitle("Delete...")
+                        .setMessage(v1.getText().toString() + " ~ " + v2.getText().toString())
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Log.d(LOGTAG, "position:" + position + ", start: " + v1.getText() +", end: " + v2.getText());
+                                Toast.makeText(getApplicationContext(), "Delete record. (start:" + v1.getText().toString() +", end:" + v2.getText().toString(),
+                                        Toast.LENGTH_LONG).show();
+                                //
+                                // TODO: 1.delete db, 2.edit adapter list, 3. refresh listview
+                                //
+                                //if (deleteDurationHistData(v1.getText().toString(), v2.getText().toString())) {
+                                if (deleteDurationHistData(selItem.getStartDate(), selItem.getEndDate())) {
+                                    adapter.remove(selItem);
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }
+                        })
+                        .setNegativeButton("Cancel", null);
+
+                AlertDialog alert = builder.create();
+                alert.show();
+                alert.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+                alert.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+
+                return false;
+            }
+        });
+
         listview.setAdapter(adapter);
-
-        // リストビューにフッターを追加
         listview.addFooterView(getFooter());
 
-        // スクロールのリスナー
         listview.setOnScrollListener(new AbsListView.OnScrollListener() {
-
-            // スクロール中の処理
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
-                // 最初とスクロール完了したとき
                 if ((totalItemCount - visibleItemCount) == firstVisibleItem) {
-
-                    // アイテムの数 フッター分の1を引く
                     Integer ItemCount = totalItemCount - 1;
 
-                    // アダプターにアイテムを追加します
-//                    for (int i = ItemCount; i < (ItemCount + per_page); i++) {
-//                        adapter.add("リストビュー：" + i);
-//                    }
                     getDurationHistData(selectKey);
                 }
             }
 
-            // ListViewがスクロール中かどうか状態を返すメソッドです
             @Override
             public void onScrollStateChanged(AbsListView arg0, int arg1) {
             }
@@ -92,6 +112,28 @@ public class DurationHistActivity extends AppCompatActivity {
             mFooter = getLayoutInflater().inflate(R.layout.footer_duration_hist, null);
         }
         return mFooter;
+    }
+
+    private boolean deleteDurationHistData(String startDateWeekname, String endDateWeekname) {
+        DurationItemOpenHelper helper = new DurationItemOpenHelper(this);
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String value1 = startDateWeekname.substring(0,4);
+        String value2 = startDateWeekname.substring(5,7);
+        String value3 = startDateWeekname.substring(8,10);
+        String v1 = value1 + value2 + value3;
+
+        value1 = endDateWeekname.substring(0,4);
+        value2 = endDateWeekname.substring(5,7);
+        value3 = endDateWeekname.substring(8,10);
+        String v2 = value1 + value2 + value3;
+
+        if (helper.deleteDuration(db, v1, v2) > 0) {
+            Log.d(LOGTAG, "startDate:" + v1 + ", endDate:" + v2 + " deleted.!");
+            return true;
+        } else {
+            Log.d(LOGTAG, "startDate:" + v1 + ", endDate:" + v2 + " delete fail.");
+            return false;
+        }
     }
 
     private void getDurationHistData(int startDate) {
@@ -107,7 +149,7 @@ public class DurationHistActivity extends AppCompatActivity {
                             "years",
                             "yearmonths",
                             "yeardays" };
-        // queryメソッドの実行例
+
         Cursor c = db.query("DateDuration", columns,
                             "stDate>?", new String[] {""+startDate},
                             null,
@@ -115,27 +157,21 @@ public class DurationHistActivity extends AppCompatActivity {
                             "stDate",
                             ""+this.per_page);
 
-        String text = null;
         boolean mov = c.moveToFirst();
         while (mov) {
             selectKey = Integer.parseInt(c.getString(0));
 
-            text = "[stDate:"      + selectKey +
-                    ", enDate:"     + c.getString(1) +
-                    ", days:"       + c.getString(2) +
-                    ", weeks:"      + c.getString(3) +
-                    ", weekdays:"   + c.getString(4) +
-                    ", months:"     + c.getString(5) +
-                    ", monthdays:"  + c.getString(6) +
-                    ", years:"      + c.getString(7) +
-                    ", yearmonths:" + c.getString(8) +
-                    ", yeardays:"   + c.getString(9) + "]";
-
-
             recordCount ++;
             DurationHistItem item = new DurationHistItem();
-            item.setStartDate(c.getString(0));
-            item.setEndDate(c.getString(1));
+
+            String temp1 = c.getString(0);
+            String temp2 = MyCalendar.convertDateWeekName(getResources(), Integer.parseInt(temp1), "/");
+            item.setStartDate(temp2);
+
+            temp1 = c.getString(1);
+            temp2 = MyCalendar.convertDateWeekName(getResources(), Integer.parseInt(temp1), "/");
+            item.setEndDate(temp2);
+
             item.setDurDays(c.getString(2) + " 日");
 
             if (StrToInt(c.getString(3)) > 0 ) {
@@ -202,6 +238,10 @@ public class DurationHistActivity extends AppCompatActivity {
             this.items.add(item);
         }
 
+        public void remove(DurationHistItem item) {
+            this.items.remove(item);
+        }
+
         @Override
         public int getCount() {
             return items.size();
@@ -221,8 +261,13 @@ public class DurationHistActivity extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             convertView = layoutInflater.inflate(R.layout.duration_hist_listview_item, parent, false);
 
-            ((TextView)convertView.findViewById(R.id.durationStart)).setText(items.get(position).getStartDate());
-            ((TextView)convertView.findViewById(R.id.durationEnd)).setText(items.get(position).getEndDate());
+            TextView stDateView = (TextView)convertView.findViewById(R.id.durationStart);
+            stDateView.setText(items.get(position).getStartDate());
+            stDateView.setTextColor(Color.rgb(35,91,164));
+
+            TextView enDateView = (TextView)convertView.findViewById(R.id.durationEnd);
+            enDateView.setText(items.get(position).getEndDate());
+            enDateView.setTextColor(Color.rgb(164, 35, 121));
 
             ((TextView)convertView.findViewById(R.id.durationDays)).setText(items.get(position).getDurDays());
             ((TextView)convertView.findViewById(R.id.durationWeeksDays)).setText(items.get(position).getDurWeeksDays());

@@ -10,16 +10,19 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 
 public class DurationItemOpenHelper extends SQLiteOpenHelper {
+    private final static String dbname = "DurationHistDB";
+    private final static String tablename = "DateDuration";
 
     public DurationItemOpenHelper(Context context) {
-        super(context, "DurationHistDB", null, 1);
+        super(context, dbname, null, 1);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table IF NOT EXISTS DateDuration(" +
+        db.execSQL("create table IF NOT EXISTS " +
+                tablename + "(" +
                 "stDate text not null," +
-                "enDate  text not null," +
+                "enDate text not null," +
                 "days text," +
                 "weeks text," +
                 "weekdays text," +
@@ -27,12 +30,18 @@ public class DurationItemOpenHelper extends SQLiteOpenHelper {
                 "monthdays text," +
                 "years text," +
                 "yearmonths text," +
-                "yeardays text" + ");");
+                "yeardays text," +
+                "primary key(stDate, enDate)" + ");");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+    public int deleteDuration(SQLiteDatabase db, String stDate, String enDate) {
+
+        return db.delete(tablename, "stDate=? and enDate=?", new String[] {stDate, enDate});
     }
 
     public long insertDuration(SQLiteDatabase db, HistItem item) {
@@ -48,6 +57,6 @@ public class DurationItemOpenHelper extends SQLiteOpenHelper {
         insertValues.put("yearmonths", item.yearmonths);
         insertValues.put("yeardays", item.yeardays);
 
-        return db.insert("DateDuration", "stDate", insertValues);
+        return db.insert(tablename, "stDate", insertValues);
     }
 }

@@ -18,13 +18,15 @@ public class EventdayItemOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table IF NOT EXISTS Eventday(" +
+                "name text not null," +
                 "stDate text not null," +
                 "days text," +
                 "weeks text," +
                 "months text," +
                 "years text," +
                 "beOrAf text," +
-                "enDate  text" + ");");
+                "enDate  text," +
+                "primary key(stDate, name)" + ");");
     }
 
     @Override

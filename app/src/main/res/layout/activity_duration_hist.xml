@@ -11,12 +11,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical">
 
-    <TextView
-        android:text="TextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView" />
-
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
