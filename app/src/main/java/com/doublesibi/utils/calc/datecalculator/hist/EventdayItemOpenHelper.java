@@ -10,14 +10,17 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 
 public class EventdayItemOpenHelper extends SQLiteOpenHelper {
+    private final static String dbname = "EventdayHistDB";
+    private final static String tablename = "Eventday";
 
     public EventdayItemOpenHelper(Context context) {
-        super(context, "EventdayHistDB", null, 1);
+        super(context, dbname, null, 1);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table IF NOT EXISTS Eventday(" +
+        db.execSQL("create table IF NOT EXISTS "  +
+                tablename + "(" +
                 "name text not null," +
                 "stDate text not null," +
                 "days text," +
@@ -25,13 +28,18 @@ public class EventdayItemOpenHelper extends SQLiteOpenHelper {
                 "months text," +
                 "years text," +
                 "beOrAf text," +
-                "enDate  text," +
+                "enDate text," +
                 "primary key(stDate, name)" + ");");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+    public int deleteEventday(SQLiteDatabase db, String stDate, String name) {
+
+        return db.delete(tablename, "stDate=? and name=?", new String[] {stDate, name});
     }
 
     public long insertEventday(SQLiteDatabase db, HistItem item) {
@@ -43,7 +51,8 @@ public class EventdayItemOpenHelper extends SQLiteOpenHelper {
         insertValues.put("years", item.years);
         insertValues.put("beOrAf", item.beOrAf);
         insertValues.put("enDate", item.enDate);
+        insertValues.put("name", item.name);
 
-        return db.insert("Eventday", "stDate", insertValues);
+        return db.insert(tablename, "stDate", insertValues);
     }
 }

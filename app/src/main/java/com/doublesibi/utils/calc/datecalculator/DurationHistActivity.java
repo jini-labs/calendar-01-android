@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,8 +22,6 @@ import android.widget.Toast;
 import com.doublesibi.utils.calc.datecalculator.hist.DurationHistItem;
 import com.doublesibi.utils.calc.datecalculator.hist.DurationItemOpenHelper;
 import com.doublesibi.utils.calc.datecalculator.holiday.MyCalendar;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -66,10 +63,7 @@ public class DurationHistActivity extends AppCompatActivity {
                                 //Log.d(LOGTAG, "position:" + position + ", start: " + v1.getText() +", end: " + v2.getText());
                                 Toast.makeText(getApplicationContext(), "Delete record. (start:" + v1.getText().toString() +", end:" + v2.getText().toString(),
                                         Toast.LENGTH_LONG).show();
-                                //
-                                // TODO: 1.delete db, 2.edit adapter list, 3. refresh listview
-                                //
-                                //if (deleteDurationHistData(v1.getText().toString(), v2.getText().toString())) {
+
                                 if (deleteDurationHistData(selItem.getStartDate(), selItem.getEndDate())) {
                                     adapter.remove(selItem);
                                     adapter.notifyDataSetChanged();

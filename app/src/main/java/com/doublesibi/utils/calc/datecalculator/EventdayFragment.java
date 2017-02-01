@@ -177,10 +177,8 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                             result_eventday_week.setTextColor(Color.RED);
                             break;
                     }
-
-
-
                     break;
+
                 case R.id.btnEventdaySave:
 
                     HistItem histItem = new HistItem();
