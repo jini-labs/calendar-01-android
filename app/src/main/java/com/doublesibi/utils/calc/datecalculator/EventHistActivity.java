@@ -59,11 +59,10 @@ public class EventHistActivity extends AppCompatActivity {
                         .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                //Log.d(LOGTAG, "position:" + position + ", start: " + v1.getText() +", end: " + v2.getText());
-                                Toast.makeText(getApplicationContext(), "Delete record. (start:" + v1.getText().toString() +", end:" + v2.getText().toString(),
-                                        Toast.LENGTH_LONG).show();
-                                //
-                                // TODO: 1.delete db, 2.edit adapter list, 3. refresh listview
+//                                Log.d(LOGTAG, "start: " + v1.getText() +", end: " + v2.getText());
+//                                Toast.makeText(getApplicationContext(), "Delete record. (start:" + v1.getText().toString() +", end:" + v2.getText().toString(),
+//                                        Toast.LENGTH_LONG).show();
+
                                 if (deleteEventdayHistData(selItem.getStartDate(), selItem.getEveName())) {
                                     adapter.remove(selItem);
                                     adapter.notifyDataSetChanged();
@@ -88,7 +87,10 @@ public class EventHistActivity extends AppCompatActivity {
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
+                Log.d(LOGTAG,"firstVisibleItem:" + firstVisibleItem + ", visibleItemCount:" + visibleItemCount + ", totalItemCount:" + totalItemCount);
+
                 if ((totalItemCount - visibleItemCount) == firstVisibleItem) {
+                    Log.d(LOGTAG, "selectKey:" + selectKey);
                     Integer ItemCount = totalItemCount - 1;
 
                     getEventdayHistData(selectKey);
@@ -252,9 +254,9 @@ public class EventHistActivity extends AppCompatActivity {
             stDateView.setText(items.get(position).getStartDate());
             stDateView.setTextColor(Color.rgb(35,91,164));
 
-//            TextView enDateView = (TextView)convertView.findViewById(R.id.durationEnd);
-//            enDateView.setText(items.get(position).getEveDate());
-//            enDateView.setTextColor(Color.rgb(164, 35, 121));
+            TextView enDateView = (TextView)convertView.findViewById(R.id.eventDate);
+            enDateView.setText(items.get(position).getEveDate());
+            enDateView.setTextColor(Color.rgb(164, 35, 121));
 
             ((TextView)convertView.findViewById(R.id.eventName)).setText(items.get(position).getEveName());
             ((TextView)convertView.findViewById(R.id.eventCalcOptions)).setText(items.get(position).getEveDayMonWeeYea());

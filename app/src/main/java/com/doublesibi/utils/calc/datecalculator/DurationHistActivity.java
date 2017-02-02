@@ -60,9 +60,9 @@ public class DurationHistActivity extends AppCompatActivity {
                         .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                //Log.d(LOGTAG, "position:" + position + ", start: " + v1.getText() +", end: " + v2.getText());
-                                Toast.makeText(getApplicationContext(), "Delete record. (start:" + v1.getText().toString() +", end:" + v2.getText().toString(),
-                                        Toast.LENGTH_LONG).show();
+//                                Log.d(LOGTAG, ", start: " + v1.getText() +", end: " + v2.getText());
+//                                Toast.makeText(getApplicationContext(), "Delete record. (start:" + v1.getText().toString() +", end:" + v2.getText().toString(),
+//                                        Toast.LENGTH_LONG).show();
 
                                 if (deleteDurationHistData(selItem.getStartDate(), selItem.getEndDate())) {
                                     adapter.remove(selItem);
