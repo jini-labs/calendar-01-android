@@ -35,22 +35,77 @@ public class DurationHistActivity extends AppCompatActivity {
 
     private View mFooter;
     private DurationHistAdaptor adapter;
-    private ListView listview;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_duration_hist);
 
+        listView = (ListView)findViewById(R.id.listView);
         adapter = new DurationHistAdaptor(DurationHistActivity.this);
         getDurationHistData(selectKey);
+        listView.setAdapter(adapter);
+        listView.addFooterView(getFooter());
 
-        listview = (ListView)findViewById(R.id.listView);
-        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            boolean isLoading = false;
+            boolean isAllLoaded = false;
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (isLoading){
+                    return;
+                }
+
+                if (isAllLoaded){
+                    return;
+                }
+
+                if ((totalItemCount - visibleItemCount) == firstVisibleItem) {
+                    Integer ItemCount = totalItemCount - 1;
+
+                    isLoading = true;
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try{
+                                Thread.sleep(3000);
+                            }
+                            catch (InterruptedException exception){
+                                // 処理なし
+                            }
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (!getDurationHistData(selectKey)) {
+                                        isAllLoaded = true;
+                                    }
+
+//                                    if (adapter.getCount() >= MAX_LIMIT){
+//                                        listView.removeFooterView(progressBar);
+//                                        isAllLoaded = true;
+//                                    }
+                                }
+                            });
+                            isLoading = false;
+                        }
+                    }).start();
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(AbsListView arg0, int arg1) {
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-                final DurationHistItem selItem=(DurationHistItem)listview.getItemAtPosition(position);
+                final DurationHistItem selItem=(DurationHistItem)listView.getItemAtPosition(position);
                 final TextView v1 = (TextView) view.findViewById(R.id.durationStart);
                 final TextView v2 = (TextView) view.findViewById(R.id.durationEnd);
 
@@ -78,25 +133,6 @@ public class DurationHistActivity extends AppCompatActivity {
                 alert.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.BLACK);
 
                 return false;
-            }
-        });
-
-        listview.setAdapter(adapter);
-        listview.addFooterView(getFooter());
-
-        listview.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-                if ((totalItemCount - visibleItemCount) == firstVisibleItem) {
-                    Integer ItemCount = totalItemCount - 1;
-
-                    getDurationHistData(selectKey);
-                }
-            }
-
-            @Override
-            public void onScrollStateChanged(AbsListView arg0, int arg1) {
             }
         });
     }
@@ -130,7 +166,7 @@ public class DurationHistActivity extends AppCompatActivity {
         }
     }
 
-    private void getDurationHistData(int startDate) {
+    private boolean getDurationHistData(int startDate) {
         DurationItemOpenHelper helper = new DurationItemOpenHelper(this);
         SQLiteDatabase db = helper.getReadableDatabase();
         String[] columns ={"stDate",
@@ -208,6 +244,13 @@ public class DurationHistActivity extends AppCompatActivity {
         }
         c.close();
         db.close();
+
+        if (c.getCount() > 0) {
+            listView.invalidateViews();
+            return true;
+        }
+
+        return true;
     }
 
     private int StrToInt(String str) {

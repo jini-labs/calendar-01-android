@@ -34,22 +34,24 @@ public class EventHistActivity extends AppCompatActivity {
 
     private View mFooter;
     private EventdayHistAdaptor adapter;
-    private ListView listview;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_hist);
 
+        listView = (ListView)findViewById(R.id.listView);
         adapter = new EventdayHistAdaptor(EventHistActivity.this);
         getEventdayHistData(selectKey);
+        listView.setAdapter(adapter);
+        listView.addFooterView(getFooter());
 
-        listview = (ListView)findViewById(R.id.listView);
-        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-                final EventdayHistItem selItem=(EventdayHistItem)listview.getItemAtPosition(position);
+                final EventdayHistItem selItem=(EventdayHistItem)listView.getItemAtPosition(position);
                 final TextView v1 = (TextView) view.findViewById(R.id.eventStart);
                 final TextView v2 = (TextView) view.findViewById(R.id.eventName);
 
@@ -80,12 +82,19 @@ public class EventHistActivity extends AppCompatActivity {
             }
         });
 
-        listview.setAdapter(adapter);
-        listview.addFooterView(getFooter());
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            boolean isLoading = false;
+            boolean isAllLoaded = false;
 
-        listview.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (isLoading){
+                    return;
+                }
+
+                if (isAllLoaded){
+                    return;
+                }
 
                 Log.d(LOGTAG,"firstVisibleItem:" + firstVisibleItem + ", visibleItemCount:" + visibleItemCount + ", totalItemCount:" + totalItemCount);
 
@@ -93,7 +102,34 @@ public class EventHistActivity extends AppCompatActivity {
                     Log.d(LOGTAG, "selectKey:" + selectKey);
                     Integer ItemCount = totalItemCount - 1;
 
-                    getEventdayHistData(selectKey);
+                    isLoading = true;
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try{
+                                Thread.sleep(3000);
+                            }
+                            catch (InterruptedException exception){
+                                // 処理なし
+                            }
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (!getEventdayHistData(selectKey)) {
+                                        isAllLoaded = true;
+                                    }
+
+//                                    if (adapter.getCount() >= MAX_LIMIT){
+//                                        listView.removeFooterView(progressBar);
+//                                        isAllLoaded = true;
+//                                    }
+                                }
+                            });
+                            isLoading = false;
+                        }
+                    }).start();
                 }
             }
 
@@ -127,7 +163,7 @@ public class EventHistActivity extends AppCompatActivity {
         }
     }
 
-    private void getEventdayHistData(int startDate) {
+    private boolean getEventdayHistData(int startDate) {
         EventdayItemOpenHelper helper = new EventdayItemOpenHelper(this);
         SQLiteDatabase db = helper.getReadableDatabase();
         String[] columns ={"name",
@@ -202,6 +238,13 @@ public class EventHistActivity extends AppCompatActivity {
         }
         c.close();
         db.close();
+
+        if (c.getCount() > 0) {
+            listView.invalidateViews();
+            return true;
+        }
+
+        return true;
     }
 
     private int StrToInt(String str) {
