@@ -180,8 +180,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                     break;
 
                 case R.id.btnEventdaySave:
-
-                    HistItem histItem = new HistItem();
+                    final HistItem histItem = new HistItem();
 
                     int saveDate = Integer.valueOf(eventStartYY.getText().toString()) * 10000 +
                             Integer.valueOf(eventStartMM.getText().toString()) * 100 +
@@ -202,13 +201,36 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                             Integer.valueOf(splitedStr[2]);
                     histItem.enDate = "" + saveDate;
 
+                    // input memo of eventday.
+                    LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getContext());
+                    View mView = layoutInflaterAndroid.inflate(R.layout.input_dialogbox, null);
+                    AlertDialog.Builder inputDialog = new AlertDialog.Builder(getContext());
+                    inputDialog.setView(mView);
 
-                    EventdayItemOpenHelper helper = new EventdayItemOpenHelper(getActivity());
-                    final SQLiteDatabase db = helper.getWritableDatabase();
+                    final EditText editTextInputMemo = (EditText) mView.findViewById(R.id.inputMemo);
+                    inputDialog.setCancelable(false)
+                            .setPositiveButton("保存", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialogBox, int id) {
+                                    histItem.name = editTextInputMemo.getText().toString();
+                                    EventdayItemOpenHelper helper = new EventdayItemOpenHelper(getActivity());
+                                    final SQLiteDatabase db = helper.getWritableDatabase();
 
-                    long ret = helper.insertEventday(db, histItem);
-                    Log.d(LOGTAG, "(eventday) inserted id :" + ret);
-                    Toast.makeText(getContext(), "(eventday) inserted id :" + ret, Toast.LENGTH_SHORT).show();
+                                    long ret = helper.insertEventday(db, histItem);
+                                    Log.d(LOGTAG, "(eventday) name:" + histItem.name + ", insertedId:" + ret);
+                                    Toast.makeText(getContext(), "(eventday) name:" + histItem.name + ", insertedId:" + ret, Toast.LENGTH_SHORT).show();
+                                }
+                            })
+
+                            .setNegativeButton("取り消し",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialogBox, int id) {
+                                            dialogBox.cancel();
+                                        }
+                                    });
+
+                    AlertDialog alertDialogAndroid = inputDialog.create();
+                    alertDialogAndroid.show();
+
                     break;
             }
         }
