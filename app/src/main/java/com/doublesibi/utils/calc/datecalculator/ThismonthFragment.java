@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.doublesibi.utils.calc.datecalculator.holiday.HolidayItem;
 import com.doublesibi.utils.calc.datecalculator.holiday.HolidaysInfo;
 import com.doublesibi.utils.calc.datecalculator.holiday.MyCalendar;
 import com.doublesibi.utils.calc.datecalculator.holiday.RangeDate;
@@ -27,6 +28,8 @@ import org.xmlpull.v1.XmlPullParser;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import static com.ibm.icu.util.Holiday.getHolidays;
 
 
 /**
@@ -45,6 +48,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
     private ArrayAdapter<String> adapter;
 
     private TextView tvYear, tvMonth, tvJpName, tvJpYear;
+    private TextView tvHoliList;
     private TextView[][] textViews;
 
     public ThismonthFragment() {
@@ -216,7 +220,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
 
         for (RangeDate item : yearNameList) {
             if (currYM*100+1 >= item.startDate && currYM*100+1 < item.endDate) {
-                tvJpName.setText(item.name);
+                tvJpName.setText(item.name.trim());
                 tvJpYear.setText("" + (currYM/100 - item.startDate/10000 + 1));
             }
         }
@@ -336,6 +340,21 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
 
             }
         }
+
+        String strHoliList = "";
+        ArrayList<HolidayItem> hdis = holidaysInfo.getHolidays();
+
+        // name:"substitute day" -> 振替休日、"between holiday" -> "国民の休日"で表示
+        for (HolidayItem item : hdis) {
+            if (item.md / 100 == currYM % 100) {
+                strHoliList = strHoliList +
+                        MyCalendar.convertDateWeekName(getResources(), item.ymd, "/") + " - " +
+                        item.name + "\n";
+                //strHoliList = strHoliList + item.ymd +" - " + item.name + "\n";
+            }
+        }
+        tvHoliList.setText(strHoliList);
+
     }
 
     private void setTextViews(View view) {
@@ -349,6 +368,8 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         ((Button) view.findViewById(R.id.btnNextMonth)).setOnClickListener(this);
         ((TextView) view.findViewById(R.id.lbThisYear)).setOnClickListener(this);
         ((TextView) view.findViewById(R.id.lbThisMonth)).setOnClickListener(this);
+
+        tvHoliList = (TextView) view.findViewById(R.id.this_year_holidayList);
 
         tvYear.setOnClickListener(this);
         tvMonth.setOnClickListener(this);

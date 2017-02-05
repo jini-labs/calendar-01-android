@@ -398,7 +398,7 @@ public class HolidaysInfo {
                                 HolidayItem newItem = new HolidayItem();
                                 newItem.ymd = this.cal.getCurrentYMD();
                                 newItem.md = newItem.ymd % 10000;
-                                newItem.name = "substitute day";
+                                newItem.name = "振替休日";
 
                                 retSubstitutesDay.add(newItem);
                                 break;
@@ -488,14 +488,17 @@ public class HolidaysInfo {
                         case Calendar.MONDAY:
                         case Calendar.TUESDAY:
                         case Calendar.WEDNESDAY:
-                            this.cal.add(Calendar.DATE, 2);
-                            if (this.holidaysMap.get(this.cal.getCurrentYMD()) != null) {
-                                this.cal.add(Calendar.DATE, -1);
-                                HolidayItem newItem = new HolidayItem();
-                                newItem.ymd = this.cal.getCurrentYMD();
-                                newItem.md = newItem.ymd % 10000;
-                                newItem.name = "between holiday";
-                                retBetweensDay.add(newItem);
+                            this.cal.add(Calendar.DATE, 1);
+                            if (this.holidaysMap.get(this.cal.getCurrentYMD()) == null) {
+                                this.cal.add(Calendar.DATE, 1);
+                                if (this.holidaysMap.get(this.cal.getCurrentYMD()) != null) {
+                                    this.cal.add(Calendar.DATE, -1);
+                                    HolidayItem newItem = new HolidayItem();
+                                    newItem.ymd = this.cal.getCurrentYMD();
+                                    newItem.md = newItem.ymd % 10000;
+                                    newItem.name = "国民休日";
+                                    retBetweensDay.add(newItem);
+                                }
                             }
 
                             break;
