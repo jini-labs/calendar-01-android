@@ -17,12 +17,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.doublesibi.utils.calc.datecalculator.holiday.HolidaysInfo;
 import com.doublesibi.utils.calc.datecalculator.holiday.MyCalendar;
-
-import org.xmlpull.v1.XmlPullParser;
 
 import java.util.Calendar;
 
@@ -30,24 +26,14 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private final String LOGTAG = "DayCalc";
     private int selectedMenu = 0;
+    private Menu mMenu;
     private MyCalendar myCalendar;
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        myCalendar = new MyCalendar();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -58,93 +44,25 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        if (myCalendar == null) {
+            myCalendar = new MyCalendar();
+        }
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         View v = navigationView.getHeaderView(0);
-        ((TextView) v.findViewById(R.id.header_date)).setText(myCalendar.getCurrentYMD("-"));
+        ((TextView) v.findViewById(R.id.header_date)).setText(myCalendar.getTodayYMD("/"));
         Resources r = getResources();
         String[] weekofName = r.getStringArray(R.array.nameOfWeek);
         int weekOfNum = myCalendar.get(Calendar.DAY_OF_WEEK);
-        ((TextView) v.findViewById(R.id.header_wdate)).setText(weekofName[weekOfNum-1]);
+        ((TextView) v.findViewById(R.id.header_wdate)).setText("("+weekofName[weekOfNum-1]+")");
         if (weekOfNum == Calendar.SUNDAY || weekOfNum == Calendar.SATURDAY) {
             ((TextView) v.findViewById(R.id.header_wdate)).setTextColor(Color.RED);
         }
 
-        initView();
+        onNavigationItemSelected(navigationView.getMenu().getItem(0));
 
-
-        // TODO : activityと連携する。
-        XmlPullParser xmlPullParser = getResources().getXml(R.xml.holidayinfo_kr);
-        HolidaysInfo holidaysInfo = new HolidaysInfo();
-        holidaysInfo.setCountry("Korea");
-        holidaysInfo.setHolidayYear(xmlPullParser, 2017);
-        holidaysInfo.setHolidayCalendar();
-        holidaysInfo.printHolidayCalendar();
-        int[][] _monthDays = holidaysInfo.getHolidayCalendar(1);
-
-        String msg = "";
-        for (int i = 0; i < 6; i++) {
-            msg = null;
-            for (int j = 0; j < 7; j++) {
-                msg = msg + "  " + _monthDays[i][j];
-            }
-            Log.d(LOGTAG,msg);
-        }
-    }
-
-    private static class Item {
-        private String title;
-        private String description;
-    }
-
-    public void printCalendar(int cal[][][], int year) {
-        String weekStr = "";
-
-        Log.d(LOGTAG, "[ " + year + " ]");
-        for (int i = 0; i < 12; i++) {
-            Log.d(LOGTAG, "[ " + year + " ] (" + (i+1) + ")");
-            weekStr = "";
-            for (int j = 0; j < 6; j++) {
-                weekStr = "";
-                for (int k = 0; k < 7; k++) {
-                    if (cal[i][j][k] == 0) {
-                        String s = String.format("    ");
-                        weekStr = weekStr + "    ";
-                    } else {
-                        if (cal[i][j][k] > 1000) {
-                            String s = String.format(" *%2d", (cal[i][j][k] - 1000));
-                            weekStr = weekStr + s;
-                        }
-                        else {
-                            String s = String.format("  %2d", cal[i][j][k]);
-                            weekStr = weekStr + s;
-                        }
-                    }
-                }
-                Log.d(LOGTAG, weekStr);
-            }
-        }
-    }
-
-    public void initView() {
-
-        Fragment fragment = null;
-        Class fragmentClass = DurationFragment.class;
-
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-
-        // Close the navigation drawer
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
     }
 
     @Override
@@ -157,9 +75,13 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        this.mMenu = menu;
+        //this.mMenu.getItem(0).setVisible(false);
+        Log.d(LOGTAG, "onCreateOptionsMenu, " + mMenu.size() );
+
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -174,15 +96,18 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent;
-            Toast.makeText(this,"selected action menu.(" + selectedMenu + ")", Toast.LENGTH_SHORT).show();
+            Log.d(LOGTAG, "selected action menu.(" + selectedMenu + ")");
             switch(selectedMenu) {
-                case 0:
+                case 1:
                     intent = new Intent(MainActivity.this, DurationHistActivity.class);
                     startActivity(intent);
                     break;
-                case 1:
+                case 2:
                     intent = new Intent(MainActivity.this, EventHistActivity.class);
                     startActivity(intent);
+                    break;
+                case 0:
+                default:
                     break;
             }
             return true;
@@ -198,17 +123,21 @@ public class MainActivity extends AppCompatActivity
         Class fragmentClass;
 
         switch(item.getItemId()) {
-            case R.id.calc_duration_fragment:
+            case R.id.calendar_fragment:
                 selectedMenu = 0;
+                fragmentClass = ThismonthFragment.class;
+                break;
+            case R.id.calc_duration_fragment:
+                selectedMenu = 1;
                 fragmentClass = DurationFragment.class;
                 break;
             case R.id.calc_eventday__fragment:
-                selectedMenu = 1;
+                selectedMenu = 2;
                 fragmentClass = EventdayFragment.class;
                 break;
             default:
                 selectedMenu = 0;
-                fragmentClass = DurationFragment.class;
+                fragmentClass = ThismonthFragment.class;
                 break;
         }
 
@@ -230,6 +159,7 @@ public class MainActivity extends AppCompatActivity
         // Close the navigation drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
 }

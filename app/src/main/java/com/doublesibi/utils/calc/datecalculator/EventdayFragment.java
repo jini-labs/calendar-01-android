@@ -4,6 +4,7 @@ package com.doublesibi.utils.calc.datecalculator;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,6 +25,8 @@ import android.widget.Toast;
 
 import com.doublesibi.utils.calc.datecalculator.common.CalcEventDate;
 import com.doublesibi.utils.calc.datecalculator.common.Constants;
+import com.doublesibi.utils.calc.datecalculator.hist.EventdayItemOpenHelper;
+import com.doublesibi.utils.calc.datecalculator.hist.HistItem;
 import com.doublesibi.utils.calc.datecalculator.holiday.MyCalendar;
 
 import java.util.Calendar;
@@ -38,11 +41,12 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
     private TextView eventStartYY, eventStartMM, eventStartDD;
     private EditText value1, value2, value3, value4;
     private TextView result_eventday, result_eventday_week;
-    private Button btnCalcEvent;
+    private Button btnCalcEvent, btnEventDaySave;
     private Spinner spnBeAf;
 
     private CalcEventDate calcEventDate;
     private DatePickerDialog datePickerDialog;
+    private MyCalendar myCalendar;
 
     private int styy = 0, stmm = 0, stdd = 0;
     private int startymd = 0;
@@ -61,6 +65,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        myCalendar = new MyCalendar();
         View view = inflater.inflate(R.layout.fragment_eventday, container, false);
 
         setTextId(view);
@@ -88,7 +93,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                         Toast.makeText(getContext(), "年と月から入力下さい。", Toast.LENGTH_SHORT).show();
                         break;
                     }
-                    maxDays = MyCalendar.getMaxDayOfMonth(styy, stmm);
+                    maxDays = myCalendar.getMaxDayOfMonth(styy, stmm);
                     numberPickerDilaog(1, maxDays, stdd, Constants.INPUT_START_DATE, "日を選択下さい。");
                     Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
                     break;
@@ -114,7 +119,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                     break;
 
                 case R.id.btn_start_today:
-                    int date = MyCalendar.getTodayYMD();
+                    int date = myCalendar.getTodayYMD();
 
                     styy = date / 10000;
                     stmm = date % 10000 / 100;
@@ -130,30 +135,29 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                 case R.id.btn_calc_eventday:
                     CalcEventDate calcEventDate = new CalcEventDate();
                     int[] params = new int[8];
-                    params[0] = styy;
-                    params[1] = stmm;
-                    params[2] = stdd;
+                    for (int i = 0; i < 8; i++) {
+                        params[i] = 0;
+                    }
+                    params[0] = Integer.parseInt(eventStartYY.getText().toString().trim());
+                    params[1] = Integer.parseInt(eventStartMM.getText().toString().trim());
+                    params[2] = Integer.parseInt(eventStartDD.getText().toString().trim());
                     params[3] = spnBeAf.getSelectedItemPosition();
+
                     // num of day
                     if (value1.getText().length() > 0)
-                        params[4] = Integer.parseInt(value1.getText().toString());
-                    else
-                        params[4] = 0;
+                        params[4] = Integer.parseInt(value1.getText().toString().trim());
+
                     // num of week
                     if (value2.getText().length() > 0)
-                        params[5] = Integer.parseInt(value2.getText().toString());
-                    else
-                        params[5] = 0;
+                        params[5] = Integer.parseInt(value2.getText().toString().trim());
+
                     // num of month
                     if (value3.getText().length() > 0)
-                        params[6] = Integer.parseInt(value3.getText().toString());
-                    else
-                        params[6] = 0;
+                        params[6] = Integer.parseInt(value3.getText().toString().trim());
+
                     // num of year
                     if (value4.getText().length() > 0)
-                        params[7] = Integer.parseInt(value4.getText().toString());
-                    else
-                        params[7] = 0;
+                        params[7] = Integer.parseInt(value4.getText().toString().trim());
 
                     String[] retYmd = calcEventDate.getEventYmd(params);
 
@@ -173,8 +177,59 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                             result_eventday_week.setTextColor(Color.RED);
                             break;
                     }
+                    break;
 
+                case R.id.btnEventdaySave:
+                    final HistItem histItem = new HistItem();
 
+                    int saveDate = Integer.valueOf(eventStartYY.getText().toString()) * 10000 +
+                            Integer.valueOf(eventStartMM.getText().toString()) * 100 +
+                            Integer.valueOf(eventStartDD.getText().toString());
+                    histItem.stDate = "" + saveDate;
+
+                    histItem.days = value1.getText().toString();
+                    histItem.weeks = value2.getText().toString();
+                    histItem.months = value3.getText().toString();
+                    histItem.years = value4.getText().toString();
+                    histItem.beOrAf = "" + spnBeAf.getSelectedItemPosition();
+
+                    String endDateStr = result_eventday.getText().toString().trim();
+                    String[] splitedStr = endDateStr.split("-");
+
+                    saveDate = Integer.valueOf(splitedStr[0]) * 10000 +
+                            Integer.valueOf(splitedStr[1]) * 100 +
+                            Integer.valueOf(splitedStr[2]);
+                    histItem.enDate = "" + saveDate;
+
+                    // input memo of eventday.
+                    LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getContext());
+                    View mView = layoutInflaterAndroid.inflate(R.layout.input_dialogbox, null);
+                    AlertDialog.Builder inputDialog = new AlertDialog.Builder(getContext());
+                    inputDialog.setView(mView);
+
+                    final EditText editTextInputMemo = (EditText) mView.findViewById(R.id.inputMemo);
+                    inputDialog.setCancelable(false)
+                            .setPositiveButton("保存", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialogBox, int id) {
+                                    histItem.name = editTextInputMemo.getText().toString();
+                                    EventdayItemOpenHelper helper = new EventdayItemOpenHelper(getActivity());
+                                    final SQLiteDatabase db = helper.getWritableDatabase();
+
+                                    long ret = helper.insertEventday(db, histItem);
+                                    Log.d(LOGTAG, "(eventday) name:" + histItem.name + ", insertedId:" + ret);
+                                    Toast.makeText(getContext(), "(eventday) name:" + histItem.name + ", insertedId:" + ret, Toast.LENGTH_SHORT).show();
+                                }
+                            })
+
+                            .setNegativeButton("取り消し",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialogBox, int id) {
+                                            dialogBox.cancel();
+                                        }
+                                    });
+
+                    AlertDialog alertDialogAndroid = inputDialog.create();
+                    alertDialogAndroid.show();
 
                     break;
             }
@@ -253,23 +308,11 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
 
     private void setButtonId(View view) {
         btnCalcEvent = (Button) view.findViewById(R.id.btn_calc_eventday);
-
-        btnCalcEvent.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    Log.d(LOGTAG,"btnCalcEvent down.");
-                    btnCalcEvent.setBackgroundResource(R.color.colorCalcButtonPress);
-
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    Log.d(LOGTAG,"btnCalcEvent up.");
-                    btnCalcEvent.setBackgroundResource(R.color.colorCalcButtonNormal);
-                }
-                return false;
-            }
-        });
+        btnEventDaySave = (Button) view.findViewById(R.id.btnEventdaySave);
 
         btnCalcEvent.setOnClickListener(this);
+        btnEventDaySave.setOnClickListener(this);
+
         view.findViewById(R.id.btn_event_stdt).setOnClickListener(this);
         view.findViewById(R.id.btn_start_today).setOnClickListener(this);
     }

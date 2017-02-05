@@ -1,5 +1,9 @@
 package com.doublesibi.utils.calc.datecalculator.holiday;
 
+import android.content.res.Resources;
+import android.widget.TextView;
+
+import com.doublesibi.utils.calc.datecalculator.R;
 import com.doublesibi.utils.calc.datecalculator.common.Constants;
 import com.ibm.icu.util.ChineseCalendar;
 
@@ -29,7 +33,16 @@ public final class MyCalendar extends Calendar {
         this.c = c;
     }
 
-    public static int getTodayYMD() {
+    public void setToday() {
+        Calendar cal = Calendar.getInstance();
+        if (this.c != null) {
+            this.c.set(cal.get(Calendar.YEAR),
+                    cal.get(Calendar.MONTH),
+                    cal.get(Calendar.DATE));
+        }
+    }
+
+    public int getTodayYMD() {
         Calendar cal = Calendar.getInstance();
 
         return cal.get(Calendar.YEAR) * 10000 +
@@ -37,7 +50,7 @@ public final class MyCalendar extends Calendar {
                 cal.get(Calendar.DATE);
     }
 
-    public static String getTodayYMD(String delm) {
+    public String getTodayYMD(String delm) {
         Calendar cal = Calendar.getInstance();
 
         if (delm != null) {
@@ -107,6 +120,41 @@ public final class MyCalendar extends Calendar {
             default:
                 return "";
         }
+    }
+
+    public int getYearMonth(int value) {
+        Calendar cal = Calendar.getInstance();
+
+        cal.add(Calendar.MONTH, value);
+
+        return cal.get(Calendar.YEAR) * 100
+                + (cal.get(Calendar.MONTH) + 1);
+    }
+
+    public int getYearMonth(int ymd, int value) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(ymd / 10000, (ymd % 10000 / 100) - 1, ymd % 100);
+
+        cal.add(Calendar.MONTH, value);
+
+        return cal.get(Calendar.YEAR) * 100
+                + (cal.get(Calendar.MONTH) + 1);
+    }
+
+    public int getCurrentPrevMonth(int value) {
+        int year = this.c.get(Calendar.YEAR);
+        int month = this.c.get(Calendar.MONTH) + 1;
+        int day = this.c.get(Calendar.DATE);
+
+        this.c.add(Calendar.MONTH, value);
+
+        int retYearMonth = this.c.get(Calendar.YEAR) * 100
+                + (this.c.get(Calendar.MONTH) + 1);
+
+        // 戻す。
+        this.c.set(year, month-1, day);
+
+        return retYearMonth;
     }
 
     public void setCalendar(int y, int m, int d) {
@@ -249,4 +297,24 @@ public final class MyCalendar extends Calendar {
 
         return l_year * 10000 + l_month * 100 + l_date;
     }
+
+    public static String convertDateWeekName(Resources r, int ymd, String delm) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(ymd/10000, ymd%10000/100 - 1, ymd%100);
+
+
+        String[] weekofName = r.getStringArray(R.array.nameOfWeek);
+        int weekOfNum = calendar.get(Calendar.DAY_OF_WEEK);
+
+
+        if (delm != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy" + delm + "MM" + delm + "dd");
+            return sdf.format(calendar.getTime()) + "("+weekofName[weekOfNum-1]+")";
+        } else {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            return sdf.format(calendar.getTime()) + "("+weekofName[weekOfNum-1]+")";
+        }
+    }
+
+
 }

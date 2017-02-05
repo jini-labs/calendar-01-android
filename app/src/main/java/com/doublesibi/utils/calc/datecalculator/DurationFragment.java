@@ -3,13 +3,13 @@ package com.doublesibi.utils.calc.datecalculator;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,8 +19,10 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.doublesibi.utils.calc.datecalculator.common.Constants;
 import com.doublesibi.utils.calc.datecalculator.common.CalcDurationDate;
+import com.doublesibi.utils.calc.datecalculator.common.Constants;
+import com.doublesibi.utils.calc.datecalculator.hist.DurationItemOpenHelper;
+import com.doublesibi.utils.calc.datecalculator.hist.HistItem;
 import com.doublesibi.utils.calc.datecalculator.holiday.MyCalendar;
 
 import java.util.Calendar;
@@ -39,9 +41,10 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
     private TextView result4_years, result4_months, result4_days;
 
     private ImageButton btnStDate, btnEnDate, btnStToday, btnEnToday;
-    private Button btnCalc;
+    private Button btnCalc, btnDuraSave;
 
     private DatePickerDialog datePickerDialog;
+    private MyCalendar myCalendar;
 
     private int startymd = 0, endymd = 0;
     private int styy = 0, stmm = 0, stdd = 0;
@@ -60,6 +63,7 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        myCalendar = new MyCalendar();
         View view = inflater.inflate(R.layout.fragment_duration, container, false);
 
         setTextId(view);
@@ -82,7 +86,7 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                     numberPickerDilaog(1, 12, stmm, Constants.INPUT_START_MONTH, "月を選択下さい。");
                     break;
                 case R.id.stdd:
-                    maxDays = MyCalendar.getMaxDayOfMonth(enyy, enmm);
+                    maxDays = myCalendar.getMaxDayOfMonth(enyy, enmm);
                     numberPickerDilaog(1, maxDays, stdd, Constants.INPUT_START_DATE, "日を選択下さい。");
                     Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
                     break;
@@ -93,7 +97,7 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                     numberPickerDilaog(1, 12, enmm, Constants.INPUT_END_MONTH, "月を選択下さい。");
                     break;
                 case R.id.endd:
-                    maxDays = MyCalendar.getMaxDayOfMonth(enyy, enmm);
+                    maxDays = myCalendar.getMaxDayOfMonth(enyy, enmm);
                     numberPickerDilaog(1, maxDays, endd, Constants.INPUT_END_DATE, "日を選択下さい。");
                     Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
                     break;
@@ -145,7 +149,7 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                     break;
 
                 case R.id.btn_start_today: {
-                    int date = MyCalendar.getTodayYMD();
+                    int date = myCalendar.getTodayYMD();
                     styy = date / 10000;
                     stmm = date % 10000 / 100;
                     stdd = date % 100;
@@ -156,7 +160,7 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                 break;
 
                 case R.id.btn_end_today: {
-                    int date = MyCalendar.getTodayYMD();
+                    int date = myCalendar.getTodayYMD();
                     enyy = date / 10000;
                     enmm = date % 10000 / 100;
                     endd = date % 100;
@@ -165,6 +169,37 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                     endDD.setText("" + endd);
                 }
                 break;
+
+                case R.id.btnDuraSave:
+
+                    HistItem histItem = new HistItem();
+
+                    int saveDate = Integer.valueOf(startYY.getText().toString()) * 10000 +
+                                    Integer.valueOf(startMM.getText().toString()) * 100 +
+                                    Integer.valueOf(startDD.getText().toString());
+                    histItem.stDate = "" + saveDate;
+
+                    saveDate = Integer.valueOf(endYY.getText().toString()) * 10000 +
+                                Integer.valueOf(endMM.getText().toString()) * 100 +
+                                Integer.valueOf(endDD.getText().toString());
+                    histItem.enDate = "" + saveDate;
+
+                    histItem.days = result1_days.getText().toString();
+                    histItem.weeks = result2_weeks.getText().toString();
+                    histItem.weekdays = result2_days.getText().toString();
+                    histItem.months = result3_months.getText().toString();
+                    histItem.monthdays = result3_days.getText().toString();
+                    histItem.years = result4_years.getText().toString();
+                    histItem.yearmonths = result4_months.getText().toString();
+                    histItem.yeardays = result4_days.getText().toString();
+
+                    DurationItemOpenHelper helper = new DurationItemOpenHelper(getActivity());
+                    final SQLiteDatabase db = helper.getWritableDatabase();
+
+                    long ret = helper.insertDuration(db, histItem);
+                    Log.d(LOGTAG, "(duration) inserted id :" + ret);
+                    Toast.makeText(getContext(), "(duration)inserted id :" + ret, Toast.LENGTH_SHORT).show();
+                    break;
 
                 case R.id.btnenter:
                     try {
@@ -214,23 +249,11 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
         btnStToday= (ImageButton) view.findViewById(R.id.btn_start_today);
         btnEnToday= (ImageButton) view.findViewById(R.id.btn_end_today);
         btnCalc = (Button) view.findViewById(R.id.btnenter);
-
-        btnCalc.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    Log.d(LOGTAG,"btnCalc down.");
-                    btnCalc.setBackgroundResource(R.color.colorCalcButtonPress);
-
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    Log.d(LOGTAG,"btnCalc up.");
-                    btnCalc.setBackgroundResource(R.color.colorCalcButtonNormal);
-                }
-                return false;
-            }
-        });
+        btnDuraSave = (Button) view.findViewById(R.id.btnDuraSave);
 
         btnCalc.setOnClickListener(this);
+        btnDuraSave.setOnClickListener(this);
+
         view.findViewById(R.id.btn_durat_stdt).setOnClickListener(this);
         view.findViewById(R.id.btn_durat_endt).setOnClickListener(this);
         view.findViewById(R.id.btn_start_today).setOnClickListener(this);

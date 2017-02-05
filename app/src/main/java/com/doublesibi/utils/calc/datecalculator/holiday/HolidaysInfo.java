@@ -24,6 +24,7 @@ public class HolidaysInfo {
     private int year;
 
     private String country;
+    private ArrayList<HolidayItem> baseHolidaysInfo;
     private ArrayList<HolidayItem> holidays;
     private ArrayList<HolidayItem> temporaryHolidays;
     private HashMap<Integer, HolidayItem> holidaysMap;
@@ -88,7 +89,7 @@ public class HolidaysInfo {
         return false;
     }
 
-    public ArrayList<HolidayItem> getPreference(XmlPullParser xpp) {
+    public void setBaseHolidaysInfo(XmlPullParser xpp) {
         final int ITEM_HOLIDAY = 1;
         final int ITEM_TEMPORARY = 2;
         final int ITEM_DIVISION = 10;
@@ -96,7 +97,8 @@ public class HolidaysInfo {
         final int ITEM_BETWEEN = 12;
 
         int itemType = 0;
-        ArrayList<HolidayItem> holidaysInfo = new ArrayList<>();
+
+        this.baseHolidaysInfo = new ArrayList<>();
 
         Log.d(LOGTAG, "xml parsing start....");
         try {
@@ -184,7 +186,7 @@ public class HolidaysInfo {
                         if ("item".equals(name)) {
                             switch (itemType) {
                                 case ITEM_HOLIDAY:
-                                    holidaysInfo.add(holidayItem);
+                                    this.baseHolidaysInfo.add(holidayItem);
                                     break;
                                 case ITEM_TEMPORARY:
                                     this.temporaryHolidays.add(holidayItem);
@@ -218,34 +220,45 @@ public class HolidaysInfo {
         } finally {
             // 処理なし
             // Debug log
-        Log.d(LOGTAG, "\tBase information of holiday in " + this.country + ".");
-        Log.d(LOGTAG, "\t\tHoliday information");
-        for (HolidayItem item: holidaysInfo) {
-            Log.d(LOGTAG, "\t\t" + item.toString());
+//            Log.d(LOGTAG, "\tBase information of holiday in " + this.country + ".");
+//            Log.d(LOGTAG, "\t\tHoliday information");
+//            for (HolidayItem item: this.baseHolidaysInfo) {
+//                Log.d(LOGTAG, "\t\t" + item.toString());
+//            }
+//
+//            if (this.substitutes != null && this.substitutes.size() > 0 ) {
+//                Log.d(LOGTAG, "\t\tSubstitute information");
+//                for (RangeDate item : this.substitutes) {
+//                    Log.d(LOGTAG, "\t\t\t" + item.startDate + " ~ " + item.endDate);
+//                }
+//            }
+//            if (this.betweens != null && this.betweens.size() > 0 ) {
+//                Log.d(LOGTAG, "\t\tBetween information");
+//                for (RangeDate item : this.betweens) {
+//                    Log.d(LOGTAG, "\t\t\t" + item.startDate + " ~ " + item.endDate);
+//                }
+//            }
         }
-
-        if (this.substitutes != null && this.substitutes.size() > 0 ) {
-            Log.d(LOGTAG, "\t\tSubstitute information");
-            for (RangeDate item : this.substitutes) {
-                Log.d(LOGTAG, "\t\t\t" + item.startDate + " ~ " + item.endDate);
-            }
-        }
-        if (this.betweens != null && this.betweens.size() > 0 ) {
-            Log.d(LOGTAG, "\t\tBetween information");
-            for (RangeDate item : this.betweens) {
-                Log.d(LOGTAG, "\t\t\t" + item.startDate + " ~ " + item.endDate);
-            }
-        }
-        }
-
-        return holidaysInfo;
     }
 
-    public boolean setHolidayYear(XmlPullParser xpp, int year) {
-        this.year = year;
-        ArrayList<HolidayItem> holidaysInfo = getPreference(xpp);
+    public void clearHolidays() {
+        if (this.holidays != null)
+            this.holidays.clear();
+        if (this.holidaysMap != null)
+            this.holidaysMap.clear();
+        for (int i = 0; i < 12; i++) {
+            for (int j = 0; j < 6; j++) {
+                for (int k = 0; k < 7; k++) {
+                    this.holidayCalendar[i][j][k] = 0;
+                }
+            }
+        }
+    }
 
-        for (HolidayItem item: holidaysInfo) {
+    public boolean setHolidayYear(int year) {
+        this.year = year;
+
+        for (HolidayItem item : this.baseHolidaysInfo) {
 
             if(item.startDate == 0 && item.endDate == 0) {
                 continue;
@@ -348,10 +361,10 @@ public class HolidaysInfo {
         }
 
         // debug
-        Log.d(LOGTAG, year + "'s holiday");
-        for (HolidayItem item : this.holidays) {
-            Log.d(LOGTAG, "\t\t" + item.toString());
-        }
+//        Log.d(LOGTAG, year + "'s holiday");
+//        for (HolidayItem item : this.holidays) {
+//            Log.d(LOGTAG, "\t\t" + item.toString());
+//        }
 
         return false;
     }
@@ -362,8 +375,8 @@ public class HolidaysInfo {
         if (this.country.equals("Japan")) {
             if (this.substitutes != null && this.substitutes.size() > 0) {
                 for (HolidayItem item : this.holidays) {
-                    if (!item.substitute)
-                        continue;
+//                    if (!item.substitute)
+//                        continue;
 
                     boolean bContinue = false;
                     for (RangeDate range : this.substitutes) {
@@ -385,7 +398,7 @@ public class HolidaysInfo {
                                 HolidayItem newItem = new HolidayItem();
                                 newItem.ymd = this.cal.getCurrentYMD();
                                 newItem.md = newItem.ymd % 10000;
-                                newItem.name = "substitute day";
+                                newItem.name = "振替休日";
 
                                 retSubstitutesDay.add(newItem);
                                 break;
@@ -475,14 +488,17 @@ public class HolidaysInfo {
                         case Calendar.MONDAY:
                         case Calendar.TUESDAY:
                         case Calendar.WEDNESDAY:
-                            this.cal.add(Calendar.DATE, 2);
-                            if (this.holidaysMap.get(this.cal.getCurrentYMD()) != null) {
-                                this.cal.add(Calendar.DATE, -1);
-                                HolidayItem newItem = new HolidayItem();
-                                newItem.ymd = this.cal.getCurrentYMD();
-                                newItem.md = newItem.ymd % 10000;
-                                newItem.name = "between holiday";
-                                retBetweensDay.add(newItem);
+                            this.cal.add(Calendar.DATE, 1);
+                            if (this.holidaysMap.get(this.cal.getCurrentYMD()) == null) {
+                                this.cal.add(Calendar.DATE, 1);
+                                if (this.holidaysMap.get(this.cal.getCurrentYMD()) != null) {
+                                    this.cal.add(Calendar.DATE, -1);
+                                    HolidayItem newItem = new HolidayItem();
+                                    newItem.ymd = this.cal.getCurrentYMD();
+                                    newItem.md = newItem.ymd % 10000;
+                                    newItem.name = "国民休日";
+                                    retBetweensDay.add(newItem);
+                                }
                             }
 
                             break;

@@ -256,8 +256,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
-                android:id="@+id/btnDuraSave"
-                android:background="@drawable/boxed_edittext_reverse"
+                android:id="@+id/btnEventdaySave"
+                android:background="@drawable/custombutton"
                 android:text="@string/label_dura_save_button"
                 android:textSize="16sp"
                 android:textColor="@color/colorCalcButton"
@@ -266,7 +266,7 @@
                 android:layout_height="wrap_content"/>
             <Button
                 android:id="@+id/btn_calc_eventday"
-                android:background="@drawable/boxed_edittext_reverse"
+                android:background="@drawable/custombutton"
                 android:text="@string/label_calc_button"
                 android:textSize="20sp"
                 android:textColor="@color/colorCalcButton"

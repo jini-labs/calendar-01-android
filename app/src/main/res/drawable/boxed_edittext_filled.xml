@@ -3,7 +3,8 @@
         <solid android:color="@color/colorFillBackground" />
         <stroke
             android:width="2dip"
-            android:color="#09742D" />
+            android:color="@color/boxed_edittext_filled_color"/>
+
         <corners android:radius="2dip" />
         <padding
             android:bottom="7dip"
