@@ -17,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.doublesibi.utils.calc.datecalculator.holiday.MyCalendar;
 
@@ -29,6 +28,7 @@ public class MainActivity extends AppCompatActivity
     private int selectedMenu = 0;
     private Menu mMenu;
     private MyCalendar myCalendar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         View v = navigationView.getHeaderView(0);
-        ((TextView) v.findViewById(R.id.header_date)).setText(myCalendar.getTodayYMD("-"));
+        ((TextView) v.findViewById(R.id.header_date)).setText(myCalendar.getTodayYMD("/"));
         Resources r = getResources();
         String[] weekofName = r.getStringArray(R.array.nameOfWeek);
         int weekOfNum = myCalendar.get(Calendar.DAY_OF_WEEK);
@@ -65,40 +65,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private static class Item {
-        private String title;
-        private String description;
-    }
-
-    public void printCalendar(int cal[][][], int year) {
-        String weekStr = "";
-
-        Log.d(LOGTAG, "[ " + year + " ]");
-        for (int i = 0; i < 12; i++) {
-            Log.d(LOGTAG, "[ " + year + " ] (" + (i+1) + ")");
-            weekStr = "";
-            for (int j = 0; j < 6; j++) {
-                weekStr = "";
-                for (int k = 0; k < 7; k++) {
-                    if (cal[i][j][k] == 0) {
-                        String s = String.format("    ");
-                        weekStr = weekStr + "    ";
-                    } else {
-                        if (cal[i][j][k] > 1000) {
-                            String s = String.format(" *%2d", (cal[i][j][k] - 1000));
-                            weekStr = weekStr + s;
-                        }
-                        else {
-                            String s = String.format("  %2d", cal[i][j][k]);
-                            weekStr = weekStr + s;
-                        }
-                    }
-                }
-                Log.d(LOGTAG, weekStr);
-            }
-        }
-    }
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -109,14 +75,12 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-
         this.mMenu = menu;
         //this.mMenu.getItem(0).setVisible(false);
         Log.d(LOGTAG, "onCreateOptionsMenu, " + mMenu.size() );
-
 
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -132,7 +96,7 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent;
-            Toast.makeText(this,"selected action menu.(" + selectedMenu + ")", Toast.LENGTH_SHORT).show();
+            Log.d(LOGTAG, "selected action menu.(" + selectedMenu + ")");
             switch(selectedMenu) {
                 case 1:
                     intent = new Intent(MainActivity.this, DurationHistActivity.class);
