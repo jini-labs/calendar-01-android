@@ -12,6 +12,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +59,19 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.main, menu);
+        menu.findItem(R.id.action_settings).setVisible(true);
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -95,7 +110,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                     }
                     maxDays = myCalendar.getMaxDayOfMonth(styy, stmm);
                     numberPickerDilaog(1, maxDays, stdd, Constants.INPUT_START_DATE, "日を選択下さい。");
-                    Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
                     break;
 
                 case R.id.btn_event_stdt:
@@ -217,7 +232,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
 
                                     long ret = helper.insertEventday(db, histItem);
                                     Log.d(LOGTAG, "(eventday) name:" + histItem.name + ", insertedId:" + ret);
-                                    Toast.makeText(getContext(), "(eventday) name:" + histItem.name + ", insertedId:" + ret, Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(getContext(), "(eventday) name:" + histItem.name + ", insertedId:" + ret, Toast.LENGTH_SHORT).show();
                                 }
                             })
 

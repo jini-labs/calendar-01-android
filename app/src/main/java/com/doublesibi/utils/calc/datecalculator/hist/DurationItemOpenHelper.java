@@ -31,6 +31,10 @@ public class DurationItemOpenHelper extends SQLiteOpenHelper {
                 "years text," +
                 "yearmonths text," +
                 "yeardays text," +
+                "temp1 text," +
+                "temp2 text," +
+                "temp3 text," +
+                "temp4 text," +
                 "primary key(stDate, enDate)" + ");");
     }
 

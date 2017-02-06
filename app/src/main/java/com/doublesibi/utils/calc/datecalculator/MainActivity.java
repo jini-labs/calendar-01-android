@@ -61,8 +61,7 @@ public class MainActivity extends AppCompatActivity
             ((TextView) v.findViewById(R.id.header_wdate)).setTextColor(Color.RED);
         }
 
-        onNavigationItemSelected(navigationView.getMenu().getItem(0));
-
+        onNavigationItemSelected(navigationView.getMenu().getItem(selectedMenu));
     }
 
     @Override
@@ -75,25 +74,15 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.mMenu = menu;
-        //this.mMenu.getItem(0).setVisible(false);
-        Log.d(LOGTAG, "onCreateOptionsMenu, " + mMenu.size() );
-
-        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent;
             Log.d(LOGTAG, "selected action menu.(" + selectedMenu + ")");
@@ -101,10 +90,12 @@ public class MainActivity extends AppCompatActivity
                 case 1:
                     intent = new Intent(MainActivity.this, DurationHistActivity.class);
                     startActivity(intent);
+
                     break;
                 case 2:
                     intent = new Intent(MainActivity.this, EventHistActivity.class);
                     startActivity(intent);
+
                     break;
                 case 0:
                 default:
@@ -137,6 +128,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             default:
                 selectedMenu = 0;
+                this.mMenu.getItem(0).setVisible(false);
                 fragmentClass = ThismonthFragment.class;
                 break;
         }
