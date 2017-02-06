@@ -29,6 +29,10 @@ public class EventdayItemOpenHelper extends SQLiteOpenHelper {
                 "years text," +
                 "beOrAf text," +
                 "enDate text," +
+                "temp1 text," +
+                "temp2 text," +
+                "temp3 text," +
+                "temp4 text," +
                 "primary key(stDate, name)" + ");");
     }
 
