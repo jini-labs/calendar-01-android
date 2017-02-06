@@ -103,7 +103,7 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                 case R.id.stdd:
                     maxDays = myCalendar.getMaxDayOfMonth(enyy, enmm);
                     numberPickerDilaog(1, maxDays, stdd, Constants.INPUT_START_DATE, "日を選択下さい。");
-                    Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.enyy:
                     numberPickerDilaog(0, 3000, enyy, Constants.INPUT_END_YEAR, "年度を選択下さい。");
@@ -114,7 +114,7 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                 case R.id.endd:
                     maxDays = myCalendar.getMaxDayOfMonth(enyy, enmm);
                     numberPickerDilaog(1, maxDays, endd, Constants.INPUT_END_DATE, "日を選択下さい。");
-                    Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
                     break;
                 // button
                 case R.id.btn_durat_stdt:
@@ -213,7 +213,7 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
 
                     long ret = helper.insertDuration(db, histItem);
                     Log.d(LOGTAG, "(duration) inserted id :" + ret);
-                    Toast.makeText(getContext(), "(duration)inserted id :" + ret, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "(duration)inserted id :" + ret, Toast.LENGTH_SHORT).show();
                     break;
 
                 case R.id.btnenter:
@@ -249,7 +249,7 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                     Log.d(Constants.LOGTAG, "start: y:" + styy + ", m:" + stmm + ", d:" + stdd);
                     Log.d(Constants.LOGTAG, "end  : y:" + enyy + ", m:" + enmm + ", d:" + endd);
                     Log.d(Constants.LOGTAG,"start:" + startymd + ", end:" + endymd);
-                    Toast.makeText(getContext(), "計算しよう。", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "計算しよう。", Toast.LENGTH_SHORT).show();
 
                     calcDateDiff(styy, stmm, stdd, enyy, enmm, endd);
 
@@ -401,5 +401,4 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
         });
         builder.show();
     }
-
 }
