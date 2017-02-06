@@ -20,7 +20,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.doublesibi.utils.calc.datecalculator.hist.DurationHistItem;
 import com.doublesibi.utils.calc.datecalculator.hist.DurationItemOpenHelper;
@@ -90,11 +89,6 @@ public class DurationHistActivity extends AppCompatActivity {
                                     if (!getDurationHistData(selectKey)) {
                                         isAllLoaded = true;
                                     }
-
-//                                    if (adapter.getCount() >= MAX_LIMIT){
-//                                        listView.removeFooterView(progressBar);
-//                                        isAllLoaded = true;
-//                                    }
                                 }
                             });
                             isLoading = false;

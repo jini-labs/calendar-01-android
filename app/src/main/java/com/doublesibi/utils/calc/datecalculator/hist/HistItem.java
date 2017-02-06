@@ -7,12 +7,6 @@ import java.util.Calendar;
  */
 
 public class HistItem {
-    public final static int DURATION_PREF = 1;
-    public final static int EVENTDAY_PREF = 2;
-
-    public final static String DURATION_PREF_NAME = "DurationP";
-    public final static String EVENTDAY_PREF_NAME = "EventDayP";
-
     public String stDate;      //　保存：両方に使用
     public String enDate;      //　保存：両方に使用
     public String days;        //　保存：両方に使用
@@ -91,6 +85,5 @@ public class HistItem {
         } else {
             return "";
         }
-
     }
 }

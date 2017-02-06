@@ -28,9 +28,6 @@ import org.xmlpull.v1.XmlPullParser;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import static com.ibm.icu.util.Holiday.getHolidays;
-
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -42,9 +39,6 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
     private HolidaysInfo holidaysInfo;
     private YearName yearName;
     private ArrayList<RangeDate> yearNameList;
-    private AlertDialog alertDialog;
-    private int selectedIndex = 0;
-    private ArrayAdapter<String> adapter;
 
     private TextView tvYear, tvMonth, tvJpName, tvJpYear;
     private TextView tvHoliList;
@@ -115,12 +109,13 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
                 break;
 
             case R.id.this_year_jpname:
-                Toast.makeText(getContext(), "click japan year name", Toast.LENGTH_SHORT).show();
                 // TODO : spinner or dialogで
+                //Toast.makeText(getContext(), "click japan year name", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.this_year_japanes:
-                Toast.makeText(getContext(), "click japan year", Toast.LENGTH_SHORT).show();
+                // TODO : spinner or dialogで
+                //Toast.makeText(getContext(), "click japan year", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

@@ -127,11 +127,6 @@ public class EventHistActivity extends AppCompatActivity {
                                     if (!getEventdayHistData(selectKey)) {
                                         isAllLoaded = true;
                                     }
-
-//                                    if (adapter.getCount() >= MAX_LIMIT){
-//                                        listView.removeFooterView(progressBar);
-//                                        isAllLoaded = true;
-//                                    }
                                 }
                             });
                             isLoading = false;

@@ -110,7 +110,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                     }
                     maxDays = myCalendar.getMaxDayOfMonth(styy, stmm);
                     numberPickerDilaog(1, maxDays, stdd, Constants.INPUT_START_DATE, "日を選択下さい。");
-                    Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
                     break;
 
                 case R.id.btn_event_stdt:
@@ -232,7 +232,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
 
                                     long ret = helper.insertEventday(db, histItem);
                                     Log.d(LOGTAG, "(eventday) name:" + histItem.name + ", insertedId:" + ret);
-                                    Toast.makeText(getContext(), "(eventday) name:" + histItem.name + ", insertedId:" + ret, Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(getContext(), "(eventday) name:" + histItem.name + ", insertedId:" + ret, Toast.LENGTH_SHORT).show();
                                 }
                             })
 
