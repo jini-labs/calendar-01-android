@@ -1,6 +1,5 @@
 package com.doublesibi.utils.calc.datecalculator;
 
-
 import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
