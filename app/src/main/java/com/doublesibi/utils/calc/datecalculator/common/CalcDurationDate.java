@@ -96,7 +96,7 @@ public class CalcDurationDate {
                 _m = c.get(Calendar.MONTH) + 1;
                 _d = c.get(Calendar.DAY_OF_MONTH);
                 _w = c.get(Calendar.DAY_OF_WEEK);
-                Log.d(Constants.LOGTAG, "" + (_y * 10000 + _m * 100 + _d) + " " + _w +", st:"+ this.stymd +", en:"+ this.enymd);
+//                Log.d(Constants.LOGTAG, "" + (_y * 10000 + _m * 100 + _d) + " " + _w +", st:"+ this.stymd +", en:"+ this.enymd);
 
                 this.totalDays++;
                 this.totalWeekDays++;

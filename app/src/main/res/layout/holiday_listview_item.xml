@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_margin="@dimen/activity_vertical_margin"
+    android:layout_gravity="center_vertical"
+    android:layout_width="match_parent"
+    android:layout_height="34dp">
+
+    <TextView
+        android:id="@+id/holiday"
+        android:textSize="14sp"
+        android:layout_weight=".35"
+        android:layout_gravity="center_vertical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/nameOfHolday"
+        android:textSize="14sp"
+        android:layout_weight=".42"
+        android:layout_gravity="center_vertical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/remainTo"
+        android:gravity="end|bottom"
+        android:textSize="14sp"
+        android:layout_weight=".23"
+        android:layout_gravity="bottom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+</LinearLayout>
