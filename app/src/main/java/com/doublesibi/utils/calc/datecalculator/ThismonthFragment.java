@@ -1,6 +1,7 @@
 package com.doublesibi.utils.calc.datecalculator;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,11 +14,17 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.doublesibi.utils.calc.datecalculator.common.CalcDurationDate;
+import com.doublesibi.utils.calc.datecalculator.common.Constants;
+import com.doublesibi.utils.calc.datecalculator.hist.DurationHistItem;
 import com.doublesibi.utils.calc.datecalculator.holiday.HolidayItem;
+import com.doublesibi.utils.calc.datecalculator.holiday.HolidayListItem;
 import com.doublesibi.utils.calc.datecalculator.holiday.HolidaysInfo;
 import com.doublesibi.utils.calc.datecalculator.holiday.MyCalendar;
 import com.doublesibi.utils.calc.datecalculator.holiday.RangeDate;
@@ -41,10 +48,15 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
     private ArrayList<RangeDate> yearNameList;
 
     private TextView tvYear, tvMonth, tvJpName, tvJpYear;
-    private TextView tvHoliList;
     private TextView[][] textViews;
 
+
+    ArrayList<HolidayListItem> holidayListItems;
+
     public ThismonthFragment() {
+        if (holidayListItems == null) {
+            holidayListItems = new ArrayList<>();
+        }
     }
 
     @Override
@@ -81,6 +93,12 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
 
         setHoliday("Japan");
         setDays(myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH)+1);
+
+        ListView listView = (ListView)view.findViewById(R.id.listViewHoliday);
+        HolidayListAdaptor holidayListAdaptor = new HolidayListAdaptor(getActivity());
+        getHolidayList("Japan");
+        Log.d(LOGTAG,"h list item count : " + holidayListItems.size());
+        listView.setAdapter(holidayListAdaptor);
 
         return view;
     }
@@ -220,6 +238,58 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         }
     }
 
+    public class HolidayListAdaptor extends BaseAdapter {
+        Context context;
+        LayoutInflater layoutInflater = null;
+
+        public HolidayListAdaptor(Context context) {
+            this.context = context;
+            this.layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public int getCount() {
+            return holidayListItems.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return holidayListItems.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+
+            if (convertView == null) {
+                convertView = layoutInflater.inflate(R.layout.holiday_listview_item, parent, false);
+                holder = new ViewHolder();
+                holder.t1 = (TextView) convertView.findViewById(R.id.holiday);
+                holder.t2 = (TextView) convertView.findViewById(R.id.nameOfHolday);
+                holder.t3 = (TextView) convertView.findViewById(R.id.remainTo);
+
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            holder.t1.setText(holidayListItems.get(position).getHoliday());
+            holder.t2.setText(holidayListItems.get(position).getHolidayName());
+            holder.t3.setText(holidayListItems.get(position).getRemainDates());
+
+            return convertView;
+        }
+    }
+
+    static class ViewHolder {
+        TextView t1, t2, t3;
+    }
+
     private void setHoliday(String country) {
         xmlPullParser = getResources().getXml(R.xml.holidayinfo_jp);
         holidaysInfo = new HolidaysInfo();
@@ -235,48 +305,48 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         int prevYM = 0, nextYM = 0;
 
         myCalendar.setCalendar(year, month, 1);
-        int currYM = myCalendar.getCurrentYMD()/100;
+        int currYM = myCalendar.getCurrentYMD() / 100;
         Log.d(LOGTAG, "setDays ->  " + "year:" + year + ", month:" + month);
         Log.d(LOGTAG, "            currYM:" + currYM);
 
         this.tvYear.setText("" + year);
         this.tvMonth.setText("" + month);
 
-        if (currYM%100 == 1) {
+        if (currYM % 100 == 1) {
             myCalendar.add(Calendar.MONTH, -1);
             prevYM = myCalendar.getCurrentYMD() / 100;
-            Log.d(LOGTAG,"----->prev year month :" + prevYM);
+            Log.d(LOGTAG, "----->prev year month :" + prevYM);
             holidaysInfo.clearHolidays();
-            holidaysInfo.setHolidayYear(prevYM/100);
+            holidaysInfo.setHolidayYear(prevYM / 100);
             holidaysInfo.setHolidayCalendar();
-            prevMonthDays = holidaysInfo.getHolidayCalendar(prevYM%100);
+            prevMonthDays = holidaysInfo.getHolidayCalendar(prevYM % 100);
 
-            Log.d(LOGTAG,"----->curr year month :" + currYM);
+            Log.d(LOGTAG, "----->curr year month :" + currYM);
             holidaysInfo.clearHolidays();
-            holidaysInfo.setHolidayYear(currYM/100);
+            holidaysInfo.setHolidayYear(currYM / 100);
             holidaysInfo.setHolidayCalendar();
-            currMonthDays = holidaysInfo.getHolidayCalendar(currYM%100);
+            currMonthDays = holidaysInfo.getHolidayCalendar(currYM % 100);
 
             nextYM = myCalendar.getYearMonth(1);
-            nextMonthDays = holidaysInfo.getHolidayCalendar(nextYM%100);
+            nextMonthDays = holidaysInfo.getHolidayCalendar(nextYM % 100);
 
             setYearMonth(currYM);
-        } else if (currYM%100 == 12) {
+        } else if (currYM % 100 == 12) {
             myCalendar.add(Calendar.MONTH, 1);
             nextYM = myCalendar.getCurrentYMD() / 100;
 
             holidaysInfo.clearHolidays();
-            holidaysInfo.setHolidayYear(nextYM/100);
+            holidaysInfo.setHolidayYear(nextYM / 100);
             holidaysInfo.setHolidayCalendar();
-            nextMonthDays = holidaysInfo.getHolidayCalendar(nextYM%100);
+            nextMonthDays = holidaysInfo.getHolidayCalendar(nextYM % 100);
 
             holidaysInfo.clearHolidays();
-            holidaysInfo.setHolidayYear(currYM/100);
+            holidaysInfo.setHolidayYear(currYM / 100);
             holidaysInfo.setHolidayCalendar();
-            currMonthDays = holidaysInfo.getHolidayCalendar(currYM%100);
+            currMonthDays = holidaysInfo.getHolidayCalendar(currYM % 100);
 
             prevYM = myCalendar.getYearMonth(-1);
-            prevMonthDays = holidaysInfo.getHolidayCalendar(prevYM%100);
+            prevMonthDays = holidaysInfo.getHolidayCalendar(prevYM % 100);
 
             setYearMonth(currYM);
 
@@ -285,19 +355,19 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
             nextYM = currYM + 1;
 
             holidaysInfo.clearHolidays();
-            holidaysInfo.setHolidayYear(currYM/100);
+            holidaysInfo.setHolidayYear(currYM / 100);
             holidaysInfo.setHolidayCalendar();
-            currMonthDays = holidaysInfo.getHolidayCalendar(currYM%100);
+            currMonthDays = holidaysInfo.getHolidayCalendar(currYM % 100);
 
-            prevMonthDays = holidaysInfo.getHolidayCalendar(prevYM%100);
-            nextMonthDays = holidaysInfo.getHolidayCalendar(nextYM%100);
+            prevMonthDays = holidaysInfo.getHolidayCalendar(prevYM % 100);
+            nextMonthDays = holidaysInfo.getHolidayCalendar(nextYM % 100);
 
             setYearMonth(currYM);
         }
 
         boolean includeToday = false;
         int today = myCalendar.getTodayYMD();
-        if (today/100 == currYM) {
+        if (today / 100 == currYM) {
             includeToday = true;
         }
         for (int i = 0; i < 6; i++) {
@@ -306,7 +376,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
 
                 if (currMonthDays[i][j] != 0) {
                     if (currMonthDays[i][j] > 100) {
-                        textViews[i][j].setText("" + currMonthDays[i][j]%100);
+                        textViews[i][j].setText("" + currMonthDays[i][j] % 100);
                         if (j == 0) {
                             textViews[i][j].setTextColor(Color.RED);
                         } else if (j == 6) {
@@ -326,7 +396,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
                     }
                 }
 
-                if(includeToday && textViews[i][j].getText().toString().equals("" + today % 100)) {
+                if (includeToday && textViews[i][j].getText().toString().equals("" + today % 100)) {
                     textViews[i][j].setBackgroundColor(Color.CYAN);
                 } else {
                     textViews[i][j].setBackground(getResources().getDrawable(R.drawable.boxed_edittext_filled));
@@ -334,21 +404,37 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
 
             }
         }
+    }
 
-        String strHoliList = "";
-        ArrayList<HolidayItem> hdis = holidaysInfo.getHolidays();
+    private void getHolidayList(String country) {
+        XmlPullParser xpp= getResources().getXml(R.xml.holidayinfo_jp);
+        HolidaysInfo hI= new HolidaysInfo();
+        hI.setCountry(country);
+        hI.setBaseHolidaysInfo(xpp);
 
-        // name:"substitute day" -> 振替休日、"between holiday" -> "国民の休日"で表示
+        int toYmd = myCalendar.getTodayYMD();
+        hI.clearHolidays();
+        hI.setHolidayYear(toYmd / 10000);
+        hI.setHolidayCalendar();
+        ArrayList<HolidayItem> hdis = hI.getHolidays();
+
         for (HolidayItem item : hdis) {
-            if (item.md / 100 == currYM % 100) {
-                strHoliList = strHoliList +
-                        MyCalendar.convertDateWeekName(getResources(), item.ymd, "/") + " - " +
-                        item.name + "\n";
-                //strHoliList = strHoliList + item.ymd +" - " + item.name + "\n";
+            if (item.ymd > toYmd) {
+
+                CalcDurationDate diffDate = new CalcDurationDate();
+                diffDate.setInitDate(toYmd/10000, (toYmd%10000)/100, toYmd%100,
+                                    item.ymd/10000, (item.ymd%10000)/100, item.ymd%100);
+                diffDate.setDiffDays();
+
+                HolidayListItem hlItem = new HolidayListItem(
+                    item.ymd,
+                    MyCalendar.convertDateWeekName(getResources(), item.ymd, "/"),
+                    item.name,
+                    diffDate.getTotalDays() + " 日後");
+
+                holidayListItems.add(hlItem);
             }
         }
-        tvHoliList.setText(strHoliList);
-
     }
 
     private void setTextViews(View view) {
@@ -362,8 +448,6 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         ((Button) view.findViewById(R.id.btnNextMonth)).setOnClickListener(this);
         ((TextView) view.findViewById(R.id.lbThisYear)).setOnClickListener(this);
         ((TextView) view.findViewById(R.id.lbThisMonth)).setOnClickListener(this);
-
-        tvHoliList = (TextView) view.findViewById(R.id.this_year_holidayList);
 
         tvYear.setOnClickListener(this);
         tvMonth.setOnClickListener(this);
