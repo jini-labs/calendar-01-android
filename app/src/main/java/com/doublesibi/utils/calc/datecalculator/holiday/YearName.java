@@ -97,12 +97,12 @@ public class YearName {
             }
             // 処理なし
             // Debug log
-            if (this.yearNameList != null && this.yearNameList.size() > 0 ) {
-                Log.d(LOGTAG, "\t\tera information");
-                for (RangeDate item : this.yearNameList) {
-                    Log.d(LOGTAG, "\t\t\t" + item.toString());
-                }
-            }
+//            if (this.yearNameList != null && this.yearNameList.size() > 0 ) {
+//                Log.d(LOGTAG, "\t\tera information");
+//                for (RangeDate item : this.yearNameList) {
+//                    Log.d(LOGTAG, "\t\t\t" + item.toString());
+//                }
+//            }
         }
     }
 }
