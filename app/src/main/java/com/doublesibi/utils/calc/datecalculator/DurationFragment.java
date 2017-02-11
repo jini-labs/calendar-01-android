@@ -4,6 +4,7 @@ package com.doublesibi.utils.calc.datecalculator;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -52,6 +53,8 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
     private int styy = 0, stmm = 0, stdd = 0;
     private int enyy = 0, enmm = 0, endd = 0;
 
+    private boolean ableToSave = false;
+
     public DurationFragment() {
         // Required empty public constructor
     }
@@ -84,6 +87,11 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
         setTextId(view);
         setButtonId(view);
 
+        startymd = endymd = myCalendar.getTodayYMD();
+        styy = enyy = startymd / 10000;
+        stmm = enmm = startymd % 10000 / 100;
+        stdd = endd = startymd % 100;
+
         return(view);
     }
 
@@ -92,32 +100,51 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
 
         int maxDays = 0;
         if (v != null) {
+            int date = 0;
             switch (v.getId()) {
                 // year or month or day
                 case R.id.styy:
+                    this.ableToSave = false;
+
                     numberPickerDilaog(0, 3000, styy, Constants.INPUT_START_YEAR, "年度を選択下さい。");
                     break;
+
                 case R.id.stmm:
+                    this.ableToSave = false;
+
                     numberPickerDilaog(1, 12, stmm, Constants.INPUT_START_MONTH, "月を選択下さい。");
                     break;
+
                 case R.id.stdd:
+                    this.ableToSave = false;
+
                     maxDays = myCalendar.getMaxDayOfMonth(enyy, enmm);
                     numberPickerDilaog(1, maxDays, stdd, Constants.INPUT_START_DATE, "日を選択下さい。");
                     //Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.enyy:
+                    this.ableToSave = false;
+
                     numberPickerDilaog(0, 3000, enyy, Constants.INPUT_END_YEAR, "年度を選択下さい。");
                     break;
+
                 case R.id.enmm:
+                    this.ableToSave = false;
+
                     numberPickerDilaog(1, 12, enmm, Constants.INPUT_END_MONTH, "月を選択下さい。");
                     break;
+
                 case R.id.endd:
+                    this.ableToSave = false;
+
                     maxDays = myCalendar.getMaxDayOfMonth(enyy, enmm);
                     numberPickerDilaog(1, maxDays, endd, Constants.INPUT_END_DATE, "日を選択下さい。");
                     //Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
                     break;
                 // button
                 case R.id.btn_durat_stdt:
+                    this.ableToSave = false;
+
                     datePickerDialog = new DatePickerDialog(
                             getContext(),
                             android.R.style.Theme_Holo_Light_Dialog_MinWidth,
@@ -136,7 +163,10 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                     datePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                     datePickerDialog.show();
                     break;
+
                 case R.id.btn_durat_endt:
+                    this.ableToSave = false;
+
                     if (enyy == 0 || enmm == 0 || endd == 0) {
                         Calendar c = Calendar.getInstance();
                         enyy = c.get(Calendar.YEAR);
@@ -163,29 +193,36 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                     datePickerDialog.show();
                     break;
 
-                case R.id.btn_start_today: {
-                    int date = myCalendar.getTodayYMD();
+                case R.id.btn_start_today:
+                    this.ableToSave = false;
+
+                    date = myCalendar.getTodayYMD();
                     styy = date / 10000;
                     stmm = date % 10000 / 100;
                     stdd = date % 100;
                     startYY.setText("" + styy);
                     startMM.setText("" + stmm);
                     startDD.setText("" + stdd);
-                }
-                break;
+                    break;
 
-                case R.id.btn_end_today: {
-                    int date = myCalendar.getTodayYMD();
+                case R.id.btn_end_today:
+                    this.ableToSave = false;
+
+                    date = myCalendar.getTodayYMD();
                     enyy = date / 10000;
                     enmm = date % 10000 / 100;
                     endd = date % 100;
                     endYY.setText("" + enyy);
                     endMM.setText("" + enmm);
                     endDD.setText("" + endd);
-                }
-                break;
+                    break;
 
                 case R.id.btnDuraSave:
+
+                    if (! this.ableToSave) {
+                        Toast.makeText(getContext(), "計算した結果のみ保存可能です。！", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
 
                     HistItem histItem = new HistItem();
 
@@ -212,8 +249,16 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                     final SQLiteDatabase db = helper.getWritableDatabase();
 
                     long ret = helper.insertDuration(db, histItem);
-                    Log.d(LOGTAG, "(duration) inserted id :" + ret);
-                    //Toast.makeText(getContext(), "(duration)inserted id :" + ret, Toast.LENGTH_SHORT).show();
+//                    if (ret ) {
+                        //Ok
+                        //Duplicate
+                        //Other
+                        //Toast.makeText(getContext(), "(duration)inserted id :" + ret, Toast.LENGTH_SHORT).show();
+//                    }
+                    helper.close();
+
+                    this.ableToSave = false;
+
                     break;
 
                 case R.id.btnenter:
@@ -249,10 +294,10 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                     Log.d(Constants.LOGTAG, "start: y:" + styy + ", m:" + stmm + ", d:" + stdd);
                     Log.d(Constants.LOGTAG, "end  : y:" + enyy + ", m:" + enmm + ", d:" + endd);
                     Log.d(Constants.LOGTAG,"start:" + startymd + ", end:" + endymd);
-                    //Toast.makeText(getContext(), "計算しよう。", Toast.LENGTH_SHORT).show();
 
                     calcDateDiff(styy, stmm, stdd, enyy, enmm, endd);
 
+                    this.ableToSave = true;
                     break;
             }
         }
@@ -323,7 +368,6 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
         if (!diffDate.setInitDate(styy, stmm, stdd, enyy, enmm, endd)) {
             Toast.makeText(getContext(), "check input date.!", Toast.LENGTH_SHORT).show();
         } else {
-            Log.d(Constants.LOGTAG, "step 0001");
             diffDate.setDiffDays();
 
             result1_days.setText("" + diffDate.getTotalDays());
@@ -343,7 +387,8 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
         numberPicker.setMaxValue(max);
         numberPicker.setMinValue(min);
         numberPicker.setValue(curr);
-        final int[] saveValue = {-1, -1};
+        final int[] saveValue = {curr, curr};
+
         NumberPicker.OnValueChangeListener onValueChangeListener = new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -399,6 +444,12 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
             public void onClick(DialogInterface dialog, int which) {
             }
         });
-        builder.show();
+        //builder.show();
+
+        AlertDialog alert = builder.create();
+        alert.show();
+        alert.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+        alert.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+
     }
 }
