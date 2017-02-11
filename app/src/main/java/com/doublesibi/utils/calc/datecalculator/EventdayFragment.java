@@ -53,6 +53,8 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
     private int styy = 0, stmm = 0, stdd = 0;
     private int startymd = 0;
 
+    private boolean ableToSave = false;
+
     public EventdayFragment() {
         // Required empty public constructor
         calcEventDate = new CalcEventDate();
@@ -103,12 +105,15 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
         if (v != null) {
             switch (v.getId()) {
                 case R.id.event_styy:
+                    this.ableToSave = false;
                     numberPickerDilaog(0, 3000, styy, Constants.INPUT_START_YEAR, "年度を選択下さい。");
                     break;
                 case R.id.event_stmm:
+                    this.ableToSave = false;
                     numberPickerDilaog(1, 12, stmm, Constants.INPUT_START_MONTH, "月を選択下さい。");
                     break;
                 case R.id.event_stdd:
+                    this.ableToSave = false;
                     if (styy == 0 || stmm == 0) {
                         Toast.makeText(getContext(), "年と月から入力下さい。", Toast.LENGTH_SHORT).show();
                         break;
@@ -119,6 +124,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                     break;
 
                 case R.id.btn_event_stdt:
+                    this.ableToSave = false;
                     datePickerDialog = new DatePickerDialog(
                             getContext(),
                             android.R.style.Theme_Holo_Light_Dialog_MinWidth,
@@ -139,6 +145,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                     break;
 
                 case R.id.btn_start_today:
+                    this.ableToSave = false;
                     int date = myCalendar.getTodayYMD();
 
                     styy = date / 10000;
@@ -150,6 +157,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                     break;
 
                 case R.id.spinnerbeforeafter:
+                    this.ableToSave = false;
                     break;
 
                 case R.id.btn_calc_eventday:
@@ -197,9 +205,15 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                             result_eventday_week.setTextColor(Color.RED);
                             break;
                     }
+
+                    this.ableToSave = true;
                     break;
 
                 case R.id.btnEventdaySave:
+                    if (! this.ableToSave) {
+                        Toast.makeText(getContext(), "計算した結果のみ保存可能です。！", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
                     final HistItem histItem = new HistItem();
 
                     int saveDate = Integer.valueOf(eventStartYY.getText().toString()) * 10000 +
@@ -238,10 +252,13 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                                     long ret = helper.insertEventday(db, histItem);
                                     Log.d(LOGTAG, "(eventday) name:" + histItem.name + ", insertedId:" + ret);
                                     //Toast.makeText(getContext(), "(eventday) name:" + histItem.name + ", insertedId:" + ret, Toast.LENGTH_SHORT).show();
+                                    helper.close();
+
+                                    ableToSave = false;
                                 }
                             })
 
-                            .setNegativeButton("取り消し",
+                            .setNegativeButton("キャンセル",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialogBox, int id) {
                                             dialogBox.cancel();
@@ -250,6 +267,8 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
 
                     AlertDialog alertDialogAndroid = inputDialog.create();
                     alertDialogAndroid.show();
+                    alertDialogAndroid.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+                    alertDialogAndroid.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.BLACK);
 
                     break;
             }
