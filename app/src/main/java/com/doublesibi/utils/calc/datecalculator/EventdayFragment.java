@@ -87,6 +87,11 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
         setButtonId(view);
         setSpinnerId(view);
 
+        startymd = myCalendar.getTodayYMD();
+        styy = startymd / 10000;
+        stmm = startymd % 10000 / 100;
+        stdd = startymd % 100;
+
         return view;
     }
 
@@ -256,7 +261,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
         numberPicker.setMaxValue(max);
         numberPicker.setMinValue(min);
         numberPicker.setValue(curr);
-        final int[] saveValue = {-1, -1};
+        final int[] saveValue = {curr, curr};
         NumberPicker.OnValueChangeListener onValueChangeListener = new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -299,7 +304,12 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
             public void onClick(DialogInterface dialog, int which) {
             }
         });
-        builder.show();
+
+        //builder.show();
+        AlertDialog alert = builder.create();
+        alert.show();
+        alert.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+        alert.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.BLACK);
     }
 
     private void setTextId(View view) {

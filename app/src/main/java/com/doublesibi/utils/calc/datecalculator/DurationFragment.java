@@ -4,6 +4,7 @@ package com.doublesibi.utils.calc.datecalculator;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -83,6 +84,11 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
 
         setTextId(view);
         setButtonId(view);
+
+        startymd = endymd = myCalendar.getTodayYMD();
+        styy = enyy = startymd / 10000;
+        stmm = enmm = startymd % 10000 / 100;
+        stdd = endd = startymd % 100;
 
         return(view);
     }
@@ -323,7 +329,6 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
         if (!diffDate.setInitDate(styy, stmm, stdd, enyy, enmm, endd)) {
             Toast.makeText(getContext(), "check input date.!", Toast.LENGTH_SHORT).show();
         } else {
-            Log.d(Constants.LOGTAG, "step 0001");
             diffDate.setDiffDays();
 
             result1_days.setText("" + diffDate.getTotalDays());
@@ -343,7 +348,8 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
         numberPicker.setMaxValue(max);
         numberPicker.setMinValue(min);
         numberPicker.setValue(curr);
-        final int[] saveValue = {-1, -1};
+        final int[] saveValue = {curr, curr};
+
         NumberPicker.OnValueChangeListener onValueChangeListener = new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -399,6 +405,12 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
             public void onClick(DialogInterface dialog, int which) {
             }
         });
-        builder.show();
+        //builder.show();
+
+        AlertDialog alert = builder.create();
+        alert.show();
+        alert.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+        alert.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+
     }
 }
