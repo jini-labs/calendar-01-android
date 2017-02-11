@@ -8,7 +8,7 @@
         android:id="@+id/dialogTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="コメント入力"
+        android:text="@string/dialog_input_event_title"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
@@ -16,7 +16,7 @@
         android:layout_marginLeft="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="コメントを入力して下さい。"
+        android:hint="@string/dialog_input_event_hint"
         android:inputType="text" />
 
 </LinearLayout>

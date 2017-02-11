@@ -53,4 +53,7 @@
 
     <string name="arrow_left">&lt;</string>
     <string name="arrow_right">&gt;</string>
+
+    <string name="dialog_input_event_title">名前入力</string>
+    <string name="dialog_input_event_hint">イベント名を入力</string>
 </resources>
