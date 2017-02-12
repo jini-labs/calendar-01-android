@@ -55,6 +55,11 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
 
     private boolean ableToSave = false;
 
+    private String[] constantStr = {"年度を選択下さい。",
+                                    "月を選択下さい。",
+                                    "日を選択下さい。",
+                                    "計算した結果のみ保存可能です。！"};
+
     public DurationFragment() {
         // Required empty public constructor
     }
@@ -69,7 +74,7 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.main, menu);
-        menu.findItem(R.id.action_settings).setVisible(true);
+        menu.findItem(R.id.action_history).setVisible(true);
     }
 
     @Override
@@ -105,40 +110,39 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                 // year or month or day
                 case R.id.styy:
                     this.ableToSave = false;
-
-                    numberPickerDilaog(0, 3000, styy, Constants.INPUT_START_YEAR, "年度を選択下さい。");
+                    numberPickerDilaog(0, 3000, styy, Constants.INPUT_START_YEAR, constantStr[0]);
                     break;
 
                 case R.id.stmm:
                     this.ableToSave = false;
 
-                    numberPickerDilaog(1, 12, stmm, Constants.INPUT_START_MONTH, "月を選択下さい。");
+                    numberPickerDilaog(1, 12, stmm, Constants.INPUT_START_MONTH, constantStr[1]);
                     break;
 
                 case R.id.stdd:
                     this.ableToSave = false;
 
                     maxDays = myCalendar.getMaxDayOfMonth(enyy, enmm);
-                    numberPickerDilaog(1, maxDays, stdd, Constants.INPUT_START_DATE, "日を選択下さい。");
+                    numberPickerDilaog(1, maxDays, stdd, Constants.INPUT_START_DATE, constantStr[2]);
                     //Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.enyy:
                     this.ableToSave = false;
 
-                    numberPickerDilaog(0, 3000, enyy, Constants.INPUT_END_YEAR, "年度を選択下さい。");
+                    numberPickerDilaog(0, 3000, enyy, Constants.INPUT_END_YEAR, constantStr[0]);
                     break;
 
                 case R.id.enmm:
                     this.ableToSave = false;
 
-                    numberPickerDilaog(1, 12, enmm, Constants.INPUT_END_MONTH, "月を選択下さい。");
+                    numberPickerDilaog(1, 12, enmm, Constants.INPUT_END_MONTH, constantStr[1]);
                     break;
 
                 case R.id.endd:
                     this.ableToSave = false;
 
                     maxDays = myCalendar.getMaxDayOfMonth(enyy, enmm);
-                    numberPickerDilaog(1, maxDays, endd, Constants.INPUT_END_DATE, "日を選択下さい。");
+                    numberPickerDilaog(1, maxDays, endd, Constants.INPUT_END_DATE, constantStr[2]);
                     //Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
                     break;
                 // button
@@ -220,7 +224,7 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                 case R.id.btnDuraSave:
 
                     if (! this.ableToSave) {
-                        Toast.makeText(getContext(), "計算した結果のみ保存可能です。！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), constantStr[3], Toast.LENGTH_SHORT).show();
                         break;
                     }
 
@@ -275,18 +279,18 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                         endymd = enyy * 10000 + enmm * 100 + endd;
 
                     } catch(NumberFormatException e) {
-                        Toast.makeText(getContext(), "input date.!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "check input date.!", Toast.LENGTH_SHORT).show();
                         break;
                     }
 
 
                     if(styy == 0 || stmm == 0 || stdd == 0) {
-                        Toast.makeText(getContext(), "input start date.!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "check input start date.!", Toast.LENGTH_SHORT).show();
                         break;
                     }
 
                     if(enyy == 0 || enmm == 0 || endd == 0) {
-                        Toast.makeText(getContext(), "input end date.!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "check input end date.!", Toast.LENGTH_SHORT).show();
                         break;
                     }
 

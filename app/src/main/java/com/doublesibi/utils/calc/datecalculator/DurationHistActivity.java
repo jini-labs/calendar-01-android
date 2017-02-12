@@ -39,6 +39,26 @@ public class DurationHistActivity extends AppCompatActivity {
     private DurationHistAdaptor adapter;
     private ListView listView;
 
+
+    private String[] constantStr = {"年度を選択下さい。",
+                                    "月を選択下さい。",
+                                    "日を選択下さい。",
+                                    "計算した結果のみ保存可能です。！",
+                                    "年と月から入力下さい。",
+                                    "保存",
+                                    "キャンセル",
+                                    "、",
+                                    " 年", //8
+                                    " カ月", //9
+                                    " 週", //10
+                                    " 日", //11
+                                    " 前",
+                                    " 後",
+                                    " 週, ",
+                                    "カ月, ",
+                                    " 年, ",
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -216,39 +236,39 @@ public class DurationHistActivity extends AppCompatActivity {
             temp2 = MyCalendar.convertDateWeekName(getResources(), Integer.parseInt(temp1), "/");
             item.setEndDate(temp2);
 
-            item.setDurDays(c.getString(2) + " 日");
+            item.setDurDays(c.getString(2) + constantStr[11]);
 
             if (StrToInt(c.getString(3)) > 0 ) {
                 item.setDurWeeksDays(c.getString(3) +
-                        " 週, ");
+                        constantStr[14]);
                 if (StrToInt(c.getString(4)) > 0 ) {
                     item.setDurWeeksDays(item.getDurWeeksDays() +
                             c.getString(4) +
-                            " 日");
+                            constantStr[11]);
                 }
             }
             if (StrToInt(c.getString(5)) > 0 ) {
                 item.setDurMonthsDays(c.getString(5) +
-                        "カ月, ");
+                        constantStr[15]);
                 if (StrToInt(c.getString(6)) > 0 ) {
                     item.setDurMonthsDays(item.getDurMonthsDays() +
                             c.getString(6) +
-                            " 日");
+                            constantStr[11]);
                 }
 
             }
             if (StrToInt(c.getString(7)) > 0 ) {
                 item.setDurYearsMonthsDays(c.getString(7)
-                        + " 年, ");
+                        + constantStr[15]);
                 if (StrToInt(c.getString(8)) > 0) {
                     item.setDurYearsMonthsDays(item.getDurYearsMonthsDays() +
                             c.getString(8) +
-                            " カ月, ");
+                            constantStr[15]);
                 }
                 if (StrToInt(c.getString(9)) > 0) {
                     item.setDurYearsMonthsDays(item.getDurYearsMonthsDays() +
                             c.getString(9) +
-                            " 日");
+                            constantStr[11]);
                 }
             }
 

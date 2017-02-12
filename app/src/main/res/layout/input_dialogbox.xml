@@ -8,7 +8,7 @@
         android:id="@+id/dialogTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/dialog_input_event_title"
+        android:text="@string/lb_dialog_title_01"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
@@ -16,7 +16,7 @@
         android:layout_marginLeft="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/dialog_input_event_hint"
+        android:hint="@string/lb_dialog_hist_01"
         android:inputType="text" />
 
 </LinearLayout>

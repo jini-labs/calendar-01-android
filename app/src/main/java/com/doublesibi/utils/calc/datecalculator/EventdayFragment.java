@@ -55,6 +55,14 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
 
     private boolean ableToSave = false;
 
+    private String[] constantStr = {"年度を選択下さい。",
+            "月を選択下さい。",
+            "日を選択下さい。",
+            "計算した結果のみ保存可能です。！",
+            "年と月から入力下さい。",
+            "保存",
+            "キャンセル"};
+
     public EventdayFragment() {
         // Required empty public constructor
         calcEventDate = new CalcEventDate();
@@ -70,7 +78,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.main, menu);
-        menu.findItem(R.id.action_settings).setVisible(true);
+        menu.findItem(R.id.action_history).setVisible(true);
     }
 
     @Override
@@ -106,20 +114,20 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
             switch (v.getId()) {
                 case R.id.event_styy:
                     this.ableToSave = false;
-                    numberPickerDilaog(0, 3000, styy, Constants.INPUT_START_YEAR, "年度を選択下さい。");
+                    numberPickerDilaog(0, 3000, styy, Constants.INPUT_START_YEAR, constantStr[0]);
                     break;
                 case R.id.event_stmm:
                     this.ableToSave = false;
-                    numberPickerDilaog(1, 12, stmm, Constants.INPUT_START_MONTH, "月を選択下さい。");
+                    numberPickerDilaog(1, 12, stmm, Constants.INPUT_START_MONTH, constantStr[1]);
                     break;
                 case R.id.event_stdd:
                     this.ableToSave = false;
                     if (styy == 0 || stmm == 0) {
-                        Toast.makeText(getContext(), "年と月から入力下さい。", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), constantStr[4], Toast.LENGTH_SHORT).show();
                         break;
                     }
                     maxDays = myCalendar.getMaxDayOfMonth(styy, stmm);
-                    numberPickerDilaog(1, maxDays, stdd, Constants.INPUT_START_DATE, "日を選択下さい。");
+                    numberPickerDilaog(1, maxDays, stdd, Constants.INPUT_START_DATE, constantStr[2]);
                     //Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
                     break;
 
@@ -211,7 +219,8 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
 
                 case R.id.btnEventdaySave:
                     if (! this.ableToSave) {
-                        Toast.makeText(getContext(), "計算した結果のみ保存可能です。！", Toast.LENGTH_SHORT).show();
+
+                        Toast.makeText(getContext(), constantStr[3], Toast.LENGTH_SHORT).show();
                         break;
                     }
                     final HistItem histItem = new HistItem();
@@ -243,7 +252,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
 
                     final EditText editTextInputMemo = (EditText) mView.findViewById(R.id.inputMemo);
                     inputDialog.setCancelable(false)
-                            .setPositiveButton("保存", new DialogInterface.OnClickListener() {
+                            .setPositiveButton(constantStr[5], new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialogBox, int id) {
                                     histItem.name = editTextInputMemo.getText().toString();
                                     EventdayItemOpenHelper helper = new EventdayItemOpenHelper(getActivity());
@@ -258,7 +267,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                                 }
                             })
 
-                            .setNegativeButton("キャンセル",
+                            .setNegativeButton(constantStr[6],
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialogBox, int id) {
                                             dialogBox.cancel();

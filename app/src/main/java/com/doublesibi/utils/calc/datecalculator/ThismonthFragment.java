@@ -50,8 +50,9 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
     private TextView tvYear, tvMonth, tvJpName, tvJpYear;
     private TextView[][] textViews;
 
-
     ArrayList<HolidayListItem> holidayListItems;
+
+    String[] constantStr = {"今日", " 日後"};
 
     public ThismonthFragment() {
         if (holidayListItems == null) {
@@ -69,7 +70,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.main, menu);
-        menu.findItem(R.id.action_settings).setVisible(false);
+        menu.findItem(R.id.action_history).setVisible(false);
     }
 
     @Override
@@ -419,7 +420,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         ArrayList<HolidayItem> hdis = hI.getHolidays();
 
         for (HolidayItem item : hdis) {
-            if (item.ymd > toYmd) {
+            if (item.ymd >= toYmd) {
 
                 CalcDurationDate diffDate = new CalcDurationDate();
                 diffDate.setInitDate(toYmd/10000, (toYmd%10000)/100, toYmd%100,
@@ -430,7 +431,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
                     item.ymd,
                     MyCalendar.convertDateWeekName(getResources(), item.ymd, "/"),
                     item.name,
-                    diffDate.getTotalDays() + " 日後");
+                    ((item.ymd == toYmd)? constantStr[0] :diffDate.getTotalDays() + constantStr[1]));
 
                 holidayListItems.add(hlItem);
             }

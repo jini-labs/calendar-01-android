@@ -1,47 +1,50 @@
+
 <resources>
+    <!-- app -->
     <string name="app_name">Duration between date</string>
     <string name="app_start_name">Date duration</string>
-
-    <string name="duration_activity_title">期間計算履歴</string>
-    <string name="eventday_activity_title">記念日探し履歴</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">履歴</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="duration_fragment">Duratin date</string>
-    <string name="eventday_fragment">Event day</string>
-
-    <string name="label_start_date">開始日</string>
-    <string name="label_other_date">終了日</string>
-    <string name="label_result_days">日</string>
-    <string name="label_result_week">週</string>
-    <string name="label_result_month">月</string>
-    <string name="label_result_year">年</string>
-
-    <string name="label_eventday_wwdd">週日</string>
-    <string name="label_eventday_mmdd">月日</string>
-    <string name="label_eventday_yymmdd">年月日</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <string name="label_eventday_base">基準日</string>
-    <string name="label_eventday_no">の</string>
-    <string name="label_eventday_ha">は</string>
-    <string name="label_eventday_date">日</string>
-    <string name="label_eventday_week">週</string>
-    <string name="label_eventday_month">月</string>
-    <string name="label_eventday_year">年</string>
+    <string name="duration_activity_title">期間計算履歴</string>
+    <string name="eventday_activity_title">記念日探し履歴</string>
 
 
-    <string name="label_calc_button">計算</string>
-    <string name="button_calc">計算</string>
-    <string name="eventday_result">です。</string>
+    <!-- action menu -->
+    <string name="action_history">履歴</string>
 
-    <string name="label_dura_save_button">計算日付保存</string>
+    <!-- Fragment Duration-->
+    <string name="lb_dur_start">ある日</string>
+    <string name="lb_dur_end">他の日</string>
+
+    <string name="lb_year">年</string>
+    <string name="lb_month">月</string>
+    <string name="lb_week">週</string>
+    <string name="lb_day">日</string>
+
+    <string name="lb_weekday">週・日</string>
+    <string name="lb_monthday">月・日</string>
+    <string name="lb_yearmonthday">年・月・日</string>
+
+    <string name="btn_dur_calc">期間計算</string>
+    <string name="btn_dur_save">計算結果保存</string>
+
+    <!-- Fragment Eventday -->
+    <string name="lb_eve_start">ある日</string>
+    <string name="lb_eve_dur">の</string>
+    <string name="lb_eve_before_day">前</string>
+    <string name="lb_eve_day_after">後</string>
+    <string name="lb_eve_result">です。</string>
+
+    <string name="btn_eve_save">計算結果保存</string>
+    <string name="btn_eve_calc">計算</string>
+
+    <string name="lb_dialog_title_01">記憶する名前入力</string>
+    <string name="lb_dialog_hist_01">計算結果の名前を入力</string>
+
+    <string name="arrow_left">&lt;</string>
+    <string name="arrow_right">&gt;</string>
 
     <string name="sunday">日</string>
     <string name="monday">月</string>
@@ -50,10 +53,4 @@
     <string name="thursday">木</string>
     <string name="friday">金</string>
     <string name="saturday">土</string>
-
-    <string name="arrow_left">&lt;</string>
-    <string name="arrow_right">&gt;</string>
-
-    <string name="dialog_input_event_title">名前入力</string>
-    <string name="dialog_input_event_hint">イベント名を入力</string>
 </resources>

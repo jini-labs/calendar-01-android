@@ -39,6 +39,22 @@ public class EventHistActivity extends AppCompatActivity {
     private EventdayHistAdaptor adapter;
     private ListView listView;
 
+    private String[] constantStr = {"年度を選択下さい。",
+            "月を選択下さい。",
+            "日を選択下さい。",
+            "計算した結果のみ保存可能です。！",
+            "年と月から入力下さい。",
+            "保存",
+            "キャンセル",
+            "、",
+            " 年", //8
+            " カ月", //9
+            " 週", //10
+            " 日", //11
+            " 前",
+            " 後",
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -211,36 +227,36 @@ public class EventHistActivity extends AppCompatActivity {
             item.setStartDate(temp2);
 
             if (StrToInt(c.getString(5)) > 0) {
-                item.setEveDayMonWeeYea(c.getString(5) + " 年");
+                item.setEveDayMonWeeYea(c.getString(5) + constantStr[8]);
             }
             if (StrToInt(c.getString(4)) > 0) {
                 if (item.getEveDayMonWeeYea().length() > 0)
-                    item.setEveDayMonWeeYea(item.getEveDayMonWeeYea() + "、" +
-                        c.getString(4) + " カ月");
+                    item.setEveDayMonWeeYea(item.getEveDayMonWeeYea() + constantStr[7] +
+                        c.getString(4) + constantStr[9]);
                 else
-                    item.setEveDayMonWeeYea(c.getString(4) + " カ月");
+                    item.setEveDayMonWeeYea(c.getString(4) + constantStr[9]);
             }
             if (StrToInt(c.getString(3)) > 0) {
                 if (item.getEveDayMonWeeYea().length() > 0)
-                    item.setEveDayMonWeeYea(item.getEveDayMonWeeYea() + "、" +
-                            c.getString(3) + "　週");
+                    item.setEveDayMonWeeYea(item.getEveDayMonWeeYea() + constantStr[7] +
+                            c.getString(3) + constantStr[10]);
                 else
-                    item.setEveDayMonWeeYea(c.getString(3) + "　週");
+                    item.setEveDayMonWeeYea(c.getString(3) + constantStr[10]);
             }
             if (StrToInt(c.getString(2)) > 0) {
                 if (item.getEveDayMonWeeYea().length() > 0)
-                    item.setEveDayMonWeeYea(item.getEveDayMonWeeYea() + "、" +
-                            c.getString(2) + "　日");
+                    item.setEveDayMonWeeYea(item.getEveDayMonWeeYea() + constantStr[7] +
+                            c.getString(2) + constantStr[11]);
                 else
-                    item.setEveDayMonWeeYea(c.getString(2) + "　日");
+                    item.setEveDayMonWeeYea(c.getString(2) + constantStr[11]);
             }
 
             if (StrToInt(c.getString(6)) > 0) {
                 item.setBeforeOrAfter(1);
-                item.setEveDayMonWeeYea(item.getEveDayMonWeeYea() + " 後");
+                item.setEveDayMonWeeYea(item.getEveDayMonWeeYea() + constantStr[12]);
             } else {
                 item.setBeforeOrAfter(-1);
-                item.setEveDayMonWeeYea(item.getEveDayMonWeeYea() + " 前");
+                item.setEveDayMonWeeYea(item.getEveDayMonWeeYea() + constantStr[13]);
             }
 
             temp1 = c.getString(7);
