@@ -381,9 +381,12 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
                         if (j == 0) {
                             textViews[i][j].setTextColor(Color.RED);
                         } else if (j == 6) {
-                            textViews[i][j].setTextColor(Color.YELLOW);
+                            //textViews[i][j].setTextColor(Color.YELLOW);
+                            textViews[i][j].setTextColor(Color.rgb(170, 0, 0));
                         } else {
-                            textViews[i][j].setTextColor(Color.YELLOW);
+                            //textViews[i][j].setTextColor(Color.YELLOW);
+                            textViews[i][j].setTextColor(Color.rgb(170, 0, 0));
+                            //text color #50F03C
                         }
                     } else {
                         textViews[i][j].setText("" + currMonthDays[i][j]);
@@ -397,10 +400,12 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
                     }
                 }
 
+                // set today
                 if (includeToday && textViews[i][j].getText().toString().equals("" + today % 100)) {
-                    textViews[i][j].setBackgroundColor(Color.CYAN);
+                    //textViews[i][j].setBackgroundColor(Color.CYAN);
+                    textViews[i][j].setBackground(getResources().getDrawable(R.drawable.calendar_today_box));
                 } else {
-                    textViews[i][j].setBackground(getResources().getDrawable(R.drawable.boxed_edittext_filled));
+                    textViews[i][j].setBackground(getResources().getDrawable(R.drawable.calendar_day_box));
                 }
 
             }

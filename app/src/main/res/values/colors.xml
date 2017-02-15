@@ -27,5 +27,11 @@
     <color name="colorButtonPressed">#69D266</color>
     <color name="colorButtonFocused">#69D266</color>
 
+    <color name="colorDayHeadSolid">#CCFFCC</color>
+    <color name="colorDayBoxSolid">#DFFFDF</color>
+    <color name="colorTodayBoxSolid">#A6C6D4</color>
+    <color name="colorDayBoxStroke">#09742D</color>
+
     <color name="boxed_edittext_filled_color">#09742D</color>
+
 </resources>

@@ -116,7 +116,7 @@
                     <TextView
                         android:text="@string/sunday"
                         android:textColor="@android:color/holo_red_light"
-                        android:background="@drawable/boxed_edittext_filled"
+                        android:background="@drawable/calendar_head_box"
                         android:gravity="center"
                         android:layout_weight="1"
                         android:layout_width="0dp"
@@ -124,7 +124,7 @@
                     <TextView
                         android:text="@string/monday"
                         android:textColor="@android:color/black"
-                        android:background="@drawable/boxed_edittext_filled"
+                        android:background="@drawable/calendar_head_box"
                         android:gravity="center"
                         android:layout_weight="1"
                         android:layout_width="0dp"
@@ -132,7 +132,7 @@
                     <TextView
                         android:text="@string/tuesday"
                         android:textColor="@android:color/black"
-                        android:background="@drawable/boxed_edittext_filled"
+                        android:background="@drawable/calendar_head_box"
                         android:gravity="center"
                         android:layout_weight="1"
                         android:layout_width="0dp"
@@ -140,7 +140,7 @@
                     <TextView
                         android:text="@string/wednesday"
                         android:textColor="@android:color/black"
-                        android:background="@drawable/boxed_edittext_filled"
+                        android:background="@drawable/calendar_head_box"
                         android:gravity="center"
                         android:layout_weight="1"
                         android:layout_width="0dp"
@@ -148,7 +148,7 @@
                     <TextView
                         android:text="@string/thursday"
                         android:textColor="@android:color/black"
-                        android:background="@drawable/boxed_edittext_filled"
+                        android:background="@drawable/calendar_head_box"
                         android:gravity="center"
                         android:layout_weight="1"
                         android:layout_width="0dp"
@@ -156,7 +156,7 @@
                     <TextView
                         android:text="@string/friday"
                         android:textColor="@android:color/black"
-                        android:background="@drawable/boxed_edittext_filled"
+                        android:background="@drawable/calendar_head_box"
                         android:gravity="center"
                         android:layout_weight="1"
                         android:layout_width="0dp"
@@ -164,7 +164,7 @@
                     <TextView
                         android:text="@string/saturday"
                         android:textColor="@android:color/holo_blue_dark"
-                        android:background="@drawable/boxed_edittext_filled"
+                        android:background="@drawable/calendar_head_box"
                         android:gravity="center"
                         android:layout_weight="1"
                         android:layout_width="0dp"
