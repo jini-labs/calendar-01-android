@@ -44,7 +44,8 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
     private EditText value1, value2, value3, value4;
     private TextView result_eventday, result_eventday_week;
     private Button btnCalcEvent, btnEventDaySave;
-    private Spinner spnBeAf;
+    private Button btnPaButton, btnPoButton;
+//    private Spinner spnBeAf;
 
     private CalcEventDate calcEventDate;
     private DatePickerDialog datePickerDialog;
@@ -52,6 +53,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
 
     private int styy = 0, stmm = 0, stdd = 0;
     private int startymd = 0;
+    private int beforeAfter = -1;
 
     private boolean ableToSave = false;
 
@@ -95,7 +97,27 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
 
         setTextId(view);
         setButtonId(view);
-        setSpinnerId(view);
+//        setSpinnerId(view);
+
+        if (this.beforeAfter == -1 || this.beforeAfter == 0) {
+            btnPaButton.setBackgroundResource(R.drawable.custombutton_selected);
+            btnPaButton.setTextColor(Color.rgb(0,0,0));
+            btnPaButton.setClickable(false);
+
+            btnPoButton.setBackgroundResource(R.drawable.custombutton);
+            btnPoButton.setTextColor(Color.rgb(255,255,255));
+            btnPoButton.setClickable(true);
+
+            this.beforeAfter = 0;
+        } else {
+            btnPaButton.setBackgroundResource(R.drawable.custombutton);
+            btnPaButton.setTextColor(Color.rgb(255,255,255));
+            btnPaButton.setClickable(true);
+
+            btnPoButton.setBackgroundResource(R.drawable.custombutton_selected);
+            btnPoButton.setTextColor(Color.rgb(0,0,0));
+            btnPoButton.setClickable(true);
+        }
 
         startymd = myCalendar.getTodayYMD();
         styy = startymd / 10000;
@@ -164,9 +186,37 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                     eventStartDD.setText("" + stdd);
                     break;
 
-                case R.id.spinnerbeforeafter:
+                case R.id.btnEvePastday:
+                    Log.d(LOGTAG, "R.id.btnEvePastday clicked....");
+                    btnPaButton.setBackgroundResource(R.drawable.custombutton_selected);
+                    btnPaButton.setTextColor(Color.rgb(0,0,0));
+                    btnPaButton.setClickable(false);
+
+                    btnPoButton.setBackgroundResource(R.drawable.custombutton);
+                    btnPoButton.setTextColor(Color.rgb(255,255,255));
+                    btnPoButton.setClickable(true);
+
                     this.ableToSave = false;
+                    this.beforeAfter = 0;
                     break;
+
+                case R.id.btnEvePostday:
+                    Log.d(LOGTAG, "R.id.btnEvePostday clicked....");
+                    btnPaButton.setBackgroundResource(R.drawable.custombutton);
+                    btnPaButton.setTextColor(Color.rgb(255,255,255));
+                    btnPaButton.setClickable(true);
+
+                    btnPoButton.setBackgroundResource(R.drawable.custombutton_selected);
+                    btnPoButton.setTextColor(Color.rgb(0,0,0));
+                    btnPoButton.setClickable(false);
+
+                    this.ableToSave = false;
+                    this.beforeAfter = 1;
+                    break;
+
+//                case R.id.spinnerbeforeafter:
+//                    this.ableToSave = false;
+//                    break;
 
                 case R.id.btn_calc_eventday:
                     CalcEventDate calcEventDate = new CalcEventDate();
@@ -177,7 +227,8 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                     params[0] = Integer.parseInt(eventStartYY.getText().toString().trim());
                     params[1] = Integer.parseInt(eventStartMM.getText().toString().trim());
                     params[2] = Integer.parseInt(eventStartDD.getText().toString().trim());
-                    params[3] = spnBeAf.getSelectedItemPosition();
+//                    params[3] = spnBeAf.getSelectedItemPosition();
+                    params[3] = this.beforeAfter;
 
                     // num of day
                     if (value1.getText().length() > 0)
@@ -234,7 +285,8 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                     histItem.weeks = value2.getText().toString();
                     histItem.months = value3.getText().toString();
                     histItem.years = value4.getText().toString();
-                    histItem.beOrAf = "" + spnBeAf.getSelectedItemPosition();
+                    //histItem.beOrAf = "" + spnBeAf.getSelectedItemPosition();
+                    histItem.beOrAf = "" + this.beforeAfter;
 
                     String endDateStr = result_eventday.getText().toString().trim();
                     String[] splitedStr = endDateStr.split("-");
@@ -368,11 +420,18 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
 
         view.findViewById(R.id.btn_event_stdt).setOnClickListener(this);
         view.findViewById(R.id.btn_start_today).setOnClickListener(this);
+
+
+        btnPaButton = (Button) view.findViewById(R.id.btnEvePastday);
+        btnPoButton = (Button) view.findViewById(R.id.btnEvePostday);
+
+        btnPaButton.setOnClickListener(this);
+        btnPoButton.setOnClickListener(this);
     }
 
-    private void setSpinnerId(View view) {
-        spnBeAf = (Spinner) view.findViewById(R.id.spinnerbeforeafter);
-    }
+//    private void setSpinnerId(View view) {
+//        spnBeAf = (Spinner) view.findViewById(R.id.spinnerbeforeafter);
+//    }
 
     private void setStartDate(int yy, int mm, int dd) {
         eventStartYY.setText(String.valueOf(yy));
