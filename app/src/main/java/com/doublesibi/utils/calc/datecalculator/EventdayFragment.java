@@ -14,14 +14,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.NumberPicker;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,8 +28,6 @@ import com.doublesibi.utils.calc.datecalculator.common.Constants;
 import com.doublesibi.utils.calc.datecalculator.hist.EventdayItemOpenHelper;
 import com.doublesibi.utils.calc.datecalculator.hist.HistItem;
 import com.doublesibi.utils.calc.datecalculator.holiday.MyCalendar;
-
-import java.util.Calendar;
 
 
 /**
@@ -100,22 +96,22 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
 //        setSpinnerId(view);
 
         if (this.beforeAfter == -1 || this.beforeAfter == 0) {
-            btnPaButton.setBackgroundResource(R.drawable.custombutton_selected);
-            btnPaButton.setTextColor(Color.rgb(0,0,0));
+            btnPaButton.setBackgroundResource(R.drawable.before_after_selected);
+            btnPaButton.setTextColor(Color.BLACK);
             btnPaButton.setClickable(false);
 
-            btnPoButton.setBackgroundResource(R.drawable.custombutton);
-            btnPoButton.setTextColor(Color.rgb(255,255,255));
+            btnPoButton.setBackgroundResource(R.drawable.before_after_unselected);
+            btnPoButton.setTextColor(Color.WHITE);
             btnPoButton.setClickable(true);
 
             this.beforeAfter = 0;
         } else {
-            btnPaButton.setBackgroundResource(R.drawable.custombutton);
-            btnPaButton.setTextColor(Color.rgb(255,255,255));
+            btnPaButton.setBackgroundResource(R.drawable.before_after_unselected);
+            btnPaButton.setTextColor(Color.WHITE);
             btnPaButton.setClickable(true);
 
-            btnPoButton.setBackgroundResource(R.drawable.custombutton_selected);
-            btnPoButton.setTextColor(Color.rgb(0,0,0));
+            btnPoButton.setBackgroundResource(R.drawable.before_after_selected);
+            btnPoButton.setTextColor(Color.BLACK);
             btnPoButton.setClickable(true);
         }
 
@@ -188,12 +184,12 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
 
                 case R.id.btnEvePastday:
                     Log.d(LOGTAG, "R.id.btnEvePastday clicked....");
-                    btnPaButton.setBackgroundResource(R.drawable.custombutton_selected);
-                    btnPaButton.setTextColor(Color.rgb(0,0,0));
+                    btnPaButton.setBackgroundResource(R.drawable.before_after_selected);
+                    btnPaButton.setTextColor(Color.BLACK);
                     btnPaButton.setClickable(false);
 
-                    btnPoButton.setBackgroundResource(R.drawable.custombutton);
-                    btnPoButton.setTextColor(Color.rgb(255,255,255));
+                    btnPoButton.setBackgroundResource(R.drawable.before_after_unselected);
+                    btnPoButton.setTextColor(Color.WHITE);
                     btnPoButton.setClickable(true);
 
                     this.ableToSave = false;
@@ -202,12 +198,12 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
 
                 case R.id.btnEvePostday:
                     Log.d(LOGTAG, "R.id.btnEvePostday clicked....");
-                    btnPaButton.setBackgroundResource(R.drawable.custombutton);
-                    btnPaButton.setTextColor(Color.rgb(255,255,255));
+                    btnPaButton.setBackgroundResource(R.drawable.before_after_unselected);
+                    btnPaButton.setTextColor(Color.WHITE);
                     btnPaButton.setClickable(true);
 
-                    btnPoButton.setBackgroundResource(R.drawable.custombutton_selected);
-                    btnPoButton.setTextColor(Color.rgb(0,0,0));
+                    btnPoButton.setBackgroundResource(R.drawable.before_after_selected);
+                    btnPoButton.setTextColor(Color.BLACK);
                     btnPoButton.setClickable(false);
 
                     this.ableToSave = false;

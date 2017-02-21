@@ -244,7 +244,7 @@
                 <Button
                     android:id="@+id/btnEvePastday"
                     android:text="以前"
-                    android:background="@drawable/custombutton_selected"
+                    android:background="@drawable/before_after_unselected"
                     android:textColor="@color/colorCalcButton"
                     android:layout_weight=".5"
                     android:layout_marginTop="@dimen/activity_vertical_margin"
