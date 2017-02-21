@@ -2,6 +2,7 @@ package com.doublesibi.utils.calc.datecalculator;
 
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -296,6 +298,8 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                     LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getContext());
                     View mView = layoutInflaterAndroid.inflate(R.layout.input_dialogbox, null);
                     AlertDialog.Builder inputDialog = new AlertDialog.Builder(getContext());
+                    final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
                     inputDialog.setView(mView);
 
                     final EditText editTextInputMemo = (EditText) mView.findViewById(R.id.inputMemo);
@@ -311,6 +315,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                                     //Toast.makeText(getContext(), "(eventday) name:" + histItem.name + ", insertedId:" + ret, Toast.LENGTH_SHORT).show();
                                     helper.close();
 
+                                    imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
                                     ableToSave = false;
                                 }
                             })
@@ -319,11 +324,17 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialogBox, int id) {
                                             dialogBox.cancel();
+
+                                            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
                                         }
                                     });
 
                     AlertDialog alertDialogAndroid = inputDialog.create();
                     alertDialogAndroid.show();
+
+                    //InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
                     alertDialogAndroid.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
                     alertDialogAndroid.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.BLACK);
 

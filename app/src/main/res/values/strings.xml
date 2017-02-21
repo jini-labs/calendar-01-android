@@ -40,8 +40,8 @@
     <string name="btn_eve_save">計算結果保存</string>
     <string name="btn_eve_calc">計算</string>
 
-    <string name="lb_dialog_title_01">記憶する名前入力</string>
-    <string name="lb_dialog_hist_01">計算結果の名前を入力</string>
+    <string name="lb_dialog_title_01">名前入力</string>
+    <string name="lb_dialog_hist_01">保存する名前を入力下さい。</string>
 
     <string name="arrow_left">&lt;</string>
     <string name="arrow_right">&gt;</string>

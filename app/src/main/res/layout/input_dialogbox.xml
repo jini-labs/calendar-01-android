@@ -4,19 +4,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/dialogTitle"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_margin="@dimen/activity_vertical_margin"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/lb_dialog_title_01"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/inputMemo"
-        android:layout_marginLeft="12dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/lb_dialog_hist_01"
-        android:inputType="text" />
+        <TextView
+            android:id="@+id/dialogTitle"
+            android:text="@string/lb_dialog_title_01"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginStart="@dimen/activity_vertical_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
+        <View
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:background="@android:color/background_dark"
+            android:layout_width="wrap_content"
+            android:layout_height="2dp">
+        </View>
+
+        <EditText
+            android:id="@+id/inputMemo"
+            android:layout_marginLeft="12dp"
+            android:background="@drawable/boxed_edittext_normal"
+            android:hint="@string/lb_dialog_hist_01"
+            android:inputType="text"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <requestFocus />
+    </LinearLayout>
 </LinearLayout>
