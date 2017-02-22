@@ -272,7 +272,7 @@
             android:layout_height="wrap_content">
             <Button
                 android:id="@+id/btnEventdaySave"
-                android:background="@drawable/custombutton"
+                android:background="@drawable/button_selector"
                 android:text="@string/btn_eve_save"
                 android:textSize="16sp"
                 android:textColor="@color/colorCalcButton"
@@ -281,9 +281,9 @@
                 android:layout_height="wrap_content"/>
             <Button
                 android:id="@+id/btn_calc_eventday"
-                android:background="@drawable/custombutton"
+                android:background="@drawable/button_selector"
                 android:text="@string/btn_eve_calc"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textColor="@color/colorCalcButton"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"/>

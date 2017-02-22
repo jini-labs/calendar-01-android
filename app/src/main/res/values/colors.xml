@@ -23,6 +23,12 @@
     <color name="colorResultValue">#AA5050</color>
     <color name="colorResultValue1">#AA5050</color>
 
+    <color name="colorNormalButtonGradientStart">#054019</color>
+    <color name="colorNormalButtonGradientEnd">#09742D</color>
+    <color name="colorPressedButtonGradientStart">#09742D</color>
+    <color name="colorPressedButtonGradientEnd">#29BF2A</color>
+
+
     <color name="colorButtonNormal">#09742D</color>
     <color name="colorButtonPressed">#69D266</color>
     <color name="colorButtonFocused">#69D266</color>
