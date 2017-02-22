@@ -263,6 +263,8 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
 
                     this.ableToSave = false;
 
+                    Toast.makeText(getContext(), "計算した期間を保存しました。\n履歴から確認できます。", Toast.LENGTH_LONG).show();
+
                     break;
 
                 case R.id.btnenter:

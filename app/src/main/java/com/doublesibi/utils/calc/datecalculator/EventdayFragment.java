@@ -317,6 +317,8 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
 
                                     imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
                                     ableToSave = false;
+
+                                    Toast.makeText(getContext(), "計算した記念日について保存しました。\n履歴から確認できます。", Toast.LENGTH_LONG).show();
                                 }
                             })
 
