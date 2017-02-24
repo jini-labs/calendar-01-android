@@ -112,7 +112,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         switch(v.getId()) {
             case R.id.this_year_solar:
             case R.id.this_month_solar:
-                showYearMonthDialog();
+                showYearMonthDialog(l_year, l_month);
                 break;
 
             case R.id.btnPrevMonth:
@@ -139,7 +139,9 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         }
     }
 
-    private void showYearMonthDialog() {
+    private void showYearMonthDialog(int year, int month) {
+        int curY = year;
+        int curM = month;
         this.tvYear.getText().toString();
 
         LayoutInflater dialog = LayoutInflater.from(getContext());
@@ -153,54 +155,105 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         final TextView selYear  = (TextView)dialogLayout.findViewById(R.id.textViewYear);
         final TextView selMonth = (TextView)dialogLayout.findViewById(R.id.textViewMonth);
 
-        selYear.setText(this.tvYear.getText().toString());
-        selMonth.setText(this.tvMonth.getText().toString());
+        final Button btn_upYY = (Button)dialogLayout.findViewById(R.id.increaseYear);
+        final Button btn_upMM = (Button)dialogLayout.findViewById(R.id.increaseMonth);
+        final Button btn_dnYY = (Button)dialogLayout.findViewById(R.id.decreaseYear);
+        final Button btn_dnMM = (Button)dialogLayout.findViewById(R.id.decreaseMonth);
+        final Button btn_ok = (Button)dialogLayout.findViewById(R.id.btnOk);
+        final Button btn_cancel = (Button)dialogLayout.findViewById(R.id.btnCancel);
 
-        Button btn_upYY = (Button)dialogLayout.findViewById(R.id.increaseYear);
-        Button btn_upMM = (Button)dialogLayout.findViewById(R.id.increaseMonth);
-        Button btn_dnYY = (Button)dialogLayout.findViewById(R.id.decreaseYear);
-        Button btn_dnMM = (Button)dialogLayout.findViewById(R.id.decreaseMonth);
-        Button btn_ok = (Button)dialogLayout.findViewById(R.id.btnOk);
-        Button btn_cancel = (Button)dialogLayout.findViewById(R.id.btnCancel);
+        selYear.setText("" + curY);
+        if (curY == 1) {
+            btn_upYY.setText("" + (curY + 1));
+            btn_dnYY.setText("" + 0);
+        } else if (curY == 0) {
+            btn_upYY.setText("" + (curY + 1));
+            btn_dnYY.setText("" + 0);
+        }else {
+            btn_upYY.setText("" + (curY + 1));
+            btn_dnYY.setText("" + (curY - 1));
+        }
+
+        selMonth.setText("" + curM);
+        if (curM == 12) {
+            btn_upMM.setText("" + (curM - 1));
+            btn_dnMM.setText("" + 1);
+        } if (curM == 1) {
+            btn_upMM.setText("" + 12);
+            btn_dnMM.setText("" + (curM + 1));
+        } else {
+            btn_upMM.setText("" + (curM - 1));
+            btn_dnMM.setText("" + (curM + 1));
+        }
 
         btn_upYY.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String str = selYear.getText().toString().trim();
-                selYear.setText("" + (Integer.parseInt(str) + 1));
+                int newY = Integer.parseInt(btn_upYY.getText().toString());
+                selYear.setText("" + newY);
+                if (newY == 9999) {
+                    btn_upYY.setText("0");
+                    btn_dnYY.setText("" + (newY - 1));
+                } else if (newY == 0) {
+                    btn_upYY.setText("" + (newY + 1));
+                    btn_dnYY.setText("9999");
+                } else {
+                    btn_upYY.setText("" + (newY + 1));
+                    btn_dnYY.setText("" + (newY - 1));
+                }
             }
         });
 
         btn_dnYY.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String str = selYear.getText().toString().trim();
-                int temp = Integer.parseInt(str) - 1;
-                if (Integer.parseInt(str) <= 0) temp = 1;
-
-                selYear.setText("" + temp);
+                int newY = Integer.parseInt(btn_dnYY.getText().toString());
+                selYear.setText("" + newY);
+                if (newY == 0) {
+                    btn_upYY.setText("" + (newY + 1));
+                    btn_dnYY.setText("0");
+                } else {
+                    btn_upYY.setText("" + (newY + 1));
+                    btn_dnYY.setText("" + (newY - 1));
+                }
             }
         });
 
         btn_upMM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String str = selMonth.getText().toString().trim();
-                int temp = Integer.parseInt(str) + 1;
-                if (temp > 12) temp = 1;
+                int newM = Integer.parseInt(btn_upMM.getText().toString());
+                selMonth.setText("" + newM);
 
-                selMonth.setText("" + temp);
+                if (newM == 12) {
+                    btn_dnMM.setText("" + 1);
+                    btn_upMM.setText("" + (newM - 1));
+                } else if (newM == 1) {
+                    btn_dnMM.setText("" + (newM + 1));
+                    btn_upMM.setText("" + 12);
+                } else {
+                    btn_dnMM.setText("" + (newM + 1));
+                    btn_upMM.setText("" + (newM - 1));
+                }
             }
         });
 
         btn_dnMM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String str = selMonth.getText().toString().trim();
-                int temp = Integer.parseInt(str) - 1;
-                if (temp < 1) temp = 12;
+                int newM = Integer.parseInt(btn_dnMM.getText().toString());
+                selMonth.setText("" + newM);
 
-                selMonth.setText("" + temp);
+                if (newM == 12) {
+                    btn_dnMM.setText("" + 1);
+                    btn_upMM.setText("" + (newM - 1));
+                } else if (newM == 1) {
+                    btn_dnMM.setText("" + (newM + 1));
+                    btn_upMM.setText("" + 12);
+                } else {
+                    btn_dnMM.setText("" + (newM + 1));
+                    btn_upMM.setText("" + (newM - 1));
+                }
             }
         });
 
