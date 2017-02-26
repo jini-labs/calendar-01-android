@@ -30,6 +30,10 @@
     <string name="btn_dur_calc">期間計算</string>
     <string name="btn_dur_save">計算結果保存</string>
 
+    <string name="lb_button_cancel">キャンセル</string>
+    <string name="lb_button_ok">Ok</string>
+    <string name="lb_select_yearmonth">年・月を選択して下さい。</string>
+
     <!-- Fragment Eventday -->
     <string name="lb_eve_start">ある日</string>
     <string name="lb_eve_dur">の</string>

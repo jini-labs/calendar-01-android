@@ -148,17 +148,17 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         final View dialogLayout = dialog.inflate(R.layout.yearmonth_picker_dialog, null);
         final Dialog myDialog = new Dialog(getContext());
 
-        //myDialog.setTitle("Dialog title");
+        myDialog.setTitle(getActivity().getResources().getString(R.string.lb_select_yearmonth));
         myDialog.setContentView(dialogLayout);
         myDialog.show();
 
         final TextView selYear  = (TextView)dialogLayout.findViewById(R.id.textViewYear);
         final TextView selMonth = (TextView)dialogLayout.findViewById(R.id.textViewMonth);
 
-        final Button btn_upYY = (Button)dialogLayout.findViewById(R.id.increaseYear);
-        final Button btn_upMM = (Button)dialogLayout.findViewById(R.id.increaseMonth);
-        final Button btn_dnYY = (Button)dialogLayout.findViewById(R.id.decreaseYear);
-        final Button btn_dnMM = (Button)dialogLayout.findViewById(R.id.decreaseMonth);
+        final TextView btn_upYY = (TextView)dialogLayout.findViewById(R.id.increaseYear);
+        final TextView btn_upMM = (TextView)dialogLayout.findViewById(R.id.increaseMonth);
+        final TextView btn_dnYY = (TextView)dialogLayout.findViewById(R.id.decreaseYear);
+        final TextView btn_dnMM = (TextView)dialogLayout.findViewById(R.id.decreaseMonth);
         final Button btn_ok = (Button)dialogLayout.findViewById(R.id.btnOk);
         final Button btn_cancel = (Button)dialogLayout.findViewById(R.id.btnCancel);
 
