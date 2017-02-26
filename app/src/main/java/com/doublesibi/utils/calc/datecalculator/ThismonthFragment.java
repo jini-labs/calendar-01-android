@@ -164,14 +164,14 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
 
         selYear.setText("" + curY);
         if (curY == 1) {
-            btn_upYY.setText("" + (curY + 1));
-            btn_dnYY.setText("" + 0);
-        } else if (curY == 0) {
-            btn_upYY.setText("" + (curY + 1));
-            btn_dnYY.setText("" + 0);
+            btn_upYY.setText("" + (curY - 1));
+            btn_dnYY.setText("" + 1);
+        } else if (curY == 1) {
+            btn_upYY.setText("" + 9999);
+            btn_dnYY.setText("" + (curY + 1));
         }else {
-            btn_upYY.setText("" + (curY + 1));
-            btn_dnYY.setText("" + (curY - 1));
+            btn_upYY.setText("" + (curY - 1));
+            btn_dnYY.setText("" + (curY + 1));
         }
 
         selMonth.setText("" + curM);
@@ -189,51 +189,36 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         btn_upYY.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int newY = Integer.parseInt(btn_upYY.getText().toString());
-                selYear.setText("" + newY);
-                if (newY == 9999) {
-                    btn_upYY.setText("0");
-                    btn_dnYY.setText("" + (newY - 1));
-                } else if (newY == 0) {
-                    btn_upYY.setText("" + (newY + 1));
-                    btn_dnYY.setText("9999");
-                } else {
-                    btn_upYY.setText("" + (newY + 1));
-                    btn_dnYY.setText("" + (newY - 1));
-                }
+                int[] retval = addNumberPicker(1, 999, selYear.getText().toString(), btn_upYY.getText().toString(), 1);
+                btn_dnYY.setText("" + retval[3]);
+                selYear.setText("" + retval[2]);
+                btn_upYY.setText("" + retval[1]);
             }
         });
 
         btn_dnYY.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int newY = Integer.parseInt(btn_dnYY.getText().toString());
-                selYear.setText("" + newY);
-                if (newY == 0) {
-                    btn_upYY.setText("" + (newY + 1));
-                    btn_dnYY.setText("0");
-                } else {
-                    btn_upYY.setText("" + (newY + 1));
-                    btn_dnYY.setText("" + (newY - 1));
-                }
+                int[] retval = addNumberPicker(1, 999, selYear.getText().toString(), btn_dnYY.getText().toString(), -1);
+                btn_dnYY.setText("" + retval[3]);
+                selYear.setText("" + retval[2]);
+                btn_upYY.setText("" + retval[1]);
             }
         });
 
         btn_upMM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int newM = Integer.parseInt(btn_upMM.getText().toString());
-                selMonth.setText("" + newM);
+                int[] retval = addNumberPicker(1, 12, selMonth.getText().toString(), btn_upMM.getText().toString(), 1);
+                btn_dnMM.setText("" + retval[3]);
+                selMonth.setText("" + retval[2]);
+                btn_upMM.setText("" + retval[1]);
 
-                if (newM == 12) {
-                    btn_dnMM.setText("" + 1);
-                    btn_upMM.setText("" + (newM - 1));
-                } else if (newM == 1) {
-                    btn_dnMM.setText("" + (newM + 1));
-                    btn_upMM.setText("" + 12);
-                } else {
-                    btn_dnMM.setText("" + (newM + 1));
-                    btn_upMM.setText("" + (newM - 1));
+                if (retval[0] == -1) {
+                    retval = addNumberPicker(1, 999, selYear.getText().toString(), btn_upYY.getText().toString(), 1);
+                    btn_dnYY.setText("" + retval[3]);
+                    selYear.setText("" + retval[2]);
+                    btn_upYY.setText("" + retval[1]);
                 }
             }
         });
@@ -241,18 +226,16 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         btn_dnMM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int newM = Integer.parseInt(btn_dnMM.getText().toString());
-                selMonth.setText("" + newM);
+                int[] retval = addNumberPicker(1, 12, selMonth.getText().toString(), btn_dnMM.getText().toString(), -1);
+                btn_dnMM.setText("" + retval[3]);
+                selMonth.setText("" + retval[2]);
+                btn_upMM.setText("" + retval[1]);
 
-                if (newM == 12) {
-                    btn_dnMM.setText("" + 1);
-                    btn_upMM.setText("" + (newM - 1));
-                } else if (newM == 1) {
-                    btn_dnMM.setText("" + (newM + 1));
-                    btn_upMM.setText("" + 12);
-                } else {
-                    btn_dnMM.setText("" + (newM + 1));
-                    btn_upMM.setText("" + (newM - 1));
+                if (retval[0] == 1) {
+                    retval = addNumberPicker(1, 999, selYear.getText().toString(), btn_dnYY.getText().toString(), -1);
+                    btn_dnYY.setText("" + retval[3]);
+                    selYear.setText("" + retval[2]);
+                    btn_upYY.setText("" + retval[1]);
                 }
             }
         });
@@ -274,6 +257,51 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
                 myDialog.cancel();
             }
         });
+    }
+
+    /*
+    *  return :
+     *  0 : 1 : max -> min, -1: min->max, 0: others
+     *  1 : location of upper
+     *  2 : cur(selected value)
+     *  3 : location of lower
+     */
+    private int[] addNumberPicker(int min, int max, String curVal, String newVal, int val) {
+        int[] retVal = new int[4];
+
+        retVal[2] = Integer.parseInt(newVal);
+        if (val < 0) {
+            if (retVal[2] == max) {
+                retVal[3] = min;
+                retVal[1] = retVal[2] - 1;
+            } else if (retVal[2] == min) {
+                retVal[3] = retVal[2] + 1;
+                retVal[1] = max;
+            } else {
+                retVal[3] = retVal[2] + 1;
+                retVal[1] = retVal[2] - 1;
+            }
+        } else {
+            if (retVal[2] == max) {
+                retVal[3] = min;
+                retVal[1] = retVal[2] - 1;
+            } else if (retVal[2] == min) {
+                retVal[3] = retVal[2] + 1;
+                retVal[1] = max;
+            } else {
+                retVal[3] = retVal[2] + 1;
+                retVal[1] = retVal[2] - 1;
+            }
+        }
+
+        retVal[0] = 0;
+        if (Integer.parseInt(curVal) == max) {
+            if (retVal[2] == min) retVal[0] = 1;
+        } else if (Integer.parseInt(curVal) == min) {
+            if (retVal[2] == max) retVal[0] = -1;
+        }
+
+        return retVal;
     }
 
     private void setTvYearMonth(String year, String month) {
