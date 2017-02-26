@@ -37,8 +37,9 @@
     <!-- Fragment Eventday -->
     <string name="lb_eve_start">ある日</string>
     <string name="lb_eve_dur">の</string>
-    <string name="lb_eve_before_day">前</string>
-    <string name="lb_eve_day_after">後</string>
+    <string name="lb_eve_before_day">以前</string>
+    <string name="lb_eve_day_after">以後</string>
+    <string name="lb_eve_result_date">計算日</string>
     <string name="lb_eve_result">です。</string>
 
     <string name="btn_eve_save">計算結果保存</string>

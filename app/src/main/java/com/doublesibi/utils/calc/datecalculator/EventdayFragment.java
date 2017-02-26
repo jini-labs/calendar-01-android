@@ -40,10 +40,9 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
 
     private TextView eventStartYY, eventStartMM, eventStartDD;
     private EditText value1, value2, value3, value4;
-    private TextView result_eventday, result_eventday_week;
+    private TextView resultEveYear, resultEveMonth, resultEveDate, resultEveWeek;
     private Button btnCalcEvent, btnEventDaySave;
     private Button btnPaButton, btnPoButton;
-//    private Spinner spnBeAf;
 
     private CalcEventDate calcEventDate;
     private DatePickerDialog datePickerDialog;
@@ -95,7 +94,6 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
 
         setTextId(view);
         setButtonId(view);
-//        setSpinnerId(view);
 
         if (this.beforeAfter == -1 || this.beforeAfter == 0) {
             btnPaButton.setBackgroundResource(R.drawable.before_after_selected);
@@ -212,10 +210,6 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                     this.beforeAfter = 1;
                     break;
 
-//                case R.id.spinnerbeforeafter:
-//                    this.ableToSave = false;
-//                    break;
-
                 case R.id.btn_calc_eventday:
                     CalcEventDate calcEventDate = new CalcEventDate();
                     int[] params = new int[8];
@@ -225,43 +219,38 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                     params[0] = Integer.parseInt(eventStartYY.getText().toString().trim());
                     params[1] = Integer.parseInt(eventStartMM.getText().toString().trim());
                     params[2] = Integer.parseInt(eventStartDD.getText().toString().trim());
-//                    params[3] = spnBeAf.getSelectedItemPosition();
                     params[3] = this.beforeAfter;
 
-                    // num of day
-                    if (value1.getText().length() > 0)
-                        params[4] = Integer.parseInt(value1.getText().toString().trim());
-
-                    // num of week
-                    if (value2.getText().length() > 0)
-                        params[5] = Integer.parseInt(value2.getText().toString().trim());
+                    String sTmp = "";
+                    // num of year
+                    if (value4.getText().length() > 0) {
+                        params[7] = Integer.parseInt(value4.getText().toString().trim());
+                    }
 
                     // num of month
-                    if (value3.getText().length() > 0)
+                    if (value3.getText().length() > 0) {
                         params[6] = Integer.parseInt(value3.getText().toString().trim());
+                    }
 
-                    // num of year
-                    if (value4.getText().length() > 0)
-                        params[7] = Integer.parseInt(value4.getText().toString().trim());
+                    // num of week
+                    if (value2.getText().length() > 0) {
+                        params[5] = Integer.parseInt(value2.getText().toString().trim());
+                    }
 
-                    String[] retYmd = calcEventDate.getEventYmd(params);
+                    // num of day
+                    if (value1.getText().length() > 0) {
+                        params[4] = Integer.parseInt(value1.getText().toString().trim());
+                    }
 
-                    // ymd
-                    result_eventday.setText(retYmd[0]);
+                    int[] retYmd = calcEventDate.getEventYmd(params);
 
-                    // day of week
-                    int tmp = Integer.parseInt(retYmd[1]);
+                    resultEveYear.setText("" + retYmd[0]/10000);
+                    resultEveMonth.setText("" + retYmd[0]%10000 / 100);
+                    resultEveDate.setText("" + retYmd[0]%100);
+
                     Resources r = getResources();
                     String[] weekofName = r.getStringArray(R.array.nameOfWeek);
-                    result_eventday_week.setText(weekofName[tmp-1]);
-                    switch(tmp) {
-                        case 6:
-                            result_eventday_week.setTextColor(Color.RED);
-                            break;
-                        case 7:
-                            result_eventday_week.setTextColor(Color.RED);
-                            break;
-                    }
+                    resultEveWeek.setText(weekofName[retYmd[1] - 1]);
 
                     this.ableToSave = true;
                     break;
@@ -283,15 +272,11 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                     histItem.weeks = value2.getText().toString();
                     histItem.months = value3.getText().toString();
                     histItem.years = value4.getText().toString();
-                    //histItem.beOrAf = "" + spnBeAf.getSelectedItemPosition();
                     histItem.beOrAf = "" + this.beforeAfter;
 
-                    String endDateStr = result_eventday.getText().toString().trim();
-                    String[] splitedStr = endDateStr.split("-");
-
-                    saveDate = Integer.valueOf(splitedStr[0]) * 10000 +
-                            Integer.valueOf(splitedStr[1]) * 100 +
-                            Integer.valueOf(splitedStr[2]);
+                    saveDate = Integer.valueOf(resultEveYear.getText().toString()) * 10000 +
+                            Integer.valueOf(resultEveMonth.getText().toString()) * 100 +
+                            Integer.valueOf(resultEveDate.getText().toString());
                     histItem.enDate = "" + saveDate;
 
                     // input memo of eventday.
@@ -415,8 +400,16 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
         eventStartMM.setOnClickListener(this);
         eventStartDD.setOnClickListener(this);
 
-        result_eventday = (TextView) view.findViewById(R.id.result_eventday);
-        result_eventday_week = (TextView) view.findViewById(R.id.result_eventday_week);
+        resultEveYear  = (TextView) view.findViewById(R.id.resultEveYear);
+        resultEveMonth = (TextView) view.findViewById(R.id.resultEveMonth);
+        resultEveDate  = (TextView) view.findViewById(R.id.resultEveDate);
+        resultEveWeek  = (TextView) view.findViewById(R.id.resultEveWeek);
+
+//        result_eventday = (TextView) view.findViewById(R.id.result_eventday);
+//        //result_eventday_week = (TextView) view.findViewById(R.id.result_eventday_week);
+//
+//        resultLabelDate = (TextView) view.findViewById(R.id.resultLabelDate);
+//        resultLabelDuration = (TextView) view.findViewById(R.id.resultLabelDuration);
     }
 
 
@@ -437,10 +430,6 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
         btnPaButton.setOnClickListener(this);
         btnPoButton.setOnClickListener(this);
     }
-
-//    private void setSpinnerId(View view) {
-//        spnBeAf = (Spinner) view.findViewById(R.id.spinnerbeforeafter);
-//    }
 
     private void setStartDate(int yy, int mm, int dd) {
         eventStartYY.setText(String.valueOf(yy));

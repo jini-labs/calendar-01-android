@@ -25,7 +25,7 @@
 
                 <Button
                     android:id="@+id/btnPrevMonth"
-                    android:background="@drawable/custombutton"
+                    android:background="@drawable/button_prevnext"
                     android:text="@string/arrow_left"
                     android:textSize="24sp"
                     android:textColor="@color/colorCalcButton"
@@ -91,7 +91,7 @@
 
                 <Button
                     android:id="@+id/btnNextMonth"
-                    android:background="@drawable/custombutton"
+                    android:background="@drawable/button_prevnext"
                     android:text="@string/arrow_right"
                     android:textSize="24sp"
                     android:textColor="@color/colorCalcButton"

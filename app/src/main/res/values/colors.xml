@@ -43,6 +43,7 @@
     <color name="colorGridview">#DFFFDF</color>
 
     <color name="colorDurationTableHead">#000000</color>
+    <color name="colorEventdayResult">#DFFFDF</color>
 
     <color name="boxed_edittext_filled_color">#09742D</color>
 

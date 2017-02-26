@@ -253,10 +253,10 @@ public class EventHistActivity extends AppCompatActivity {
 
             if (StrToInt(c.getString(6)) > 0) {
                 item.setBeforeOrAfter(1);
-                item.setEveDayMonWeeYea(item.getEveDayMonWeeYea() + constantStr[12]);
+                item.setEveDayMonWeeYea(item.getEveDayMonWeeYea() + constantStr[13]);
             } else {
                 item.setBeforeOrAfter(-1);
-                item.setEveDayMonWeeYea(item.getEveDayMonWeeYea() + constantStr[13]);
+                item.setEveDayMonWeeYea(item.getEveDayMonWeeYea() + constantStr[12]);
             }
 
             temp1 = c.getString(7);
