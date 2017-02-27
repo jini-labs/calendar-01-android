@@ -2,6 +2,7 @@ package com.doublesibi.utils.calc.datecalculator;
 
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -15,8 +16,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -58,7 +61,10 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
     private String[] constantStr = {"年度を選択下さい。",
                                     "月を選択下さい。",
                                     "日を選択下さい。",
-                                    "計算した結果のみ保存可能です。！"};
+                                    "計算した結果のみ保存可能です。！",
+                                    "年と月から入力下さい。",
+                                    "保存",
+                                    "キャンセル"};
 
     public DurationFragment() {
         // Required empty public constructor
@@ -228,7 +234,7 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                         break;
                     }
 
-                    HistItem histItem = new HistItem();
+                    final HistItem histItem = new HistItem();
 
                     int saveDate = Integer.valueOf(startYY.getText().toString()) * 10000 +
                                     Integer.valueOf(startMM.getText().toString()) * 100 +
@@ -249,21 +255,66 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                     histItem.yearmonths = result4_months.getText().toString();
                     histItem.yeardays = result4_days.getText().toString();
 
-                    DurationItemOpenHelper helper = new DurationItemOpenHelper(getActivity());
-                    final SQLiteDatabase db = helper.getWritableDatabase();
+                    // input memo of duration.
+                    LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getContext());
+                    View mView = layoutInflaterAndroid.inflate(R.layout.input_dialogbox, null);
+                    AlertDialog.Builder inputDialog = new AlertDialog.Builder(getContext());
+                    final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-                    long ret = helper.insertDuration(db, histItem);
-//                    if (ret ) {
-                        //Ok
-                        //Duplicate
-                        //Other
-                        //Toast.makeText(getContext(), "(duration)inserted id :" + ret, Toast.LENGTH_SHORT).show();
-//                    }
-                    helper.close();
+                    inputDialog.setView(mView);
 
-                    this.ableToSave = false;
+                    final EditText editTextInputMemo = (EditText) mView.findViewById(R.id.inputMemo);
+                    inputDialog.setCancelable(false)
+                            .setPositiveButton(this.constantStr[5], new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialogBox, int id) {
+                                    histItem.name = editTextInputMemo.getText().toString();
+                                    DurationItemOpenHelper helper = new DurationItemOpenHelper(getActivity());
+                                    final SQLiteDatabase db = helper.getWritableDatabase();
 
-                    Toast.makeText(getContext(), "計算した期間を保存しました。\n履歴から確認できます。", Toast.LENGTH_LONG).show();
+                                    long ret = helper.insertDuration(db, histItem);
+                                    Log.d(LOGTAG, "(duration) name:" + histItem.name + ", insertedId:" + ret);
+                                    helper.close();
+
+                                    imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+                                    ableToSave = false;
+
+                                    Toast.makeText(getContext(), "計算した期間について保存しました。\n履歴から確認できます。", Toast.LENGTH_LONG).show();
+                                }
+                            })
+
+                            .setNegativeButton(constantStr[6],
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialogBox, int id) {
+                                            dialogBox.cancel();
+
+                                            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+                                        }
+                                    });
+
+                    AlertDialog alertDialogAndroid = inputDialog.create();
+                    alertDialogAndroid.show();
+
+                    //InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
+                    alertDialogAndroid.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+                    alertDialogAndroid.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+
+//                    DurationItemOpenHelper helper = new DurationItemOpenHelper(getActivity());
+//                    final SQLiteDatabase db = helper.getWritableDatabase();
+//
+//                    long ret = helper.insertDuration(db, histItem);
+////                    if (ret ) {
+//                        //Ok
+//                        //Duplicate
+//                        //Other
+//                        //Toast.makeText(getContext(), "(duration)inserted id :" + ret, Toast.LENGTH_SHORT).show();
+////                    }
+//                    helper.close();
+//
+//                    this.ableToSave = false;
+//
+//                    Toast.makeText(getContext(), "計算した期間を保存しました。\n履歴から確認できます。", Toast.LENGTH_LONG).show();
 
                     break;
 

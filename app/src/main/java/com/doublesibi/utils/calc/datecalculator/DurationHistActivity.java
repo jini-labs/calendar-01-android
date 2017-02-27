@@ -212,7 +212,8 @@ public class DurationHistActivity extends AppCompatActivity {
                             "monthdays",
                             "years",
                             "yearmonths",
-                            "yeardays" };
+                            "yeardays",
+                            "name" };
 
         Cursor c = db.query("DateDuration", columns,
                             "stDate>?", new String[] {""+startDate},
@@ -259,7 +260,7 @@ public class DurationHistActivity extends AppCompatActivity {
             }
             if (StrToInt(c.getString(7)) > 0 ) {
                 item.setDurYearsMonthsDays(c.getString(7)
-                        + constantStr[15]);
+                        + constantStr[16]);
                 if (StrToInt(c.getString(8)) > 0) {
                     item.setDurYearsMonthsDays(item.getDurYearsMonthsDays() +
                             c.getString(8) +
@@ -270,6 +271,10 @@ public class DurationHistActivity extends AppCompatActivity {
                             c.getString(9) +
                             constantStr[11]);
                 }
+            }
+
+            if (c.getString(10).length() > 0 ) {
+                item.setName(c.getString(10));
             }
 
             Log.d(LOGTAG, item.toString());
