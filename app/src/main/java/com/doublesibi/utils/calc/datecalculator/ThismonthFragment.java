@@ -50,8 +50,9 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
     private TextView tvYear, tvMonth, tvJpName, tvJpYear;
     private TextView[][] textViews;
 
-
     ArrayList<HolidayListItem> holidayListItems;
+
+    String[] constantStr = {"今日", " 日後"};
 
     public ThismonthFragment() {
         if (holidayListItems == null) {
@@ -69,7 +70,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.main, menu);
-        menu.findItem(R.id.action_settings).setVisible(false);
+        menu.findItem(R.id.action_history).setVisible(false);
     }
 
     @Override
@@ -111,7 +112,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         switch(v.getId()) {
             case R.id.this_year_solar:
             case R.id.this_month_solar:
-                showYearMonthDialog();
+                showYearMonthDialog(l_year, l_month);
                 break;
 
             case R.id.btnPrevMonth:
@@ -138,68 +139,104 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         }
     }
 
-    private void showYearMonthDialog() {
+    private void showYearMonthDialog(int year, int month) {
+        int curY = year;
+        int curM = month;
         this.tvYear.getText().toString();
 
         LayoutInflater dialog = LayoutInflater.from(getContext());
         final View dialogLayout = dialog.inflate(R.layout.yearmonth_picker_dialog, null);
         final Dialog myDialog = new Dialog(getContext());
 
-        //myDialog.setTitle("Dialog title");
+        myDialog.setTitle(getActivity().getResources().getString(R.string.lb_select_yearmonth));
         myDialog.setContentView(dialogLayout);
         myDialog.show();
 
         final TextView selYear  = (TextView)dialogLayout.findViewById(R.id.textViewYear);
         final TextView selMonth = (TextView)dialogLayout.findViewById(R.id.textViewMonth);
 
-        selYear.setText(this.tvYear.getText().toString());
-        selMonth.setText(this.tvMonth.getText().toString());
+        final TextView btn_upYY = (TextView)dialogLayout.findViewById(R.id.increaseYear);
+        final TextView btn_upMM = (TextView)dialogLayout.findViewById(R.id.increaseMonth);
+        final TextView btn_dnYY = (TextView)dialogLayout.findViewById(R.id.decreaseYear);
+        final TextView btn_dnMM = (TextView)dialogLayout.findViewById(R.id.decreaseMonth);
+        final Button btn_ok = (Button)dialogLayout.findViewById(R.id.btnOk);
+        final Button btn_cancel = (Button)dialogLayout.findViewById(R.id.btnCancel);
 
-        Button btn_upYY = (Button)dialogLayout.findViewById(R.id.increaseYear);
-        Button btn_upMM = (Button)dialogLayout.findViewById(R.id.increaseMonth);
-        Button btn_dnYY = (Button)dialogLayout.findViewById(R.id.decreaseYear);
-        Button btn_dnMM = (Button)dialogLayout.findViewById(R.id.decreaseMonth);
-        Button btn_ok = (Button)dialogLayout.findViewById(R.id.btnOk);
-        Button btn_cancel = (Button)dialogLayout.findViewById(R.id.btnCancel);
+        selYear.setText("" + curY);
+        if (curY == 1) {
+            btn_upYY.setText("" + (curY - 1));
+            btn_dnYY.setText("" + 1);
+        } else if (curY == 1) {
+            btn_upYY.setText("" + 9999);
+            btn_dnYY.setText("" + (curY + 1));
+        }else {
+            btn_upYY.setText("" + (curY - 1));
+            btn_dnYY.setText("" + (curY + 1));
+        }
+
+        selMonth.setText("" + curM);
+        if (curM == 12) {
+            btn_upMM.setText("" + (curM - 1));
+            btn_dnMM.setText("" + 1);
+        } if (curM == 1) {
+            btn_upMM.setText("" + 12);
+            btn_dnMM.setText("" + (curM + 1));
+        } else {
+            btn_upMM.setText("" + (curM - 1));
+            btn_dnMM.setText("" + (curM + 1));
+        }
 
         btn_upYY.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String str = selYear.getText().toString().trim();
-                selYear.setText("" + (Integer.parseInt(str) + 1));
+                int[] retval = addNumberPicker(1, 999, selYear.getText().toString(), btn_upYY.getText().toString(), 1);
+                btn_dnYY.setText("" + retval[3]);
+                selYear.setText("" + retval[2]);
+                btn_upYY.setText("" + retval[1]);
             }
         });
 
         btn_dnYY.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String str = selYear.getText().toString().trim();
-                int temp = Integer.parseInt(str) - 1;
-                if (Integer.parseInt(str) <= 0) temp = 1;
-
-                selYear.setText("" + temp);
+                int[] retval = addNumberPicker(1, 999, selYear.getText().toString(), btn_dnYY.getText().toString(), -1);
+                btn_dnYY.setText("" + retval[3]);
+                selYear.setText("" + retval[2]);
+                btn_upYY.setText("" + retval[1]);
             }
         });
 
         btn_upMM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String str = selMonth.getText().toString().trim();
-                int temp = Integer.parseInt(str) + 1;
-                if (temp > 12) temp = 1;
+                int[] retval = addNumberPicker(1, 12, selMonth.getText().toString(), btn_upMM.getText().toString(), 1);
+                btn_dnMM.setText("" + retval[3]);
+                selMonth.setText("" + retval[2]);
+                btn_upMM.setText("" + retval[1]);
 
-                selMonth.setText("" + temp);
+                if (retval[0] == -1) {
+                    retval = addNumberPicker(1, 999, selYear.getText().toString(), btn_upYY.getText().toString(), 1);
+                    btn_dnYY.setText("" + retval[3]);
+                    selYear.setText("" + retval[2]);
+                    btn_upYY.setText("" + retval[1]);
+                }
             }
         });
 
         btn_dnMM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String str = selMonth.getText().toString().trim();
-                int temp = Integer.parseInt(str) - 1;
-                if (temp < 1) temp = 12;
+                int[] retval = addNumberPicker(1, 12, selMonth.getText().toString(), btn_dnMM.getText().toString(), -1);
+                btn_dnMM.setText("" + retval[3]);
+                selMonth.setText("" + retval[2]);
+                btn_upMM.setText("" + retval[1]);
 
-                selMonth.setText("" + temp);
+                if (retval[0] == 1) {
+                    retval = addNumberPicker(1, 999, selYear.getText().toString(), btn_dnYY.getText().toString(), -1);
+                    btn_dnYY.setText("" + retval[3]);
+                    selYear.setText("" + retval[2]);
+                    btn_upYY.setText("" + retval[1]);
+                }
             }
         });
 
@@ -220,6 +257,51 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
                 myDialog.cancel();
             }
         });
+    }
+
+    /*
+    *  return :
+     *  0 : 1 : max -> min, -1: min->max, 0: others
+     *  1 : location of upper
+     *  2 : cur(selected value)
+     *  3 : location of lower
+     */
+    private int[] addNumberPicker(int min, int max, String curVal, String newVal, int val) {
+        int[] retVal = new int[4];
+
+        retVal[2] = Integer.parseInt(newVal);
+        if (val < 0) {
+            if (retVal[2] == max) {
+                retVal[3] = min;
+                retVal[1] = retVal[2] - 1;
+            } else if (retVal[2] == min) {
+                retVal[3] = retVal[2] + 1;
+                retVal[1] = max;
+            } else {
+                retVal[3] = retVal[2] + 1;
+                retVal[1] = retVal[2] - 1;
+            }
+        } else {
+            if (retVal[2] == max) {
+                retVal[3] = min;
+                retVal[1] = retVal[2] - 1;
+            } else if (retVal[2] == min) {
+                retVal[3] = retVal[2] + 1;
+                retVal[1] = max;
+            } else {
+                retVal[3] = retVal[2] + 1;
+                retVal[1] = retVal[2] - 1;
+            }
+        }
+
+        retVal[0] = 0;
+        if (Integer.parseInt(curVal) == max) {
+            if (retVal[2] == min) retVal[0] = 1;
+        } else if (Integer.parseInt(curVal) == min) {
+            if (retVal[2] == max) retVal[0] = -1;
+        }
+
+        return retVal;
     }
 
     private void setTvYearMonth(String year, String month) {
@@ -380,9 +462,12 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
                         if (j == 0) {
                             textViews[i][j].setTextColor(Color.RED);
                         } else if (j == 6) {
-                            textViews[i][j].setTextColor(Color.YELLOW);
+                            //textViews[i][j].setTextColor(Color.YELLOW);
+                            textViews[i][j].setTextColor(Color.rgb(170, 0, 0));
                         } else {
-                            textViews[i][j].setTextColor(Color.YELLOW);
+                            //textViews[i][j].setTextColor(Color.YELLOW);
+                            textViews[i][j].setTextColor(Color.rgb(170, 0, 0));
+                            //text color #50F03C
                         }
                     } else {
                         textViews[i][j].setText("" + currMonthDays[i][j]);
@@ -396,10 +481,12 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
                     }
                 }
 
+                // set today
                 if (includeToday && textViews[i][j].getText().toString().equals("" + today % 100)) {
-                    textViews[i][j].setBackgroundColor(Color.CYAN);
+                    //textViews[i][j].setBackgroundColor(Color.CYAN);
+                    textViews[i][j].setBackground(getResources().getDrawable(R.drawable.calendar_today_box));
                 } else {
-                    textViews[i][j].setBackground(getResources().getDrawable(R.drawable.boxed_edittext_filled));
+                    textViews[i][j].setBackground(getResources().getDrawable(R.drawable.calendar_day_box));
                 }
 
             }
@@ -419,7 +506,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         ArrayList<HolidayItem> hdis = hI.getHolidays();
 
         for (HolidayItem item : hdis) {
-            if (item.ymd > toYmd) {
+            if (item.ymd >= toYmd) {
 
                 CalcDurationDate diffDate = new CalcDurationDate();
                 diffDate.setInitDate(toYmd/10000, (toYmd%10000)/100, toYmd%100,
@@ -430,7 +517,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
                     item.ymd,
                     MyCalendar.convertDateWeekName(getResources(), item.ymd, "/"),
                     item.name,
-                    diffDate.getTotalDays() + " 日後");
+                    ((item.ymd == toYmd)? constantStr[0] :diffDate.getTotalDays() + constantStr[1]));
 
                 holidayListItems.add(hlItem);
             }

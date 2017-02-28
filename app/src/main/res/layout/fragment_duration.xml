@@ -27,8 +27,8 @@
 
                 <TextView
                     android:id="@+id/colorLabelStartDate"
-                    android:text="@string/label_start_date"
-                    android:textSize="24sp"
+                    android:text="@string/lb_dur_start"
+                    android:textSize="20sp"
                     android:gravity="start"
                     android:textColor="@color/colorLabelStartDate"
                     android:layout_marginRight="10dp"
@@ -114,14 +114,14 @@
             <LinearLayout
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="36dp">
 
                 <TextView
                     android:id="@+id/labelenddate"
-                    android:text="@string/label_other_date"
-                    android:textSize="24sp"
+                    android:text="@string/lb_dur_end"
+                    android:textSize="20sp"
                     android:gravity="start"
                     android:textColor="@color/colorLabelEndDate"
                     android:layout_marginRight="10dp"
@@ -211,8 +211,8 @@
                 android:layout_height="wrap_content">
                 <Button
                     android:id="@+id/btnDuraSave"
-                    android:background="@drawable/custombutton"
-                    android:text="@string/label_dura_save_button"
+                    android:background="@drawable/button_selector"
+                    android:text="@string/btn_dur_save"
                     android:textSize="16sp"
                     android:textColor="@color/colorCalcButton"
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
@@ -220,9 +220,9 @@
                     android:layout_height="wrap_content"/>
                 <Button
                     android:id="@+id/btnenter"
-                    android:background="@drawable/custombutton"
-                    android:text="@string/label_calc_button"
-                    android:textSize="20sp"
+                    android:background="@drawable/button_selector"
+                    android:text="@string/btn_dur_calc"
+                    android:textSize="18sp"
                     android:textColor="@color/colorCalcButton"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"/>
@@ -231,10 +231,12 @@
             <!-- border line -->
             <View
                 android:background="@android:color/darker_gray"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
                 android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="2dp"/>
+                android:layout_height="1dp"/>
         </LinearLayout>
 
         <!-- Output of result -->
@@ -259,43 +261,43 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:text=""
-                        android:background="@drawable/boxed_edittext_reverse"
+                        android:background="@drawable/duration_head_box"
                         android:layout_weight="5"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"/>
                     <TextView
-                        android:text="@string/label_result_year"
+                        android:text="@string/lb_year"
                         android:textSize="@dimen/dur_table_label_textsize"
-                        android:textColor="@android:color/white"
-                        android:background="@drawable/boxed_edittext_reverse"
+                        android:textColor="@color/colorDurationTableHead"
+                        android:background="@drawable/duration_head_box"
                         android:gravity="center_vertical|center_horizontal"
                         android:layout_weight="5"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <TextView
-                        android:text="@string/label_result_month"
+                        android:text="@string/lb_month"
                         android:textSize="@dimen/dur_table_label_textsize"
-                        android:textColor="@android:color/white"
-                        android:background="@drawable/boxed_edittext_reverse"
+                        android:textColor="@color/colorDurationTableHead"
+                        android:background="@drawable/duration_head_box"
                         android:gravity="center_vertical|center_horizontal"
                         android:layout_weight="5"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <TextView
-                        android:text="@string/label_result_week"
+                        android:text="@string/lb_week"
                         android:gravity="center_vertical|center_horizontal"
                         android:textSize="@dimen/dur_table_label_textsize"
-                        android:textColor="@android:color/white"
-                        android:background="@drawable/boxed_edittext_reverse"
+                        android:textColor="@color/colorDurationTableHead"
+                        android:background="@drawable/duration_head_box"
                         android:layout_weight="7"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <TextView
-                        android:text="@string/label_result_days"
+                        android:text="@string/lb_day"
                         android:gravity="center_vertical|center_horizontal"
                         android:textSize="@dimen/dur_table_label_textsize"
-                        android:textColor="@android:color/white"
-                        android:background="@drawable/boxed_edittext_reverse"
+                        android:textColor="@color/colorDurationTableHead"
+                        android:background="@drawable/duration_head_box"
                         android:layout_weight="8"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
@@ -308,11 +310,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:text="@string/label_result_days"
+                        android:text="@string/lb_day"
                         android:gravity="center"
                         android:textSize="@dimen/dur_table_label_textsize"
-                        android:textColor="@android:color/white"
-                        android:background="@drawable/boxed_edittext_reverse"
+                        android:textColor="@color/colorDurationTableHead"
+                        android:background="@drawable/duration_left_head_box"
                         android:focusable="false"
                         android:layout_weight="5"
                         android:layout_width="wrap_content"
@@ -320,21 +322,21 @@
 
                     <EditText
                         android:enabled="false"
-                        android:background="@drawable/boxed_edittext_filled"
+                        android:background="@drawable/duration_result_box_reverse"
                         android:focusable="false"
                         android:layout_weight="5"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <EditText
                         android:enabled="false"
-                        android:background="@drawable/boxed_edittext_filled"
+                        android:background="@drawable/duration_result_box_reverse"
                         android:focusable="false"
                         android:layout_weight="5"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <EditText
                         android:enabled="false"
-                        android:background="@drawable/boxed_edittext_filled"
+                        android:background="@drawable/duration_result_box_reverse"
                         android:focusable="false"
                         android:layout_weight="7"
                         android:layout_width="0dp"
@@ -345,7 +347,7 @@
                         android:textColor="@color/colorResultValue"
                         android:enabled="false"
                         android:gravity="end"
-                        android:background="@drawable/boxed_edittext_normal"
+                        android:background="@drawable/duration_result_box"
                         android:focusable="false"
                         android:layout_weight="8"
                         android:layout_width="0dp"
@@ -359,25 +361,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:text="@string/label_eventday_wwdd"
+                        android:text="@string/lb_weekday"
                         android:gravity="center"
                         android:textSize="@dimen/dur_table_label_textsize"
-                        android:textColor="@android:color/white"
-                        android:background="@drawable/boxed_edittext_reverse"
+                        android:textColor="@color/colorDurationTableHead"
+                        android:background="@drawable/duration_left_head_box"
                         android:layout_weight="5"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"/>
 
                     <EditText
                         android:enabled="false"
-                        android:background="@drawable/boxed_edittext_filled"
+                        android:background="@drawable/duration_result_box_reverse"
                         android:focusable="false"
                         android:layout_weight="5"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <EditText
                         android:enabled="false"
-                        android:background="@drawable/boxed_edittext_filled"
+                        android:background="@drawable/duration_result_box_reverse"
                         android:focusable="false"
                         android:layout_weight="5"
                         android:layout_width="0dp"
@@ -388,7 +390,7 @@
                         android:textColor="@color/colorResultValue"
                         android:enabled="false"
                         android:gravity="end"
-                        android:background="@drawable/boxed_edittext_normal"
+                        android:background="@drawable/duration_result_box"
                         android:focusable="false"
                         android:layout_weight="7"
                         android:layout_width="0dp"
@@ -399,7 +401,7 @@
                         android:textColor="@color/colorResultValue"
                         android:enabled="false"
                         android:gravity="end"
-                        android:background="@drawable/boxed_edittext_normal"
+                        android:background="@drawable/duration_result_box"
                         android:focusable="false"
                         android:layout_weight="8"
                         android:layout_width="0dp"
@@ -413,18 +415,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:text="@string/label_eventday_mmdd"
+                        android:text="@string/lb_monthday"
                         android:gravity="center"
                         android:textSize="@dimen/dur_table_label_textsize"
-                        android:textColor="@android:color/white"
-                        android:background="@drawable/boxed_edittext_reverse"
+                        android:textColor="@color/colorDurationTableHead"
+                        android:background="@drawable/duration_left_head_box"
                         android:layout_weight="5"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"/>
 
                     <EditText
                         android:enabled="false"
-                        android:background="@drawable/boxed_edittext_filled"
+                        android:background="@drawable/duration_result_box_reverse"
                         android:focusable="false"
                         android:layout_weight="5"
                         android:layout_width="0dp"
@@ -435,14 +437,14 @@
                         android:textColor="@color/colorResultValue"
                         android:enabled="false"
                         android:gravity="end"
-                        android:background="@drawable/boxed_edittext_normal"
+                        android:background="@drawable/duration_result_box"
                         android:focusable="false"
                         android:layout_weight="5"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <EditText
                         android:enabled="false"
-                        android:background="@drawable/boxed_edittext_filled"
+                        android:background="@drawable/duration_result_box_reverse"
                         android:focusable="false"
                         android:layout_weight="7"
                         android:layout_width="0dp"
@@ -453,7 +455,7 @@
                         android:textColor="@color/colorResultValue"
                         android:enabled="false"
                         android:gravity="end"
-                        android:background="@drawable/boxed_edittext_normal"
+                        android:background="@drawable/duration_result_box"
                         android:focusable="false"
                         android:layout_weight="8"
                         android:layout_width="0dp"
@@ -467,11 +469,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:text="@string/label_eventday_yymmdd"
+                        android:text="@string/lb_yearmonthday"
                         android:gravity="center"
                         android:textSize="@dimen/dur_table_label_textsize"
-                        android:textColor="@android:color/white"
-                        android:background="@drawable/boxed_edittext_reverse"
+                        android:textColor="@color/colorDurationTableHead"
+                        android:background="@drawable/duration_left_head_box"
                         android:layout_weight="5"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"/>
@@ -481,7 +483,7 @@
                         android:textColor="@color/colorResultValue"
                         android:enabled="false"
                         android:gravity="end"
-                        android:background="@drawable/boxed_edittext_normal"
+                        android:background="@drawable/duration_result_box"
                         android:focusable="false"
                         android:layout_weight="5"
                         android:layout_width="0dp"
@@ -492,14 +494,14 @@
                         android:textColor="@color/colorResultValue"
                         android:enabled="false"
                         android:gravity="end"
-                        android:background="@drawable/boxed_edittext_normal"
+                        android:background="@drawable/duration_result_box"
                         android:focusable="false"
                         android:layout_weight="5"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
                     <EditText
                         android:enabled="false"
-                        android:background="@drawable/boxed_edittext_filled"
+                        android:background="@drawable/duration_result_box_reverse"
                         android:focusable="false"
                         android:layout_weight="7"
                         android:layout_width="0dp"
@@ -510,7 +512,7 @@
                         android:textColor="@color/colorResultValue"
                         android:enabled="false"
                         android:gravity="end"
-                        android:background="@drawable/boxed_edittext_normal"
+                        android:background="@drawable/duration_result_box"
                         android:focusable="false"
                         android:layout_weight="8"
                         android:layout_width="0dp"

@@ -2,6 +2,7 @@ package com.doublesibi.utils.calc.datecalculator;
 
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -15,8 +16,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -55,6 +58,14 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
 
     private boolean ableToSave = false;
 
+    private String[] constantStr = {"年度を選択下さい。",
+                                    "月を選択下さい。",
+                                    "日を選択下さい。",
+                                    "計算した結果のみ保存可能です。！",
+                                    "年と月から入力下さい。",
+                                    "保存",
+                                    "キャンセル"};
+
     public DurationFragment() {
         // Required empty public constructor
     }
@@ -69,7 +80,7 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.main, menu);
-        menu.findItem(R.id.action_settings).setVisible(true);
+        menu.findItem(R.id.action_history).setVisible(true);
     }
 
     @Override
@@ -105,40 +116,39 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                 // year or month or day
                 case R.id.styy:
                     this.ableToSave = false;
-
-                    numberPickerDilaog(0, 3000, styy, Constants.INPUT_START_YEAR, "年度を選択下さい。");
+                    numberPickerDilaog(0, 3000, styy, Constants.INPUT_START_YEAR, constantStr[0]);
                     break;
 
                 case R.id.stmm:
                     this.ableToSave = false;
 
-                    numberPickerDilaog(1, 12, stmm, Constants.INPUT_START_MONTH, "月を選択下さい。");
+                    numberPickerDilaog(1, 12, stmm, Constants.INPUT_START_MONTH, constantStr[1]);
                     break;
 
                 case R.id.stdd:
                     this.ableToSave = false;
 
                     maxDays = myCalendar.getMaxDayOfMonth(enyy, enmm);
-                    numberPickerDilaog(1, maxDays, stdd, Constants.INPUT_START_DATE, "日を選択下さい。");
+                    numberPickerDilaog(1, maxDays, stdd, Constants.INPUT_START_DATE, constantStr[2]);
                     //Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.enyy:
                     this.ableToSave = false;
 
-                    numberPickerDilaog(0, 3000, enyy, Constants.INPUT_END_YEAR, "年度を選択下さい。");
+                    numberPickerDilaog(0, 3000, enyy, Constants.INPUT_END_YEAR, constantStr[0]);
                     break;
 
                 case R.id.enmm:
                     this.ableToSave = false;
 
-                    numberPickerDilaog(1, 12, enmm, Constants.INPUT_END_MONTH, "月を選択下さい。");
+                    numberPickerDilaog(1, 12, enmm, Constants.INPUT_END_MONTH, constantStr[1]);
                     break;
 
                 case R.id.endd:
                     this.ableToSave = false;
 
                     maxDays = myCalendar.getMaxDayOfMonth(enyy, enmm);
-                    numberPickerDilaog(1, maxDays, endd, Constants.INPUT_END_DATE, "日を選択下さい。");
+                    numberPickerDilaog(1, maxDays, endd, Constants.INPUT_END_DATE, constantStr[2]);
                     //Toast.makeText(getContext(), "開始日付", Toast.LENGTH_SHORT).show();
                     break;
                 // button
@@ -220,11 +230,11 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                 case R.id.btnDuraSave:
 
                     if (! this.ableToSave) {
-                        Toast.makeText(getContext(), "計算した結果のみ保存可能です。！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), constantStr[3], Toast.LENGTH_SHORT).show();
                         break;
                     }
 
-                    HistItem histItem = new HistItem();
+                    final HistItem histItem = new HistItem();
 
                     int saveDate = Integer.valueOf(startYY.getText().toString()) * 10000 +
                                     Integer.valueOf(startMM.getText().toString()) * 100 +
@@ -245,19 +255,66 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                     histItem.yearmonths = result4_months.getText().toString();
                     histItem.yeardays = result4_days.getText().toString();
 
-                    DurationItemOpenHelper helper = new DurationItemOpenHelper(getActivity());
-                    final SQLiteDatabase db = helper.getWritableDatabase();
+                    // input memo of duration.
+                    LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getContext());
+                    View mView = layoutInflaterAndroid.inflate(R.layout.input_dialogbox, null);
+                    AlertDialog.Builder inputDialog = new AlertDialog.Builder(getContext());
+                    final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-                    long ret = helper.insertDuration(db, histItem);
-//                    if (ret ) {
-                        //Ok
-                        //Duplicate
-                        //Other
-                        //Toast.makeText(getContext(), "(duration)inserted id :" + ret, Toast.LENGTH_SHORT).show();
-//                    }
-                    helper.close();
+                    inputDialog.setView(mView);
 
-                    this.ableToSave = false;
+                    final EditText editTextInputMemo = (EditText) mView.findViewById(R.id.inputMemo);
+                    inputDialog.setCancelable(false)
+                            .setPositiveButton(this.constantStr[5], new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialogBox, int id) {
+                                    histItem.name = editTextInputMemo.getText().toString();
+                                    DurationItemOpenHelper helper = new DurationItemOpenHelper(getActivity());
+                                    final SQLiteDatabase db = helper.getWritableDatabase();
+
+                                    long ret = helper.insertDuration(db, histItem);
+                                    Log.d(LOGTAG, "(duration) name:" + histItem.name + ", insertedId:" + ret);
+                                    helper.close();
+
+                                    imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+                                    ableToSave = false;
+
+                                    Toast.makeText(getContext(), "計算した期間について保存しました。\n履歴から確認できます。", Toast.LENGTH_LONG).show();
+                                }
+                            })
+
+                            .setNegativeButton(constantStr[6],
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialogBox, int id) {
+                                            dialogBox.cancel();
+
+                                            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+                                        }
+                                    });
+
+                    AlertDialog alertDialogAndroid = inputDialog.create();
+                    alertDialogAndroid.show();
+
+                    //InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
+                    alertDialogAndroid.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+                    alertDialogAndroid.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+
+//                    DurationItemOpenHelper helper = new DurationItemOpenHelper(getActivity());
+//                    final SQLiteDatabase db = helper.getWritableDatabase();
+//
+//                    long ret = helper.insertDuration(db, histItem);
+////                    if (ret ) {
+//                        //Ok
+//                        //Duplicate
+//                        //Other
+//                        //Toast.makeText(getContext(), "(duration)inserted id :" + ret, Toast.LENGTH_SHORT).show();
+////                    }
+//                    helper.close();
+//
+//                    this.ableToSave = false;
+//
+//                    Toast.makeText(getContext(), "計算した期間を保存しました。\n履歴から確認できます。", Toast.LENGTH_LONG).show();
 
                     break;
 
@@ -275,18 +332,18 @@ public class DurationFragment extends Fragment implements View.OnClickListener{
                         endymd = enyy * 10000 + enmm * 100 + endd;
 
                     } catch(NumberFormatException e) {
-                        Toast.makeText(getContext(), "input date.!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "check input date.!", Toast.LENGTH_SHORT).show();
                         break;
                     }
 
 
                     if(styy == 0 || stmm == 0 || stdd == 0) {
-                        Toast.makeText(getContext(), "input start date.!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "check input start date.!", Toast.LENGTH_SHORT).show();
                         break;
                     }
 
                     if(enyy == 0 || enmm == 0 || endd == 0) {
-                        Toast.makeText(getContext(), "input end date.!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "check input end date.!", Toast.LENGTH_SHORT).show();
                         break;
                     }
 

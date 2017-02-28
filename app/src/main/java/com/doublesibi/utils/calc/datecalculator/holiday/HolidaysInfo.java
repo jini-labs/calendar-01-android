@@ -32,8 +32,8 @@ public class HolidaysInfo {
     private ArrayList<RangeDate> betweens = null;
 
     private int[][][] holidayCalendar;
-
     private MyCalendar cal = null;
+    private String[] constantStr = {"振替休日", "国民休日"};
 
     public HolidaysInfo() {
         this.holidays = new ArrayList<>();
@@ -398,8 +398,7 @@ public class HolidaysInfo {
                                 HolidayItem newItem = new HolidayItem();
                                 newItem.ymd = this.cal.getCurrentYMD();
                                 newItem.md = newItem.ymd % 10000;
-                                newItem.name = "振替休日";
-
+                                newItem.name = constantStr[0];
                                 retSubstitutesDay.add(newItem);
                                 break;
                             } else {
@@ -496,7 +495,7 @@ public class HolidaysInfo {
                                     HolidayItem newItem = new HolidayItem();
                                     newItem.ymd = this.cal.getCurrentYMD();
                                     newItem.md = newItem.ymd % 10000;
-                                    newItem.name = "国民休日";
+                                    newItem.name = constantStr[1];
                                     retBetweensDay.add(newItem);
                                 }
                             }
