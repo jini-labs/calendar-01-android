@@ -238,6 +238,7 @@ public class DurationHistActivity extends AppCompatActivity {
             item.setEndDate(temp2);
 
             item.setDurDays(c.getString(2) + constantStr[11]);
+            item.setDurationResult("[" + item.getDurDays() + "]");
 
             if (StrToInt(c.getString(3)) > 0 ) {
                 item.setDurWeeksDays(c.getString(3) +
@@ -247,7 +248,10 @@ public class DurationHistActivity extends AppCompatActivity {
                             c.getString(4) +
                             constantStr[11]);
                 }
+                item.setDurationResult(item.getDurationResult() + ", [" + item.getDurWeeksDays() + "]");
             }
+            item.setDurationResult(item.getDurationResult() + "\n");
+
             if (StrToInt(c.getString(5)) > 0 ) {
                 item.setDurMonthsDays(c.getString(5) +
                         constantStr[15]);
@@ -256,7 +260,7 @@ public class DurationHistActivity extends AppCompatActivity {
                             c.getString(6) +
                             constantStr[11]);
                 }
-
+                item.setDurationResult(item.getDurationResult() + "[" + item.getDurMonthsDays() + "]");
             }
             if (StrToInt(c.getString(7)) > 0 ) {
                 item.setDurYearsMonthsDays(c.getString(7)
@@ -271,7 +275,9 @@ public class DurationHistActivity extends AppCompatActivity {
                             c.getString(9) +
                             constantStr[11]);
                 }
+                item.setDurationResult(item.getDurationResult() + ", [" + item.getDurYearsMonthsDays() + "]");
             }
+            item.setDurationResult(item.getDurationResult() + " ");
 
             if (c.getString(10).length() > 0 ) {
                 item.setName(c.getString(10));
@@ -345,10 +351,8 @@ public class DurationHistActivity extends AppCompatActivity {
             enDateView.setText(items.get(position).getEndDate());
             enDateView.setTextColor(Color.rgb(164, 35, 121));
 
-            ((TextView)convertView.findViewById(R.id.durationDays)).setText(items.get(position).getDurDays());
-            ((TextView)convertView.findViewById(R.id.durationWeeksDays)).setText(items.get(position).getDurWeeksDays());
-            ((TextView)convertView.findViewById(R.id.durationMonthsDays)).setText(items.get(position).getDurMonthsDays());
-            ((TextView)convertView.findViewById(R.id.durationYearsMonthsDays)).setText(items.get(position).getDurYearsMonthsDays());
+            ((TextView)convertView.findViewById(R.id.durationName)).setText(items.get(position).getName());
+            ((TextView)convertView.findViewById(R.id.durationResult)).setText(items.get(position).getDurationResult());
 
             return convertView;
         }
