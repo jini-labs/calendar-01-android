@@ -23,9 +23,28 @@
     <color name="colorResultValue">#AA5050</color>
     <color name="colorResultValue1">#AA5050</color>
 
+    <color name="colorNormalButtonGradientStart">#054019</color>
+    <color name="colorNormalButtonGradientEnd">#09742D</color>
+    <color name="colorPressedButtonGradientStart">#09742D</color>
+    <color name="colorPressedButtonGradientEnd">#29BF2A</color>
+
+
     <color name="colorButtonNormal">#09742D</color>
     <color name="colorButtonPressed">#69D266</color>
     <color name="colorButtonFocused">#69D266</color>
 
+    <color name="colorDayReverse">#09742D</color>
+    <color name="colorDayHeadSolid">#CCFFCC</color>
+    <color name="colorDayLeftHeadSolid">#69D266</color>
+    <color name="colorDayBoxSolid">#DFFFDF</color>
+    <color name="colorTodayBoxSolid">#A6C6D4</color>
+    <color name="colorDayBoxStroke">#09742D</color>
+
+    <color name="colorGridview">#DFFFDF</color>
+
+    <color name="colorDurationTableHead">#000000</color>
+    <color name="colorEventdayResult">#DFFFDF</color>
+
     <color name="boxed_edittext_filled_color">#09742D</color>
+
 </resources>

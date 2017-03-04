@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_history) {
             Intent intent;
             Log.d(LOGTAG, "selected action menu.(" + selectedMenu + ")");
             switch(selectedMenu) {

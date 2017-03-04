@@ -11,6 +11,8 @@ public class DurationHistItem {
     String durWeeksDays;
     String durMonthsDays;
     String durYearsMonthsDays;
+    String name;
+    String durationResult;
 
     public DurationHistItem() {
         this.startDate = "";
@@ -19,6 +21,8 @@ public class DurationHistItem {
         this.durWeeksDays = "";
         this.durMonthsDays = "";
         this.durYearsMonthsDays = "";
+        this.name = "";
+        this.durationResult = "";
     }
 
     public String getStartDate() {
@@ -69,6 +73,22 @@ public class DurationHistItem {
         this.durYearsMonthsDays = durYearsMonthsDays;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDurationResult() {
+        return durationResult;
+    }
+
+    public void setDurationResult(String durationResult) {
+        this.durationResult = durationResult;
+    }
+
     @Override
     public String toString() {
         return "DurationHistItem{" +
@@ -78,6 +98,8 @@ public class DurationHistItem {
                 ", durWeeksDays='" + durWeeksDays + '\'' +
                 ", durMonthsDays='" + durMonthsDays + '\'' +
                 ", durYearsMonthsDays='" + durYearsMonthsDays + '\'' +
+                ", name='" + name + '\'' +
+                ", result='" + name + '\'' +
                 '}';
     }
 }

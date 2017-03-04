@@ -39,6 +39,26 @@ public class DurationHistActivity extends AppCompatActivity {
     private DurationHistAdaptor adapter;
     private ListView listView;
 
+
+    private String[] constantStr = {"年度を選択下さい。",
+                                    "月を選択下さい。",
+                                    "日を選択下さい。",
+                                    "計算した結果のみ保存可能です。！",
+                                    "年と月から入力下さい。",
+                                    "保存",
+                                    "キャンセル",
+                                    "、",
+                                    " 年", //8
+                                    " カ月", //9
+                                    " 週", //10
+                                    " 日", //11
+                                    " 前",
+                                    " 後",
+                                    " 週, ",
+                                    "カ月, ",
+                                    " 年, ",
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -192,7 +212,8 @@ public class DurationHistActivity extends AppCompatActivity {
                             "monthdays",
                             "years",
                             "yearmonths",
-                            "yeardays" };
+                            "yeardays",
+                            "name" };
 
         Cursor c = db.query("DateDuration", columns,
                             "stDate>?", new String[] {""+startDate},
@@ -216,40 +237,50 @@ public class DurationHistActivity extends AppCompatActivity {
             temp2 = MyCalendar.convertDateWeekName(getResources(), Integer.parseInt(temp1), "/");
             item.setEndDate(temp2);
 
-            item.setDurDays(c.getString(2) + " 日");
+            item.setDurDays(c.getString(2) + constantStr[11]);
+            item.setDurationResult("[" + item.getDurDays() + "]");
 
             if (StrToInt(c.getString(3)) > 0 ) {
                 item.setDurWeeksDays(c.getString(3) +
-                        " 週, ");
+                        constantStr[14]);
                 if (StrToInt(c.getString(4)) > 0 ) {
                     item.setDurWeeksDays(item.getDurWeeksDays() +
                             c.getString(4) +
-                            " 日");
+                            constantStr[11]);
                 }
+                item.setDurationResult(item.getDurationResult() + ", [" + item.getDurWeeksDays() + "]");
             }
+            item.setDurationResult(item.getDurationResult() + "\n");
+
             if (StrToInt(c.getString(5)) > 0 ) {
                 item.setDurMonthsDays(c.getString(5) +
-                        "カ月, ");
+                        constantStr[15]);
                 if (StrToInt(c.getString(6)) > 0 ) {
                     item.setDurMonthsDays(item.getDurMonthsDays() +
                             c.getString(6) +
-                            " 日");
+                            constantStr[11]);
                 }
-
+                item.setDurationResult(item.getDurationResult() + "[" + item.getDurMonthsDays() + "]");
             }
             if (StrToInt(c.getString(7)) > 0 ) {
                 item.setDurYearsMonthsDays(c.getString(7)
-                        + " 年, ");
+                        + constantStr[16]);
                 if (StrToInt(c.getString(8)) > 0) {
                     item.setDurYearsMonthsDays(item.getDurYearsMonthsDays() +
                             c.getString(8) +
-                            " カ月, ");
+                            constantStr[15]);
                 }
                 if (StrToInt(c.getString(9)) > 0) {
                     item.setDurYearsMonthsDays(item.getDurYearsMonthsDays() +
                             c.getString(9) +
-                            " 日");
+                            constantStr[11]);
                 }
+                item.setDurationResult(item.getDurationResult() + ", [" + item.getDurYearsMonthsDays() + "]");
+            }
+            item.setDurationResult(item.getDurationResult() + " ");
+
+            if (c.getString(10).length() > 0 ) {
+                item.setName(c.getString(10));
             }
 
             Log.d(LOGTAG, item.toString());
@@ -320,10 +351,8 @@ public class DurationHistActivity extends AppCompatActivity {
             enDateView.setText(items.get(position).getEndDate());
             enDateView.setTextColor(Color.rgb(164, 35, 121));
 
-            ((TextView)convertView.findViewById(R.id.durationDays)).setText(items.get(position).getDurDays());
-            ((TextView)convertView.findViewById(R.id.durationWeeksDays)).setText(items.get(position).getDurWeeksDays());
-            ((TextView)convertView.findViewById(R.id.durationMonthsDays)).setText(items.get(position).getDurMonthsDays());
-            ((TextView)convertView.findViewById(R.id.durationYearsMonthsDays)).setText(items.get(position).getDurYearsMonthsDays());
+            ((TextView)convertView.findViewById(R.id.durationName)).setText(items.get(position).getName());
+            ((TextView)convertView.findViewById(R.id.durationResult)).setText(items.get(position).getDurationResult());
 
             return convertView;
         }

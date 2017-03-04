@@ -23,6 +23,7 @@ public class DurationItemOpenHelper extends SQLiteOpenHelper {
                 tablename + "(" +
                 "stDate text not null," +
                 "enDate text not null," +
+                "name text not null," +
                 "days text," +
                 "weeks text," +
                 "weekdays text," +
@@ -52,6 +53,7 @@ public class DurationItemOpenHelper extends SQLiteOpenHelper {
         ContentValues insertValues = new ContentValues();
         insertValues.put("stDate", item.stDate);
         insertValues.put("enDate", item.enDate);
+        insertValues.put("name", item.name);
         insertValues.put("days", item.days);
         insertValues.put("weeks", item.weeks);
         insertValues.put("weekdays", item.weekdays);
