@@ -38,6 +38,7 @@
     <color name="colorDayLeftHeadSolid">#69D266</color>
     <color name="colorDayBoxSolid">#DFFFDF</color>
     <color name="colorTodayBoxSolid">#A6C6D4</color>
+    <color name="colorOtherMonthDayBoxSolid">#EFFFDF</color>
     <color name="colorDayBoxStroke">#09742D</color>
 
     <color name="colorGridview">#DFFFDF</color>
