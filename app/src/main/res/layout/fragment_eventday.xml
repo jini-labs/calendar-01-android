@@ -149,7 +149,7 @@
                         android:textSize="@dimen/eve_input_valuetextsize"
                         android:textColor="@color/colorInputEndDate"
                         android:gravity="end"
-                        android:background="@drawable/boxed_edittext_normal"
+                        android:theme="@style/EditTextStyle"
                         android:layout_weight="7"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
@@ -174,7 +174,7 @@
                         android:textSize="@dimen/eve_input_valuetextsize"
                         android:textColor="@color/colorInputEndDate"
                         android:gravity="end"
-                        android:background="@drawable/boxed_edittext_normal"
+                        android:theme="@style/EditTextStyle"
                         android:layout_weight="7"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
@@ -199,7 +199,7 @@
                         android:textSize="@dimen/eve_input_valuetextsize"
                         android:textColor="@color/colorInputEndDate"
                         android:gravity="end"
-                        android:background="@drawable/boxed_edittext_normal"
+                        android:theme="@style/EditTextStyle"
                         android:layout_weight="7"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
@@ -224,7 +224,8 @@
                         android:textSize="@dimen/eve_input_valuetextsize"
                         android:textColor="@color/colorInputEndDate"
                         android:gravity="end"
-                        android:background="@drawable/boxed_edittext_normal"
+                        android:theme="@style/EditTextStyle"
+                        android:cursorVisible="true"
                         android:layout_weight="7"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>

@@ -384,67 +384,131 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         int[][] currMonthDays = new int[6][7];
         int[][] nextMonthDays = new int[6][7];
 
-        int prevYM = 0, nextYM = 0;
+        int currYM = 0, prevYM = 0, nextYM = 0;
 
         myCalendar.setCalendar(year, month, 1);
-        int currYM = myCalendar.getCurrentYMD() / 100;
-        Log.d(LOGTAG, "setDays ->  " + "year:" + year + ", month:" + month);
-        Log.d(LOGTAG, "            currYM:" + currYM);
+
+        // this month
+        currYM = myCalendar.getCurrentYMD() / 100;
+        holidaysInfo.clearHolidays();
+        holidaysInfo.setHolidayYear(currYM / 100);
+        holidaysInfo.setHolidayCalendar();
+        currMonthDays = holidaysInfo.getHolidayCalendar(currYM % 100);
 
         this.tvYear.setText("" + year);
         this.tvMonth.setText("" + month);
 
+        HolidaysInfo prevHolidayInfo = null;
+        HolidaysInfo nextHolidayInfo = null;
+
+        // 年号を表示
+        setYearMonth(currYM);
+
         if (currYM % 100 == 1) {
-            myCalendar.add(Calendar.MONTH, -1);
-            prevYM = myCalendar.getCurrentYMD() / 100;
-            Log.d(LOGTAG, "----->prev year month :" + prevYM);
-            holidaysInfo.clearHolidays();
-            holidaysInfo.setHolidayYear(prevYM / 100);
-            holidaysInfo.setHolidayCalendar();
-            prevMonthDays = holidaysInfo.getHolidayCalendar(prevYM % 100);
-
-            Log.d(LOGTAG, "----->curr year month :" + currYM);
-            holidaysInfo.clearHolidays();
-            holidaysInfo.setHolidayYear(currYM / 100);
-            holidaysInfo.setHolidayCalendar();
-            currMonthDays = holidaysInfo.getHolidayCalendar(currYM % 100);
-
-            nextYM = myCalendar.getYearMonth(1);
+            // next month
+            nextYM = currYM + 1;
             nextMonthDays = holidaysInfo.getHolidayCalendar(nextYM % 100);
 
-            setYearMonth(currYM);
+            // prev month
+            myCalendar.setCalendar(year, month, 1);
+            myCalendar.add(Calendar.MONTH, -1);
+            Log.d(LOGTAG, "----->curr year month(1) :" + myCalendar.getCurrentYMD("-"));
+            prevYM = myCalendar.getCurrentYMD() / 100;
+            prevHolidayInfo = new HolidaysInfo();
+            prevHolidayInfo.setBaseHolidaysInfo(this.xmlPullParser);
+            prevHolidayInfo.setCountry(holidaysInfo.getCountry());
+            prevHolidayInfo.clearHolidays();
+            prevHolidayInfo.setHolidayYear(prevYM / 100);
+            prevHolidayInfo.setHolidayCalendar();
+            prevMonthDays = prevHolidayInfo.getHolidayCalendar(prevYM % 100);
+
+            Log.d(LOGTAG, "----->curr year month(1) :" + prevYM + " - " + currYM + " - " +  nextYM);
         } else if (currYM % 100 == 12) {
+            prevYM = currYM - 1;
+            prevMonthDays = holidaysInfo.getHolidayCalendar(prevYM % 100);
+
+            myCalendar.setCalendar(year, month, 1);
             myCalendar.add(Calendar.MONTH, 1);
             nextYM = myCalendar.getCurrentYMD() / 100;
 
-            holidaysInfo.clearHolidays();
-            holidaysInfo.setHolidayYear(nextYM / 100);
-            holidaysInfo.setHolidayCalendar();
-            nextMonthDays = holidaysInfo.getHolidayCalendar(nextYM % 100);
-
-            holidaysInfo.clearHolidays();
-            holidaysInfo.setHolidayYear(currYM / 100);
-            holidaysInfo.setHolidayCalendar();
-            currMonthDays = holidaysInfo.getHolidayCalendar(currYM % 100);
-
-            prevYM = myCalendar.getYearMonth(-1);
-            prevMonthDays = holidaysInfo.getHolidayCalendar(prevYM % 100);
-
-            setYearMonth(currYM);
-
+            nextHolidayInfo = new HolidaysInfo();
+            nextHolidayInfo.setBaseHolidaysInfo(this.xmlPullParser);
+            nextHolidayInfo.setCountry(holidaysInfo.getCountry());
+            nextHolidayInfo.setHolidayYear(nextYM / 100);
+            nextHolidayInfo.setHolidayCalendar();
+            nextMonthDays = nextHolidayInfo.getHolidayCalendar(nextYM % 100);
+            Log.d(LOGTAG, "----->curr year month(2) :" + prevYM + " - " + currYM + " - " +  nextYM);
         } else {
             prevYM = currYM - 1;
-            nextYM = currYM + 1;
-
-            holidaysInfo.clearHolidays();
-            holidaysInfo.setHolidayYear(currYM / 100);
-            holidaysInfo.setHolidayCalendar();
-            currMonthDays = holidaysInfo.getHolidayCalendar(currYM % 100);
-
             prevMonthDays = holidaysInfo.getHolidayCalendar(prevYM % 100);
+            nextYM = currYM + 1;
             nextMonthDays = holidaysInfo.getHolidayCalendar(nextYM % 100);
+            Log.d(LOGTAG, "----->curr year month(3) :" + prevYM + " - " + currYM + " - " +  nextYM);
+        }
 
-            setYearMonth(currYM);
+        // for debug
+//        for (int j = 0; j < 6; j++) {
+//            String weekStr = "";
+//            for (int k = 0; k < 7; k++) {
+//                if (prevMonthDays[j][k] == 0) {
+//                    String s = String.format("    ");
+//                    weekStr = weekStr + "    ";
+//                } else {
+//                    String s = String.format("%4d", prevMonthDays[j][k]);
+//                    weekStr = weekStr + s;
+//                }
+//            }
+//            Log.d(LOGTAG, "Prev month :" + weekStr);
+//        }
+
+        // for debug
+//        for (int j = 0; j < 6; j++) {
+//            String weekStr = "";
+//            for (int k = 0; k < 7; k++) {
+//                if (currMonthDays[j][k] == 0) {
+//                    String s = String.format("    ");
+//                    weekStr = weekStr + "    ";
+//                } else {
+//                    String s = String.format("%4d", currMonthDays[j][k]);
+//                    weekStr = weekStr + s;
+//                }
+//            }
+//            Log.d(LOGTAG, "Curr month :" + weekStr);
+//        }
+
+        int prevMonthStartIdx = 0;
+        for (int i = 5; i >= 0; i--) {
+            for (int j = 6; j >= 0; j--) {
+                if (prevMonthDays[i][j] != 0) {
+                    prevMonthStartIdx = i;
+                    break;
+                }
+            }
+            if (prevMonthStartIdx > 0) {
+                break;
+            }
+        }
+
+        int curMonthLatestIdx_i = 0;
+        int curMonthLatestIdx_j = 0;
+        for (int i = 5; i >= 0; i--) {
+            for (int j = 6; j >= 0; j--) {
+                if (currMonthDays[i][j] != 0) {
+                    curMonthLatestIdx_i = i;
+                    curMonthLatestIdx_j = j;
+
+                    break;
+                }
+            }
+            if (curMonthLatestIdx_i != 0 || curMonthLatestIdx_j != 0) {
+                if (curMonthLatestIdx_j == 6) {
+                    curMonthLatestIdx_i++;
+                    curMonthLatestIdx_j = 0;
+
+                }
+
+                break;
+            }
         }
 
         boolean includeToday = false;
@@ -455,8 +519,25 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 7; j++) {
                 textViews[i][j].setText("");
-
-                if (currMonthDays[i][j] != 0) {
+                if (currMonthDays[i][j] == 0) {
+                    if (i == 0) {
+                        textViews[i][j].setText("" + prevMonthDays[prevMonthStartIdx][j] % 100);
+                        if (prevMonthDays[prevMonthStartIdx][j] > 100) {
+                            textViews[i][j].setTextColor(Color.rgb(215, 108, 108));
+                        } else {
+                            textViews[i][j].setTextColor(Color.rgb(128, 128, 128));
+                        }
+                        textViews[i][j].setBackground(getResources().getDrawable(R.drawable.calendar_day_box_othermonth));
+                    } else if (i >= curMonthLatestIdx_i) {
+                        textViews[i][j].setText("" + nextMonthDays[i-curMonthLatestIdx_i][j] % 100);
+                        if (nextMonthDays[i-curMonthLatestIdx_i][j] > 100) {
+                            textViews[i][j].setTextColor(Color.rgb(215, 108, 108));
+                        } else {
+                            textViews[i][j].setTextColor(Color.rgb(128, 128, 128));
+                        }
+                        textViews[i][j].setBackground(getResources().getDrawable(R.drawable.calendar_day_box_othermonth));
+                    }
+                } else {
                     if (currMonthDays[i][j] > 100) {
                         textViews[i][j].setText("" + currMonthDays[i][j] % 100);
                         if (j == 0) {
@@ -479,18 +560,34 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
                             textViews[i][j].setTextColor(Color.BLACK);
                         }
                     }
-                }
 
-                // set today
-                if (includeToday && textViews[i][j].getText().toString().equals("" + today % 100)) {
-                    //textViews[i][j].setBackgroundColor(Color.CYAN);
-                    textViews[i][j].setBackground(getResources().getDrawable(R.drawable.calendar_today_box));
-                } else {
-                    textViews[i][j].setBackground(getResources().getDrawable(R.drawable.calendar_day_box));
-                }
 
+                    // set today
+                    if (includeToday && textViews[i][j].getText().toString().equals("" + today % 100)) {
+                        //textViews[i][j].setBackgroundColor(Color.CYAN);
+                        textViews[i][j].setBackground(getResources().getDrawable(R.drawable.calendar_today_box));
+                    } else {
+                        textViews[i][j].setBackground(getResources().getDrawable(R.drawable.calendar_day_box));
+                    }
+
+                }
             }
         }
+
+        // for debug
+//        for (int j = 0; j < 6; j++) {
+//            String weekStr = "";
+//            for (int k = 0; k < 7; k++) {
+//                if (nextMonthDays[j][k] == 0) {
+//                    String s = String.format("    ");
+//                    weekStr = weekStr + "    ";
+//                } else {
+//                    String s = String.format("%4d", nextMonthDays[j][k]);
+//                    weekStr = weekStr + s;
+//                }
+//            }
+//            Log.d(LOGTAG, "Next month :" + weekStr);
+//        }
     }
 
     private void getHolidayList(String country) {

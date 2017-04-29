@@ -60,7 +60,10 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
             "計算した結果のみ保存可能です。！",
             "年と月から入力下さい。",
             "保存",
-            "キャンセル"};
+            "キャンセル",
+            "ある日\nを入力してください。",
+            "計算期間日・週・月・年数\nを入力してください。",
+            };
 
     public EventdayFragment() {
         // Required empty public constructor
@@ -211,14 +214,29 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                     break;
 
                 case R.id.btn_calc_eventday:
+                    //close keyboard.
+
+                    final InputMethodManager imm0 = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm0.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+
                     CalcEventDate calcEventDate = new CalcEventDate();
                     int[] params = new int[8];
                     for (int i = 0; i < 8; i++) {
                         params[i] = 0;
                     }
-                    params[0] = Integer.parseInt(eventStartYY.getText().toString().trim());
-                    params[1] = Integer.parseInt(eventStartMM.getText().toString().trim());
-                    params[2] = Integer.parseInt(eventStartDD.getText().toString().trim());
+                    if (eventStartYY.getText().toString().length() > 0)
+                        params[0] = Integer.parseInt(eventStartYY.getText().toString().trim());
+                    if (eventStartMM.getText().toString().length() > 0)
+                        params[1] = Integer.parseInt(eventStartMM.getText().toString().trim());
+                    if (eventStartDD.getText().toString().length() > 0)
+                        params[2] = Integer.parseInt(eventStartDD.getText().toString().trim());
+
+                    if (params[0] == 0 || params[1] == 0 || params[2] == 0) {
+                        Toast.makeText(getContext(), constantStr[7], Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+
                     params[3] = this.beforeAfter;
 
                     String sTmp = "";
@@ -242,6 +260,11 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                         params[4] = Integer.parseInt(value1.getText().toString().trim());
                     }
 
+                    if (params[7] == 0 && params[6] == 0 && params[5] == 0 && params[4] == 0) {
+                        Toast.makeText(getContext(), constantStr[8], Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+
                     int[] retYmd = calcEventDate.getEventYmd(params);
 
                     resultEveYear.setText("" + retYmd[0]/10000);
@@ -257,7 +280,6 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
 
                 case R.id.btnEventdaySave:
                     if (! this.ableToSave) {
-
                         Toast.makeText(getContext(), constantStr[3], Toast.LENGTH_SHORT).show();
                         break;
                     }
