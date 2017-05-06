@@ -22,6 +22,8 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:layout_marginBottom="15dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="36dp">
 
@@ -93,27 +95,38 @@
                     android:layout_marginRight="5dp"
                     android:layout_width="30dp"
                     android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                <ImageButton
-                    android:id="@+id/btn_durat_stdt"
-                    android:src="@drawable/ic_calendar"
-                    android:gravity="center"
-                    android:layout_marginRight="5dp"
-                    android:layout_width="36dp"
-                    android:layout_height="match_parent"/>
+                    <ImageButton
+                        android:id="@+id/btn_durat_stdt"
+                        android:background="@color/colorBackground"
+                        android:src="@drawable/ic_calendar"
+                        android:scaleType="fitCenter"
+                        android:layout_weight=".5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
 
-                <ImageButton
-                    android:id="@+id/btn_start_today"
-                    android:src="@drawable/ic_today"
-                    android:gravity="center"
-                    android:layout_width="36dp"
-                    android:layout_height="match_parent"/>
+                    <ImageButton
+                        android:id="@+id/btn_start_today"
+                        android:background="@color/colorBackground"
+                        android:src="@drawable/ic_today"
+                        android:scaleType="fitCenter"
+                        android:gravity="center"
+                        android:layout_weight=".5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                </LinearLayout>
             </LinearLayout>
 
             <!--2nd date-->
             <LinearLayout
                 android:gravity="center"
                 android:orientation="horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="36dp">
@@ -187,20 +200,30 @@
                     android:layout_width="30dp"
                     android:layout_height="wrap_content"/>
 
-                <ImageButton
-                    android:id="@+id/btn_durat_endt"
-                    android:src="@drawable/ic_calendar"
-                    android:gravity="center"
-                    android:layout_marginRight="5dp"
-                    android:layout_width="36dp"
-                    android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                <ImageButton
-                    android:id="@+id/btn_end_today"
-                    android:src="@drawable/ic_today"
-                    android:gravity="center"
-                    android:layout_width="36dp"
-                    android:layout_height="wrap_content"/>
+                    <ImageButton
+                        android:id="@+id/btn_durat_endt"
+                        android:background="@color/colorBackground"
+                        android:src="@drawable/ic_calendar"
+                        android:scaleType="fitCenter"
+                        android:layout_weight=".5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+
+                    <ImageButton
+                        android:id="@+id/btn_end_today"
+                        android:background="@color/colorBackground"
+                        android:src="@drawable/ic_today"
+                        android:scaleType="fitCenter"
+                        android:gravity="center"
+                        android:layout_weight=".5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                </LinearLayout>
             </LinearLayout>
 
             <!-- Button -->

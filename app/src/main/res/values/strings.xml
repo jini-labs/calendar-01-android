@@ -1,8 +1,8 @@
 
 <resources>
     <!-- app -->
-    <string name="app_name">Duration between date</string>
-    <string name="app_start_name">Date duration</string>
+    <string name="app_name">日付計算</string>
+    <string name="app_start_name">日付計算</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
