@@ -97,18 +97,31 @@
                     android:layout_marginEnd="5dp"
                     android:layout_width="30dp"
                     android:layout_height="wrap_content"/>
-                <ImageButton
-                    android:id="@+id/btn_event_stdt"
-                    android:layout_marginEnd="5dp"
-                    android:src="@drawable/ic_calendar"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"/>
 
-                <ImageButton
-                    android:id="@+id/btn_start_today"
-                    android:src="@drawable/ic_today"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageButton
+                        android:id="@+id/btn_event_stdt"
+                        android:background="@color/colorBackground"
+                        android:src="@drawable/ic_calendar"
+                        android:scaleType="fitCenter"
+                        android:layout_weight=".5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+
+                    <ImageButton
+                        android:id="@+id/btn_start_today"
+                        android:background="@color/colorBackground"
+                        android:src="@drawable/ic_today"
+                        android:scaleType="fitCenter"
+                        android:gravity="center"
+                        android:layout_weight=".5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
