@@ -3,55 +3,12 @@
     android:weightSum="7"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="36sp">
-
-    <TextView
-        android:id="@+id/day_1"
-        android:background="@drawable/calendar_day_box"
-        android:gravity="end"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"/>
-    <TextView
-        android:id="@+id/day_2"
-        android:background="@drawable/calendar_day_box"
-        android:gravity="end"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"/>
-    <TextView
-        android:id="@+id/day_3"
-        android:background="@drawable/calendar_day_box"
-        android:gravity="end"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"/>
-    <TextView
-        android:id="@+id/day_4"
-        android:background="@drawable/calendar_day_box"
-        android:gravity="end"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"/>
-    <TextView
-        android:id="@+id/day_5"
-        android:background="@drawable/calendar_day_box"
-        android:gravity="end"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"/>
-    <TextView
-        android:id="@+id/day_6"
-        android:background="@drawable/calendar_day_box"
-        android:gravity="end"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"/>
-    <TextView
-        android:id="@+id/day_7"
-        android:background="@drawable/calendar_day_box"
-        android:gravity="end"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"/>
+    android:layout_height="wrap_content">
+    <include android:id="@+id/day_0" android:background="@drawable/calendar_day_box" layout="@layout/one_day" android:layout_weight="1" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    <include android:id="@+id/day_1" android:background="@drawable/calendar_day_box" layout="@layout/one_day" android:layout_weight="1" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    <include android:id="@+id/day_2" android:background="@drawable/calendar_day_box" layout="@layout/one_day" android:layout_weight="1" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    <include android:id="@+id/day_3" android:background="@drawable/calendar_day_box" layout="@layout/one_day" android:layout_weight="1" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    <include android:id="@+id/day_4" android:background="@drawable/calendar_day_box" layout="@layout/one_day" android:layout_weight="1" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    <include android:id="@+id/day_5" android:background="@drawable/calendar_day_box" layout="@layout/one_day" android:layout_weight="1" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    <include android:id="@+id/day_6" android:background="@drawable/calendar_day_box" layout="@layout/one_day" android:layout_weight="1" android:layout_width="match_parent" android:layout_height="wrap_content"/>
 </LinearLayout>

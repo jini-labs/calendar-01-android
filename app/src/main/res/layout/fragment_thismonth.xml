@@ -171,29 +171,12 @@
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
 
-                <include
-                    android:id="@+id/week_0"
-                    layout="@layout/one_week"/>
-
-                <include
-                    android:id="@+id/week_1"
-                    layout="@layout/one_week"/>
-
-                <include
-                    android:id="@+id/week_2"
-                    layout="@layout/one_week"/>
-
-                <include
-                    android:id="@+id/week_3"
-                    layout="@layout/one_week"/>
-
-                <include
-                    android:id="@+id/week_4"
-                    layout="@layout/one_week"/>
-
-                <include
-                    android:id="@+id/week_5"
-                    layout="@layout/one_week"/>
+                <include android:id="@+id/week_0" layout="@layout/one_week"/>
+                <include android:id="@+id/week_1" layout="@layout/one_week"/>
+                <include android:id="@+id/week_2" layout="@layout/one_week"/>
+                <include android:id="@+id/week_3" layout="@layout/one_week"/>
+                <include android:id="@+id/week_4" layout="@layout/one_week"/>
+                <include android:id="@+id/week_5" layout="@layout/one_week"/>
             </LinearLayout>
 
         </LinearLayout>
