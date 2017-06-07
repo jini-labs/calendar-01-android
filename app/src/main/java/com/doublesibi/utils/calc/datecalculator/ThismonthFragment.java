@@ -6,24 +6,19 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.doublesibi.utils.calc.datecalculator.common.CalcDurationDate;
-import com.doublesibi.utils.calc.datecalculator.common.Constants;
 import com.doublesibi.utils.calc.datecalculator.common.ThisMonthViewsWeek;
-import com.doublesibi.utils.calc.datecalculator.hist.DurationHistItem;
 import com.doublesibi.utils.calc.datecalculator.holiday.HolidayItem;
 import com.doublesibi.utils.calc.datecalculator.holiday.HolidayListItem;
 import com.doublesibi.utils.calc.datecalculator.holiday.HolidaysInfo;
@@ -49,13 +44,17 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
     private ArrayList<RangeDate> yearNameList;
 
     private TextView tvYear, tvMonth, tvJpName, tvJpYear;
-    private TextView[][] textViews;
 
     ArrayList<ThisMonthViewsWeek> thisMonthViews;
 
     ArrayList<HolidayListItem> holidayListItems;
 
     String[] constantStr = {"今日", " 日後"};
+
+    private Button btnRokuyo, btnMoveThisMonth;
+    private Boolean bRokuyo = false;
+    private Boolean bThisMonth = true;
+    private int thisYearMonth = 0;
 
     public ThismonthFragment() {
         if (holidayListItems == null) {
@@ -65,6 +64,9 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         if (thisMonthViews == null) {
             thisMonthViews = new ArrayList<>(6);
         }
+
+        Calendar c = Calendar.getInstance();
+        thisYearMonth = c.get(Calendar.YEAR)*100 + (c.get(Calendar.MONTH)+1);
     }
 
     @Override
@@ -103,7 +105,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         }
 
         setHoliday("Japan");
-        setDays(myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH)+1);
+        setDays(myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH) + 1);
 
         ListView listView = (ListView)view.findViewById(R.id.listViewHoliday);
         HolidayListAdaptor holidayListAdaptor = new HolidayListAdaptor(getActivity());
@@ -119,6 +121,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         int tempYM;
         final int l_year = Integer.parseInt(this.tvYear.getText().toString().trim());
         final int l_month = Integer.parseInt(this.tvMonth.getText().toString().trim());
+
         switch(v.getId()) {
             case R.id.this_year_solar:
             case R.id.this_month_solar:
@@ -146,7 +149,15 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
                 // TODO : spinner or dialogで
                 //Toast.makeText(getContext(), "click japan year", Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.btnMoveThisMonth:
+                myCalendar.setCalendar(thisYearMonth/100, (thisYearMonth%100)-1, 1);
+                tempYM = myCalendar.getCurrentPrevMonth(1);
+                setDays(tempYM/100, tempYM%100);
+                break;
+            case R.id.btnRokuyo:
+                break;
         }
+
     }
 
     private void showYearMonthDialog(int year, int month) {
@@ -550,6 +561,16 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
                 }
             }
         }
+
+        if (thisYearMonth != (year * 100 + month)) {
+            btnMoveThisMonth.setTextColor(Color.BLACK);
+            btnMoveThisMonth.setClickable(true);
+            bThisMonth = false;
+        } else {
+            btnMoveThisMonth.setTextColor(Color.WHITE);
+            btnMoveThisMonth.setClickable(false);
+            bThisMonth = true;
+        }
     }
 
     private void getHolidayList(String country) {
@@ -589,10 +610,14 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         tvJpName = ((TextView)view.findViewById(R.id.this_year_jpname));
         tvJpYear = ((TextView)view.findViewById(R.id.this_year_japanes));
 
+        btnRokuyo = (Button)(view.findViewById(R.id.btnRokuyo));
+        btnMoveThisMonth = (Button)(view.findViewById(R.id.btnMoveThisMonth));
         (view.findViewById(R.id.btnPrevMonth)).setOnClickListener(this);
         (view.findViewById(R.id.btnNextMonth)).setOnClickListener(this);
         (view.findViewById(R.id.lbThisYear)).setOnClickListener(this);
         (view.findViewById(R.id.lbThisMonth)).setOnClickListener(this);
+        btnRokuyo.setOnClickListener(this);
+        btnMoveThisMonth.setOnClickListener(this);
 
         tvYear.setOnClickListener(this);
         tvMonth.setOnClickListener(this);
