@@ -1,4 +1,4 @@
-package com.doublesibi.utils.calc.datecalculator.common;
+package com.doublesibi.utils.calc.datecalculator.dsblunar;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -8,10 +8,10 @@ import java.util.HashMap;
  */
 public class SolarLunarJP {
 
-    private DateInfoLunarSolar currentDateInfo = null;
+    private SolarLunarDateInfo currentDateInfo = null;
 
-    private static HashMap<Integer, DateInfoLunarSolar> solar2lunar;
-    private static HashMap<Integer, DateInfoLunarSolar> lunar2solar;
+    private static HashMap<Integer, SolarLunarDateInfo> solar2lunar;
+    private static HashMap<Integer, SolarLunarDateInfo> lunar2solar;
 
 
     public SolarLunarJP() {
@@ -26,19 +26,19 @@ public class SolarLunarJP {
         initinalize();
     }
 
-    public DateInfoLunarSolar getDateInfo() {
+    public SolarLunarDateInfo getDateInfo() {
         if (this.currentDateInfo != null) {
             return this.currentDateInfo;
         }
         return null;
     }
 
-    public String getRokuyoName() {
-        if (this.currentDateInfo != null) {
-            return DateInfoLunarSolar.ROKYO_NAME[this.currentDateInfo.rokuyoIdx];
-        }
-        return null;
-    }
+//    public String getRokuyoName() {
+//        if (this.currentDateInfo != null) {
+//            return Constants.ROKYO_NAME[this.currentDateInfo.rokuyoIdx];
+//        }
+//        return null;
+//    }
 
     public int getRokuyo() {
         if (this.currentDateInfo != null) {
@@ -59,9 +59,9 @@ public class SolarLunarJP {
         int loopcnt = 0;
         int retdate = 0;
         int cntDate = solar2lunar.size();
-        DateInfoLunarSolar dateInfoLunarSolar = null;
+        SolarLunarDateInfo solarLunarDateInfo = null;
 
-        if ((dateInfoLunarSolar = solar2lunar.get(solardate)) == null ) {
+        if ((solarLunarDateInfo = solar2lunar.get(solardate)) == null ) {
             Calendar c = Calendar.getInstance();
             c.set(solardate / 10000, solardate / 100 % 100 - 1, solardate % 100);
 
@@ -69,9 +69,9 @@ public class SolarLunarJP {
                 loopcnt++;
                 c.add(Calendar.DAY_OF_MONTH, -1);
                 tmpSYmd = c.get(Calendar.YEAR) * 10000 + c.get(Calendar.MONTH) * 100 + 100 + c.get(Calendar.DAY_OF_MONTH);
-                if ((dateInfoLunarSolar = solar2lunar.get(tmpSYmd)) != null) {
-                    retdate = dateInfoLunarSolar.valueDate + loopcnt;
-                    this.currentDateInfo = new DateInfoLunarSolar(solardate, 0, retdate, dateInfoLunarSolar.bLeap);
+                if ((solarLunarDateInfo = solar2lunar.get(tmpSYmd)) != null) {
+                    retdate = solarLunarDateInfo.valueDate + loopcnt;
+                    this.currentDateInfo = new SolarLunarDateInfo(solardate, 0, retdate, solarLunarDateInfo.bLeap);
                     break;
                 }
 
@@ -80,8 +80,8 @@ public class SolarLunarJP {
                     break;
             }
         } else {
-            this.currentDateInfo = dateInfoLunarSolar;
-            retdate = dateInfoLunarSolar.valueDate;
+            this.currentDateInfo = solarLunarDateInfo;
+            retdate = solarLunarDateInfo.valueDate;
         }
 
         return retdate;
@@ -96,8 +96,8 @@ public class SolarLunarJP {
     }
 
     private void putInitDate(int solardate, int lunardate, boolean bleap) {
-        solar2lunar.put((Integer)solardate, new DateInfoLunarSolar(solardate, 0, lunardate, bleap));
-        lunar2solar.put((Integer)lunardate, new DateInfoLunarSolar(lunardate, 1, solardate, bleap));
+        solar2lunar.put((Integer)solardate, new SolarLunarDateInfo(solardate, 0, lunardate, bleap));
+        lunar2solar.put((Integer)lunardate, new SolarLunarDateInfo(lunardate, 1, solardate, bleap));
 
     }
 

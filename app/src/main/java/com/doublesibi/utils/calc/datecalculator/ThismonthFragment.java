@@ -2,7 +2,6 @@ package com.doublesibi.utils.calc.datecalculator;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,8 +18,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.doublesibi.utils.calc.datecalculator.common.CalcDurationDate;
+import com.doublesibi.utils.calc.datecalculator.common.Constants;
 import com.doublesibi.utils.calc.datecalculator.common.DateInfo;
-import com.doublesibi.utils.calc.datecalculator.common.SolarLunarJP;
+import com.doublesibi.utils.calc.datecalculator.dsblunar.SolarLunarJP;
 import com.doublesibi.utils.calc.datecalculator.common.ThisMonthViewsWeek;
 import com.doublesibi.utils.calc.datecalculator.holiday.HolidayItem;
 import com.doublesibi.utils.calc.datecalculator.holiday.HolidayListItem;
@@ -33,7 +33,7 @@ import org.xmlpull.v1.XmlPullParser;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Iterator;
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +42,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
     private final String LOGTAG = "DayCalc";
 
     private MyCalendar myCalendar;
+    SolarLunarJP solarLunarJP;
     private XmlPullParser xmlPullParser;
     private HolidaysInfo holidaysInfo;
     private YearName yearName;
@@ -59,6 +60,28 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
     private Boolean bRokuyo = false;
     private int thisYearMonth = 0;
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (holidayListItems == null) {
+            holidayListItems = new ArrayList<>();
+        }
+
+        if (thisMonthViews == null) {
+            thisMonthViews = new ArrayList<>(6);
+        }
+
+        if (solarLunarJP == null) {
+            solarLunarJP = new SolarLunarJP();
+        }
+
+        if (thisYearMonth == 0) {
+            Calendar c = Calendar.getInstance();
+            thisYearMonth = c.get(Calendar.YEAR) * 100 + (c.get(Calendar.MONTH) + 1);
+        }
+    }
+
     public ThismonthFragment() {
         if (holidayListItems == null) {
             holidayListItems = new ArrayList<>();
@@ -66,6 +89,10 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
 
         if (thisMonthViews == null) {
             thisMonthViews = new ArrayList<>(6);
+        }
+
+        if (solarLunarJP == null) {
+            solarLunarJP = new SolarLunarJP();
         }
 
         Calendar c = Calendar.getInstance();
@@ -416,353 +443,73 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         holidaysInfo.setBaseHolidaysInfo(xmlPullParser);
     }
 
-    private void setDays1(int year, int month) {
-        ArrayList<DateInfo> prevMonthDays = new ArrayList<>();
-        ArrayList<DateInfo> currMonthDays = new ArrayList<>();
-        ArrayList<DateInfo> nextMonthDays = new ArrayList<>();
-        int currYM = 0, prevYM = 0, nextYM = 0;
+    private void setDays(int year, int month) {
+        int currYM;
+        HolidayItem holidayItem;
+        HashMap<Integer, HolidayItem> holidaysMap;
 
         myCalendar.setCalendar(year, month, 1);
         currYM = myCalendar.getCurrentYMD() / 100;
-
-        Log.d(LOGTAG,"setDays1  1");
-
-        // 年号を表示
-        //setYearMonth(currYM);
-
         holidaysInfo.clearHolidays();
         holidaysInfo.setHolidayYear(currYM / 100);
-        holidaysInfo.setHolidayCalendar();
+        holidaysMap = holidaysInfo.getHolidaysMap();
+        int today = myCalendar.getTodayYMD();
 
-        SolarLunarJP solarLunarJP = new SolarLunarJP();
+        Calendar c = Calendar.getInstance();
+        c.set(year, month - 1, 1);
+        int column = c.get(Calendar.DAY_OF_WEEK);
 
-        int tmp[][] = holidaysInfo.getHolidayCalendar(currYM % 100);
+        if(column == 1) {
+            c.add(Calendar.DAY_OF_MONTH, -7);
+        } else {
+            c.add(Calendar.DAY_OF_MONTH, -1 * column + 1);
+        }
+         SolarLunarJP solarLunarJP = new SolarLunarJP();
+        DateInfo[][] dateInfos = new DateInfo[6][7];
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 7; j++) {
-                if (tmp[i][j] != 0 ) {
-                    DateInfo dateInfo = new DateInfo(currYM, tmp[i][j]%100);
-                    dateInfo.lunar_date = solarLunarJP.getLunar(currYM * 100 + tmp[i][j]%100);
-                    dateInfo.rokuyo_idx = solarLunarJP.getRokuyo();
-                    dateInfo.rokuyo = solarLunarJP.getRokuyoName();
-                    if (tmp[i][j] > 100) {
-                        dateInfo.setHolidayName("#");
-                    }
-                    currMonthDays.add(dateInfo);
+                DateInfo dif = new DateInfo(c.get(Calendar.YEAR), c.get(Calendar.MONTH)+1,c.get(Calendar.DAY_OF_MONTH));
+                dif.lunarDate = solarLunarJP.getLunar(dif.solarDate);
+
+                dif.l_bLeap=solarLunarJP.getLeap();
+                dif.rokuyoIdx = solarLunarJP.getRokuyo();
+                dif.rokuyo = Constants.ROKYO_NAME[dif.rokuyoIdx];
+                if ((holidayItem = holidaysMap.get(dif.solarDate)) != null) {
+                    dif.bHoliday = true;
+                    dif.setHolidayName(holidayItem.name);
+                } else {
+                    dif.setHolidayName(null);
                 }
+                if (dif.solarDate / 100 == currYM) {
+                    dif.bthisMonth = true;
+                }
+                dif.column = c.get(Calendar.DAY_OF_WEEK);
+                dif.row = c.get(Calendar.DAY_OF_WEEK_IN_MONTH);
+                if (today == dif.solarDate)
+                    dif.bToday = true;
+                dif.column = j;
+                dif.row = i;
+
+                dateInfos[dif.row][dif.column] = dif;
+                c.add(Calendar.DAY_OF_MONTH, 1);
             }
         }
 
-        Log.d(LOGTAG,"setDays1  2");
-        if (currYM % 100 == 1) {
-            // Next month.
-            nextYM = currYM + 1;
-            tmp = holidaysInfo.getHolidayCalendar(nextYM % 100);
-            for (int i = 0; i < 6; i++) {
-                for (int j = 0; j < 7; j++) {
-                    if (tmp[i][j] != 0 ) {
-                        DateInfo dateInfo = new DateInfo(nextYM, tmp[i][j]%100);
-                        dateInfo.lunar_date = solarLunarJP.getLunar(currYM * 100 + tmp[i][j]%100);
-                        dateInfo.rokuyo_idx = solarLunarJP.getRokuyo();
-                        dateInfo.rokuyo = solarLunarJP.getRokuyoName();
-                        if (tmp[i][j] > 100) {
-                            dateInfo.setHolidayName("#");
-                        }
-                        nextMonthDays.add(dateInfo);
-                    }
-                }
-            }
-            Log.d(LOGTAG,"setDays1  3");
-            // prev month
-            myCalendar.setCalendar(year, month, 1);
-            myCalendar.add(Calendar.MONTH, -1);
-            prevYM = myCalendar.getCurrentYMD() / 100;
-            HolidaysInfo prevHolidayInfo = new HolidaysInfo();
-            prevHolidayInfo.setBaseHolidaysInfo(this.xmlPullParser);
-            prevHolidayInfo.setCountry(holidaysInfo.getCountry());
-            prevHolidayInfo.clearHolidays();
-            prevHolidayInfo.setHolidayYear(prevYM / 100);
-            prevHolidayInfo.setHolidayCalendar();
-            tmp = prevHolidayInfo.getHolidayCalendar(prevYM % 100);
-            for (int i = 0; i < 6; i++) {
-                for (int j = 0; j < 7; j++) {
-                    if (tmp[i][j] != 0 ) {
-                        DateInfo dateInfo = new DateInfo(prevYM, tmp[i][j]%100);
-                        dateInfo.lunar_date = solarLunarJP.getLunar(currYM * 100 + tmp[i][j]%100);
-                        dateInfo.rokuyo_idx = solarLunarJP.getRokuyo();
-                        dateInfo.rokuyo = solarLunarJP.getRokuyoName();
-                        if (tmp[i][j] > 100) {
-                            dateInfo.setHolidayName("#");
-                        }
-                        prevMonthDays.add(dateInfo);
-                    }
-                }
-            }
-        } else if (currYM % 100 == 12) {
-            prevYM = currYM - 1;
-            tmp = holidaysInfo.getHolidayCalendar(prevYM % 100);
-            for (int i = 0; i < 6; i++) {
-                for (int j = 0; j < 7; j++) {
-                    if (tmp[i][j] != 0 ) {
-                        DateInfo dateInfo = new DateInfo(prevYM, tmp[i][j]%100);
-                        dateInfo.lunar_date = solarLunarJP.getLunar(currYM * 100 + tmp[i][j]%100);
-                        dateInfo.rokuyo_idx = solarLunarJP.getRokuyo();
-                        dateInfo.rokuyo = solarLunarJP.getRokuyoName();
-                        if (tmp[i][j] > 100) {
-                            dateInfo.setHolidayName("#");
-                        }
-                        prevMonthDays.add(dateInfo);
-                    }
-                }
-            }
-            Log.d(LOGTAG,"setDays1  3");
-            myCalendar.setCalendar(year, month, 1);
-            myCalendar.add(Calendar.MONTH, 1);
-            nextYM = myCalendar.getCurrentYMD() / 100;
-
-            HolidaysInfo nextHolidayInfo = new HolidaysInfo();
-            nextHolidayInfo.setBaseHolidaysInfo(this.xmlPullParser);
-            nextHolidayInfo.setCountry(holidaysInfo.getCountry());
-            nextHolidayInfo.setHolidayYear(nextYM / 100);
-            nextHolidayInfo.setHolidayCalendar();
-            tmp = nextHolidayInfo.getHolidayCalendar(nextYM % 100);
-            for (int i = 0; i < 6; i++) {
-                for (int j = 0; j < 7; j++) {
-                    if (tmp[i][j] != 0 ) {
-                        DateInfo dateInfo = new DateInfo(nextYM, tmp[i][j]%100);
-                        dateInfo.lunar_date = solarLunarJP.getLunar(currYM * 100 + tmp[i][j]%100);
-                        dateInfo.rokuyo_idx = solarLunarJP.getRokuyo();
-                        dateInfo.rokuyo = solarLunarJP.getRokuyoName();
-                        if (tmp[i][j] > 100) {
-                            dateInfo.setHolidayName("#");
-                        }
-                        nextMonthDays.add(dateInfo);
-                    }
-                }
-            }
-        } else {
-            prevYM = currYM - 1;
-            tmp = holidaysInfo.getHolidayCalendar(prevYM % 100);
-            for (int i = 0; i < 6; i++) {
-                for (int j = 0; j < 7; j++) {
-                    if (tmp[i][j] != 0 ) {
-                        DateInfo dateInfo = new DateInfo(prevYM, tmp[i][j]%100);
-                        dateInfo.lunar_date = solarLunarJP.getLunar(currYM * 100 + tmp[i][j]%100);
-                        dateInfo.rokuyo_idx = solarLunarJP.getRokuyo();
-                        dateInfo.rokuyo = solarLunarJP.getRokuyoName();
-                        if (tmp[i][j] > 100) {
-                            dateInfo.setHolidayName("#");
-                        }
-                        prevMonthDays.add(dateInfo);
-                    }
-                }
-            }
-
-            nextYM = currYM + 1;
-            tmp = holidaysInfo.getHolidayCalendar(nextYM % 100);
-            for (int i = 0; i < 6; i++) {
-                for (int j = 0; j < 7; j++) {
-                    if (tmp[i][j] != 0 ) {
-                        DateInfo dateInfo = new DateInfo(nextYM, tmp[i][j]%100);
-                        dateInfo.lunar_date = solarLunarJP.getLunar(currYM * 100 + tmp[i][j]%100);
-                        dateInfo.rokuyo_idx = solarLunarJP.getRokuyo();
-                        dateInfo.rokuyo = solarLunarJP.getRokuyoName();
-                        if (tmp[i][j] > 100) {
-                            dateInfo.setHolidayName("#");
-                        }
-                        nextMonthDays.add(dateInfo);
-                    }
-                }
-            }
-        }
-
-        Iterator<DateInfo> itr = prevMonthDays.iterator();
-        Log.d(LOGTAG,"PREV--------------------------");
-        while(itr.hasNext()) {
-            DateInfo dateinfo = itr.next();
-            Log.d(LOGTAG, dateinfo.toString());
-        }
-
-        itr = currMonthDays.iterator();
-        Log.d(LOGTAG,"CURR--------------------------");
-        while(itr.hasNext()) {
-            DateInfo dateinfo = itr.next();
-            Log.d(LOGTAG, dateinfo.toString());
-        }
-
-        itr = nextMonthDays.iterator();
-        Log.d(LOGTAG,"NEXT--------------------------");
-        while(itr.hasNext()) {
-            DateInfo dateinfo = itr.next();
-            Log.d(LOGTAG, dateinfo.toString());
-        }
-    }
-
-    private void setDays(int year, int month) {
-
-        setDays1(year, month);
-
-
-        int[][] prevMonthDays = new int[6][7];
-        int[][] currMonthDays = new int[6][7];
-        int[][] nextMonthDays = new int[6][7];
-
-        int currYM = 0, prevYM = 0, nextYM = 0;
-
-        myCalendar.setCalendar(year, month, 1);
-
-        // this month
-        currYM = myCalendar.getCurrentYMD() / 100;
-        holidaysInfo.clearHolidays();
-        holidaysInfo.setHolidayYear(currYM / 100);
-        holidaysInfo.setHolidayCalendar();
-        currMonthDays = holidaysInfo.getHolidayCalendar(currYM % 100);
-
-        this.tvYear.setText("" + year);
-        this.tvMonth.setText("" + month);
-
-        HolidaysInfo prevHolidayInfo = null;
-        HolidaysInfo nextHolidayInfo = null;
+        // for debug
+//        for (int i = 0; i < 6; i++) {
+//            for (int j = 0; j < 7; j++) {
+//                Log.d(LOGTAG, "(" + i +","+ j + ")");
+//                Log.d(LOGTAG, "(" + i +","+ j + ")" + dateInfos[i][j].toString());
+//            }
+//        }
 
         // 年号を表示
         setYearMonth(currYM);
 
-        if (currYM % 100 == 1) {
-            // next month
-            nextYM = currYM + 1;
-            nextMonthDays = holidaysInfo.getHolidayCalendar(nextYM % 100);
+        // カレンダー表示
+        displayCalendar(dateInfos);
 
-            // prev month
-            myCalendar.setCalendar(year, month, 1);
-            myCalendar.add(Calendar.MONTH, -1);
-            Log.d(LOGTAG, "----->curr year month(1) :" + myCalendar.getCurrentYMD("-"));
-            prevYM = myCalendar.getCurrentYMD() / 100;
-            prevHolidayInfo = new HolidaysInfo();
-            prevHolidayInfo.setBaseHolidaysInfo(this.xmlPullParser);
-            prevHolidayInfo.setCountry(holidaysInfo.getCountry());
-            prevHolidayInfo.clearHolidays();
-            prevHolidayInfo.setHolidayYear(prevYM / 100);
-            prevHolidayInfo.setHolidayCalendar();
-            prevMonthDays = prevHolidayInfo.getHolidayCalendar(prevYM % 100);
-
-            Log.d(LOGTAG, "----->curr year month(1) :" + prevYM + " - " + currYM + " - " +  nextYM);
-        } else if (currYM % 100 == 12) {
-            prevYM = currYM - 1;
-            prevMonthDays = holidaysInfo.getHolidayCalendar(prevYM % 100);
-
-            myCalendar.setCalendar(year, month, 1);
-            myCalendar.add(Calendar.MONTH, 1);
-            nextYM = myCalendar.getCurrentYMD() / 100;
-
-            nextHolidayInfo = new HolidaysInfo();
-            nextHolidayInfo.setBaseHolidaysInfo(this.xmlPullParser);
-            nextHolidayInfo.setCountry(holidaysInfo.getCountry());
-            nextHolidayInfo.setHolidayYear(nextYM / 100);
-            nextHolidayInfo.setHolidayCalendar();
-            nextMonthDays = nextHolidayInfo.getHolidayCalendar(nextYM % 100);
-            Log.d(LOGTAG, "----->curr year month(2) :" + prevYM + " - " + currYM + " - " +  nextYM);
-        } else {
-            prevYM = currYM - 1;
-            prevMonthDays = holidaysInfo.getHolidayCalendar(prevYM % 100);
-            nextYM = currYM + 1;
-            nextMonthDays = holidaysInfo.getHolidayCalendar(nextYM % 100);
-            Log.d(LOGTAG, "----->curr year month(3) :" + prevYM + " - " + currYM + " - " +  nextYM);
-        }
-
-        int prevMonthStartIdx = 0;
-        for (int i = 5; i >= 0; i--) {
-            for (int j = 6; j >= 0; j--) {
-                if (prevMonthDays[i][j] != 0) {
-                    prevMonthStartIdx = i;
-                    break;
-                }
-            }
-            if (prevMonthStartIdx > 0) {
-                break;
-            }
-        }
-
-        int curMonthLatestIdx_i = 0;
-        int curMonthLatestIdx_j = 0;
-        for (int i = 5; i >= 0; i--) {
-            for (int j = 6; j >= 0; j--) {
-                if (currMonthDays[i][j] != 0) {
-                    curMonthLatestIdx_i = i;
-                    curMonthLatestIdx_j = j;
-
-                    break;
-                }
-            }
-            if (curMonthLatestIdx_i != 0 || curMonthLatestIdx_j != 0) {
-                if (curMonthLatestIdx_j == 6) {
-                    curMonthLatestIdx_i++;
-                    curMonthLatestIdx_j = 0;
-
-                }
-
-                break;
-            }
-        }
-
-        boolean includeToday = false;
-        int today = myCalendar.getTodayYMD();
-        if (today / 100 == currYM) {
-            includeToday = true;
-        }
-
-        for (int i = 0; i < 6; i++) {
-            ThisMonthViewsWeek weekViews = thisMonthViews.get(i);
-            for (int j = 0; j < 7; j++) {
-
-                View view = weekViews.getaView(j);
-                TextView tv = weekViews.getaWeekDays(j);
-                if (currMonthDays[i][j] == 0) {
-                    if (i == 0) {
-                        tv.setText("" + prevMonthDays[prevMonthStartIdx][j] % 100);
-                        if (prevMonthDays[prevMonthStartIdx][j] > 100) {
-                            tv.setTextColor(Color.rgb(215, 108, 108));
-                        } else {
-                            tv.setTextColor(Color.rgb(128, 128, 128));
-                        }
-                        view.setBackground(getResources().getDrawable(R.drawable.calendar_day_box_othermonth));
-                    } else if (i >= curMonthLatestIdx_i) {
-                        tv.setText("" + nextMonthDays[i-curMonthLatestIdx_i][j] % 100);
-                        if (nextMonthDays[i-curMonthLatestIdx_i][j] > 100) {
-                            tv.setTextColor(Color.rgb(215, 108, 108));
-                        } else {
-                            tv.setTextColor(Color.rgb(128, 128, 128));
-                        }
-                        view.setBackground(getResources().getDrawable(R.drawable.calendar_day_box_othermonth));
-                    }
-                } else {
-                    if (currMonthDays[i][j] > 100) {
-                        tv.setText("" + currMonthDays[i][j] % 100);
-                        if (j == 0) {
-                            tv.setTextColor(Color.RED);
-                        } else if (j == 6) {
-                            tv.setTextColor(Color.rgb(170, 0, 0));
-                        } else {
-                            tv.setTextColor(Color.rgb(170, 0, 0));
-                        }
-                    } else {
-                        tv.setText("" + currMonthDays[i][j]);
-                        if (j == 0) {
-                            tv.setTextColor(Color.RED);
-                        } else if (j == 6) {
-                            tv.setTextColor(Color.BLUE);/*-------------------------------------------------------------*/
-                        } else {
-                            tv.setTextColor(Color.BLACK);
-                        }
-                    }
-                    // set today
-                    if (includeToday && tv.getText().toString().equals("" + today % 100)) {
-                        view.setBackground(getResources().getDrawable(R.drawable.calendar_today_box));
-                    } else {
-                        view.setBackground(getResources().getDrawable(R.drawable.calendar_day_box));
-                    }
-                }
-            }
-        }
-
+        // 今月へボタン
         if (thisYearMonth != (year * 100 + month)) {
             btnMoveThisMonth.setTextColor(getResources().getColor(R.color.colorCalcButtonNormal));
             btnMoveThisMonth.setClickable(true);
@@ -770,6 +517,59 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         } else {
             btnMoveThisMonth.setTextColor(getResources().getColor(R.color.colorCalcButton));
             btnMoveThisMonth.setClickable(false);
+        }
+    }
+
+    private void displayCalendar(DateInfo[][] dateInfos) {
+
+        for (int i = 0; i < 6; i++) {
+            ThisMonthViewsWeek weekViews = thisMonthViews.get(i);
+            for (int j = 0; j < 7; j++) {
+                DateInfo dif = dateInfos[i][j];
+
+                View view = weekViews.getaView(j);
+                TextView tv = weekViews.getaWeekDays(j);
+                tv.setText("" + dif.day);
+
+                // 文字の色－今月　　：祝日・日曜日・土曜日・平日
+                // 　　　　　今月以外：祝日・以外
+                if (dif.bthisMonth) {
+                    if (dif.bHoliday) {
+                        if (dif.week == 1) { // sunday
+                            tv.setTextColor(Color.RED);
+                        } else if (dif.week == 7) { //saturday
+                            tv.setTextColor(Color.rgb(170, 0, 0));
+                        } else {
+                            tv.setTextColor(Color.rgb(170, 0, 0));
+                        }
+                    } else {
+                        if (dif.week == 1) { // sunday
+                            tv.setTextColor(Color.RED);
+                        } else if (dif.week == 7) { //saturday
+                            tv.setTextColor(Color.BLUE);
+                        } else {
+                            tv.setTextColor(Color.BLACK);
+                        }
+                    }
+                } else {
+                    if (dif.bHoliday) {
+                        tv.setTextColor(Color.rgb(215, 108, 108));
+                    } else {
+                        tv.setTextColor(Color.rgb(128, 128, 128));
+                    }
+                }
+
+                // 背景　　－今月・以外、今日・以外
+                if (dif.bToday) {
+                    view.setBackground(getResources().getDrawable(R.drawable.calendar_today_box));
+                } else {
+                    if (dif.bthisMonth) {
+                        view.setBackground(getResources().getDrawable(R.drawable.calendar_day_box));
+                    } else {
+                        view.setBackground(getResources().getDrawable(R.drawable.calendar_day_box_othermonth));
+                    }
+                }
+            }
         }
     }
 

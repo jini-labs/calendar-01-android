@@ -1,26 +1,24 @@
-package com.doublesibi.utils.calc.datecalculator.common;
+package com.doublesibi.utils.calc.datecalculator.dsblunar;
 
 /**
  * Created by hunajini on 2017/06/22.
  */
 
-public class DateInfoLunarSolar {
-
-    public static final String ROKYO_NAME[] = {"大安","赤口","先勝","友引","先負","仏滅"};
+public class SolarLunarDateInfo {
 
     int keyDateType;
-    int keyDate;
-    int kyear;
-    int kmonth;
-    int kday;
+    private int keyDate;
+    private int kyear;
+    private int kmonth;
+    private int kday;
     int valueDate;
-    int vdate;
-    int vmonth;
-    int vday;
+    private int vyear;
+    private int vmonth;
+    private int vday;
     boolean bLeap; //潤いつき
     int rokuyoIdx;
 
-    public DateInfoLunarSolar(int keyDate, int keyDateType, int valueDate, boolean bLeap) {
+    public SolarLunarDateInfo(int keyDate, int keyDateType, int valueDate, boolean bLeap) {
         this.keyDateType = keyDateType;
         this.keyDate = keyDate;
         this.valueDate = valueDate;
@@ -30,7 +28,7 @@ public class DateInfoLunarSolar {
         this.kmonth = keyDate / 100 % 100;
         this.kday = keyDate % 100;
 
-        this.vdate = valueDate / 10000;
+        this.vyear = valueDate / 10000;
         this.vmonth = valueDate / 100 % 100;
         this.vday = valueDate % 100;
 
@@ -48,4 +46,3 @@ public class DateInfoLunarSolar {
                 '}';
     }
 }
-

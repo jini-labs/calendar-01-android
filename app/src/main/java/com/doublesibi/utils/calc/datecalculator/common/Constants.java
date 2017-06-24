@@ -28,4 +28,11 @@ public final class Constants {
     public final static int[][] daysOfMonth = {
             {30,28,30,31,30,31,31,30,31,30,31,30},
             {30,29,30,31,30,31,31,30,31,30,31,30}};
+
+    public static final String ROKYO_NAME[] = {"大安","赤口","先勝","友引","先負","仏滅"};
+
+    public final static String[] WEEK_NAME_JP = {"日曜日", "月曜日", "火曜日", "水曜日",
+            "木曜日", "金曜日", "土曜日"};
+    public final static String[] WEEK_NAME_EN = {"SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY",
+            "THURSDAY", "FRIDAY", "SATURDAY"};
 }
