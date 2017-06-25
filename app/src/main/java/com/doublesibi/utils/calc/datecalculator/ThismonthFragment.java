@@ -47,6 +47,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
     private HolidaysInfo holidaysInfo;
     private YearName yearName;
     private ArrayList<RangeDate> yearNameList;
+    private DateInfo[][] dateInfos;
 
     private TextView tvYear, tvMonth, tvJpName, tvJpYear;
 
@@ -76,6 +77,10 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
             solarLunarJP = new SolarLunarJP();
         }
 
+        if (dateInfos == null) {
+            dateInfos = new DateInfo[6][7];
+        }
+
         if (thisYearMonth == 0) {
             Calendar c = Calendar.getInstance();
             thisYearMonth = c.get(Calendar.YEAR) * 100 + (c.get(Calendar.MONTH) + 1);
@@ -93,6 +98,10 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
 
         if (solarLunarJP == null) {
             solarLunarJP = new SolarLunarJP();
+        }
+
+        if (dateInfos == null) {
+            dateInfos = new DateInfo[6][7];
         }
 
         Calendar c = Calendar.getInstance();
@@ -192,12 +201,12 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
             case R.id.btnRokuyo:
                 bRokuyo = !bRokuyo;
                 if (bRokuyo) {
-                    //btnRokuyo.setTextColor(getResources().getColor(R.color.colorCalcButtonNormal));
-                    btnRokuyo.setTextColor(getResources().getColor(R.color.colorCalcButton));
+                    btnRokuyo.setTextColor(Color.BLACK);
+                    displayRokuyo(true);
 
                 } else {
                     btnRokuyo.setTextColor(getResources().getColor(R.color.colorCalcButtonNormal));
-                    //btnRokuyo.setTextColor(getResources().getColor(R.color.colorCalcButton));
+                    displayRokuyo(false);
                 }
                 break;
         }
@@ -464,8 +473,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         } else {
             c.add(Calendar.DAY_OF_MONTH, -1 * column + 1);
         }
-         SolarLunarJP solarLunarJP = new SolarLunarJP();
-        DateInfo[][] dateInfos = new DateInfo[6][7];
+        SolarLunarJP solarLunarJP = new SolarLunarJP();
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 7; j++) {
                 DateInfo dif = new DateInfo(c.get(Calendar.YEAR), c.get(Calendar.MONTH)+1,c.get(Calendar.DAY_OF_MONTH));
@@ -507,7 +515,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         setYearMonth(currYM);
 
         // カレンダー表示
-        displayCalendar(dateInfos);
+        displayCalendar();
 
         // 今月へボタン
         if (thisYearMonth != (year * 100 + month)) {
@@ -520,7 +528,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         }
     }
 
-    private void displayCalendar(DateInfo[][] dateInfos) {
+    private void displayCalendar() {
 
         for (int i = 0; i < 6; i++) {
             ThisMonthViewsWeek weekViews = thisMonthViews.get(i);
@@ -568,6 +576,29 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
                     } else {
                         view.setBackground(getResources().getDrawable(R.drawable.calendar_day_box_othermonth));
                     }
+                }
+            }
+        }
+    }
+
+    private void displayRokuyo(boolean flag) {
+        for (int i = 0; i < 6; i++) {
+            ThisMonthViewsWeek weekViews = thisMonthViews.get(i);
+            for (int j = 0; j < 7; j++) {
+                DateInfo dif = dateInfos[i][j];
+
+                //View view = weekViews.getaView(j);
+                TextView tv = weekViews.getaWeekRokuyo(j);
+
+                if (flag) {
+                    tv.setText("" + Constants.ROKYO_NAME[dif.rokuyoIdx]);
+                    if(dif.rokuyoIdx==0) {
+                        tv.setTextColor(Color.RED);
+                    } else {
+                        tv.setTextColor(Color.rgb(128,128,128));
+                    }
+                } else {
+                    tv.setText("");
                 }
             }
         }
