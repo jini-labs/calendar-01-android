@@ -42,7 +42,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
     private final String LOGTAG = "DayCalc";
 
     private MyCalendar myCalendar;
-    SolarLunarJP solarLunarJP;
+    private SolarLunarJP solarLunarJP;
     private XmlPullParser xmlPullParser;
     private HolidaysInfo holidaysInfo;
     private YearName yearName;
@@ -473,7 +473,8 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         } else {
             c.add(Calendar.DAY_OF_MONTH, -1 * column + 1);
         }
-        SolarLunarJP solarLunarJP = new SolarLunarJP();
+
+        //solarLunarJP = new SolarLunarJP();
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 7; j++) {
                 DateInfo dif = new DateInfo(c.get(Calendar.YEAR), c.get(Calendar.MONTH)+1,c.get(Calendar.DAY_OF_MONTH));
@@ -598,7 +599,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
                         tv.setTextColor(Color.rgb(128,128,128));
                     }
                 } else {
-                    tv.setText("");
+                    tv.setText(" ");
                 }
             }
         }
