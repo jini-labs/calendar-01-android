@@ -132,9 +132,9 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         setThisMonthViews(view);
 
         if (bRokuyo) {
-            btnRokuyo.setTextColor(getResources().getColor(R.color.colorCalcButton));
-        } else {
             btnRokuyo.setTextColor(getResources().getColor(R.color.colorCalcButtonNormal));
+        } else {
+            btnRokuyo.setTextColor(Color.BLACK);
         }
 
         if (myCalendar == null) {
@@ -201,13 +201,11 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
             case R.id.btnRokuyo:
                 bRokuyo = !bRokuyo;
                 if (bRokuyo) {
-                    btnRokuyo.setTextColor(Color.BLACK);
-                    displayRokuyo(true);
-
-                } else {
                     btnRokuyo.setTextColor(getResources().getColor(R.color.colorCalcButtonNormal));
-                    displayRokuyo(false);
+                } else {
+                    btnRokuyo.setTextColor(Color.BLACK);
                 }
+                displayRokuyo(bRokuyo);
                 break;
         }
     }
@@ -518,6 +516,8 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         // カレンダー表示
         displayCalendar();
 
+        displayRokuyo(bRokuyo);
+
         // 今月へボタン
         if (thisYearMonth != (year * 100 + month)) {
             btnMoveThisMonth.setTextColor(getResources().getColor(R.color.colorCalcButtonNormal));
@@ -593,8 +593,9 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
 
                 if (flag) {
                     tv.setText("" + Constants.ROKYO_NAME[dif.rokuyoIdx]);
+                    Log.d(LOGTAG, "Sol:" + dif.solarDate + ", Lun:" + dif.lunarDate + ", roI:" + dif.rokuyoIdx + ", roNm:" + Constants.ROKYO_NAME[dif.rokuyoIdx]);
                     if(dif.rokuyoIdx==0) {
-                        tv.setTextColor(Color.RED);
+                        tv.setTextColor(Color.rgb(170, 0, 0));
                     } else {
                         tv.setTextColor(Color.rgb(128,128,128));
                     }
