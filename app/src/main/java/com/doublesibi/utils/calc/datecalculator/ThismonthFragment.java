@@ -591,16 +591,20 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
                 //View view = weekViews.getaView(j);
                 TextView tv = weekViews.getaWeekRokuyo(j);
 
-                if (flag) {
-                    tv.setText("" + Constants.ROKYO_NAME[dif.rokuyoIdx]);
-                    Log.d(LOGTAG, "Sol:" + dif.solarDate + ", Lun:" + dif.lunarDate + ", roI:" + dif.rokuyoIdx + ", roNm:" + Constants.ROKYO_NAME[dif.rokuyoIdx]);
-                    if(dif.rokuyoIdx==0) {
-                        tv.setTextColor(Color.rgb(170, 0, 0));
-                    } else {
-                        tv.setTextColor(Color.rgb(128,128,128));
-                    }
-                } else {
+                if (dif.lunarDate <= SolarLunarJP.LUNAR_MIN_YEAR || dif.lunarDate >= solarLunarJP.LUNAR_MAX_YEAR) {
                     tv.setText(" ");
+                } else {
+                    if (flag) {
+                        tv.setText("" + Constants.ROKYO_NAME[dif.rokuyoIdx]);
+                        Log.d(LOGTAG, "Sol:" + dif.solarDate + ", Lun:" + dif.lunarDate + ", roI:" + dif.rokuyoIdx + ", roNm:" + Constants.ROKYO_NAME[dif.rokuyoIdx]);
+                        if (dif.rokuyoIdx == 0) {
+                            tv.setTextColor(Color.rgb(170, 0, 0));
+                        } else {
+                            tv.setTextColor(Color.rgb(128, 128, 128));
+                        }
+                    } else {
+                        tv.setText(" ");
+                    }
                 }
             }
         }

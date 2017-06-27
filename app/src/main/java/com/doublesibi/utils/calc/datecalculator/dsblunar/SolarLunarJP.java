@@ -13,6 +13,10 @@ public class SolarLunarJP {
     private static HashMap<Integer, SolarLunarDateInfo> solar2lunar;
     private static HashMap<Integer, SolarLunarDateInfo> lunar2solar;
 
+    public final static int LUNAR_MIN_YEAR = 18710101;
+    public final static int LUNAR_MAX_YEAR = 20301201;
+
+
 
     public SolarLunarJP() {
         if (solar2lunar == null) {
