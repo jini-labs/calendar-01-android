@@ -1,25 +1,26 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/framelayout_thismonth"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.doublesibi.utils.calc.datecalculator.ThismonthFragment">
     <LinearLayout
         android:orientation="vertical"
-        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
             android:orientation="vertical"
-            android:weightSum="8"
+            android:weightSum="9"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_weight="1"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -31,61 +32,57 @@
                     android:textColor="@color/colorCalcButton"
                     android:layout_gravity="center_vertical|start"
                     android:layout_weight=".1"
-                    android:layout_width="44dp"
-                    android:layout_height="48dp"/>
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"/>
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_margin="6dp"
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
+                    android:gravity="center"
+                    android:layout_weight=".8"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content">
                     <TextView
                         android:id="@+id/this_year_solar"
-                        android:textSize="22sp"
-                        android:gravity="end"
-                        android:layout_gravity="top"
-                        android:layout_width="58sp"
+                        android:textSize="24sp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
                         android:id="@+id/lbThisYear"
                         android:text="@string/lb_year"
                         android:textSize="18sp"
-                        android:layout_gravity="top"
+                        android:layout_marginRight="8dp"
+                        android:layout_gravity="bottom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
                         android:id="@+id/this_month_solar"
-                        android:textSize="22sp"
-                        android:gravity="end"
-                        android:layout_gravity="top"
-                        android:layout_width="36dp"
+                        android:textSize="24sp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <TextView
                         android:id="@+id/lbThisMonth"
                         android:text="@string/lb_month"
                         android:textSize="18sp"
-                        android:layout_gravity="top"
+                        android:layout_marginRight="12dp"
+                        android:layout_gravity="bottom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
                         android:id="@+id/this_year_jpname"
                         android:textSize="18sp"
                         android:layout_gravity="bottom"
-                        android:layout_marginLeft="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
                         android:id="@+id/this_year_japanes"
-                        android:textSize="18sp"
-                        android:layout_gravity="bottom"
-                        android:gravity="end"
+                        android:textSize="24sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
                         android:text="@string/lb_year"
                         android:textSize="18sp"
                         android:layout_gravity="bottom"
-                        android:layout_width="20dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
 
@@ -97,8 +94,42 @@
                     android:textColor="@color/colorCalcButton"
                     android:layout_gravity="center_vertical|end"
                     android:layout_weight=".1"
-                    android:layout_width="44dp"
-                    android:layout_height="48dp"/>
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="end"
+                android:layout_weight="2"
+                android:layout_width="match_parent"
+                android:layout_height="36dp">
+                <TextView
+                    android:layout_weight=".7"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/btnRokuyo"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_weight=".15"
+                    android:background="@color/colorDayLeftHeadSolid"
+                    android:textColor="@color/colorCalcButtonNormal"
+                    android:text="六曜"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+                <Button
+                    android:id="@+id/btnMoveThisMonth"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_weight=".15"
+                    android:background="@color/colorDayLeftHeadSolid"
+                    android:textColor="@color/colorCalcButton"
+                    android:text="今月"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
 
             <LinearLayout
@@ -171,29 +202,12 @@
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
 
-                <include
-                    android:id="@+id/week_0"
-                    layout="@layout/one_week"/>
-
-                <include
-                    android:id="@+id/week_1"
-                    layout="@layout/one_week"/>
-
-                <include
-                    android:id="@+id/week_2"
-                    layout="@layout/one_week"/>
-
-                <include
-                    android:id="@+id/week_3"
-                    layout="@layout/one_week"/>
-
-                <include
-                    android:id="@+id/week_4"
-                    layout="@layout/one_week"/>
-
-                <include
-                    android:id="@+id/week_5"
-                    layout="@layout/one_week"/>
+                <include android:id="@+id/week_0" layout="@layout/one_week"/>
+                <include android:id="@+id/week_1" layout="@layout/one_week"/>
+                <include android:id="@+id/week_2" layout="@layout/one_week"/>
+                <include android:id="@+id/week_3" layout="@layout/one_week"/>
+                <include android:id="@+id/week_4" layout="@layout/one_week"/>
+                <include android:id="@+id/week_5" layout="@layout/one_week"/>
             </LinearLayout>
 
         </LinearLayout>

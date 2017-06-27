@@ -6,23 +6,22 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.doublesibi.utils.calc.datecalculator.common.CalcDurationDate;
 import com.doublesibi.utils.calc.datecalculator.common.Constants;
-import com.doublesibi.utils.calc.datecalculator.hist.DurationHistItem;
+import com.doublesibi.utils.calc.datecalculator.common.DateInfo;
+import com.doublesibi.utils.calc.datecalculator.dsblunar.SolarLunarJP;
+import com.doublesibi.utils.calc.datecalculator.common.ThisMonthViewsWeek;
 import com.doublesibi.utils.calc.datecalculator.holiday.HolidayItem;
 import com.doublesibi.utils.calc.datecalculator.holiday.HolidayListItem;
 import com.doublesibi.utils.calc.datecalculator.holiday.HolidaysInfo;
@@ -34,6 +33,7 @@ import org.xmlpull.v1.XmlPullParser;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,22 +42,70 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
     private final String LOGTAG = "DayCalc";
 
     private MyCalendar myCalendar;
+    private SolarLunarJP solarLunarJP;
     private XmlPullParser xmlPullParser;
     private HolidaysInfo holidaysInfo;
     private YearName yearName;
     private ArrayList<RangeDate> yearNameList;
+    private DateInfo[][] dateInfos;
 
     private TextView tvYear, tvMonth, tvJpName, tvJpYear;
-    private TextView[][] textViews;
+
+    ArrayList<ThisMonthViewsWeek> thisMonthViews;
 
     ArrayList<HolidayListItem> holidayListItems;
 
     String[] constantStr = {"今日", " 日後"};
 
+    private Button btnRokuyo, btnMoveThisMonth;
+    private Boolean bRokuyo = false;
+    private int thisYearMonth = 0;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (holidayListItems == null) {
+            holidayListItems = new ArrayList<>();
+        }
+
+        if (thisMonthViews == null) {
+            thisMonthViews = new ArrayList<>(6);
+        }
+
+        if (solarLunarJP == null) {
+            solarLunarJP = new SolarLunarJP();
+        }
+
+        if (dateInfos == null) {
+            dateInfos = new DateInfo[6][7];
+        }
+
+        if (thisYearMonth == 0) {
+            Calendar c = Calendar.getInstance();
+            thisYearMonth = c.get(Calendar.YEAR) * 100 + (c.get(Calendar.MONTH) + 1);
+        }
+    }
+
     public ThismonthFragment() {
         if (holidayListItems == null) {
             holidayListItems = new ArrayList<>();
         }
+
+        if (thisMonthViews == null) {
+            thisMonthViews = new ArrayList<>(6);
+        }
+
+        if (solarLunarJP == null) {
+            solarLunarJP = new SolarLunarJP();
+        }
+
+        if (dateInfos == null) {
+            dateInfos = new DateInfo[6][7];
+        }
+
+        Calendar c = Calendar.getInstance();
+        thisYearMonth = c.get(Calendar.YEAR)*100 + (c.get(Calendar.MONTH)+1);
     }
 
     @Override
@@ -79,7 +127,15 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
 
         final View view = inflater.inflate(R.layout.fragment_thismonth, container, false);
 
-        setTextViews(view);
+        setFragmentViews(view);
+
+        setThisMonthViews(view);
+
+        if (bRokuyo) {
+            btnRokuyo.setTextColor(getResources().getColor(R.color.colorCalcButtonNormal));
+        } else {
+            btnRokuyo.setTextColor(Color.BLACK);
+        }
 
         if (myCalendar == null) {
             myCalendar = new MyCalendar();
@@ -93,7 +149,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         }
 
         setHoliday("Japan");
-        setDays(myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH)+1);
+        setDays(myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH) + 1);
 
         ListView listView = (ListView)view.findViewById(R.id.listViewHoliday);
         HolidayListAdaptor holidayListAdaptor = new HolidayListAdaptor(getActivity());
@@ -109,6 +165,7 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         int tempYM;
         final int l_year = Integer.parseInt(this.tvYear.getText().toString().trim());
         final int l_month = Integer.parseInt(this.tvMonth.getText().toString().trim());
+
         switch(v.getId()) {
             case R.id.this_year_solar:
             case R.id.this_month_solar:
@@ -135,6 +192,20 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
             case R.id.this_year_japanes:
                 // TODO : spinner or dialogで
                 //Toast.makeText(getContext(), "click japan year", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btnMoveThisMonth:
+                myCalendar.setCalendar(thisYearMonth/100, (thisYearMonth%100)-1, 1);
+                tempYM = myCalendar.getCurrentPrevMonth(1);
+                setDays(tempYM/100, tempYM%100);
+                break;
+            case R.id.btnRokuyo:
+                bRokuyo = !bRokuyo;
+                if (bRokuyo) {
+                    btnRokuyo.setTextColor(getResources().getColor(R.color.colorCalcButtonNormal));
+                } else {
+                    btnRokuyo.setTextColor(Color.BLACK);
+                }
+                displayRokuyo(bRokuyo);
                 break;
         }
     }
@@ -380,214 +451,163 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
     }
 
     private void setDays(int year, int month) {
-        int[][] prevMonthDays = new int[6][7];
-        int[][] currMonthDays = new int[6][7];
-        int[][] nextMonthDays = new int[6][7];
-
-        int currYM = 0, prevYM = 0, nextYM = 0;
+        int currYM;
+        HolidayItem holidayItem;
+        HashMap<Integer, HolidayItem> holidaysMap;
 
         myCalendar.setCalendar(year, month, 1);
-
-        // this month
         currYM = myCalendar.getCurrentYMD() / 100;
         holidaysInfo.clearHolidays();
         holidaysInfo.setHolidayYear(currYM / 100);
-        holidaysInfo.setHolidayCalendar();
-        currMonthDays = holidaysInfo.getHolidayCalendar(currYM % 100);
+        holidaysMap = holidaysInfo.getHolidaysMap();
+        int today = myCalendar.getTodayYMD();
 
-        this.tvYear.setText("" + year);
-        this.tvMonth.setText("" + month);
+        Calendar c = Calendar.getInstance();
+        c.set(year, month - 1, 1);
+        int column = c.get(Calendar.DAY_OF_WEEK);
 
-        HolidaysInfo prevHolidayInfo = null;
-        HolidaysInfo nextHolidayInfo = null;
+        if(column == 1) {
+            c.add(Calendar.DAY_OF_MONTH, -7);
+        } else {
+            c.add(Calendar.DAY_OF_MONTH, -1 * column + 1);
+        }
+
+        //solarLunarJP = new SolarLunarJP();
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 7; j++) {
+                DateInfo dif = new DateInfo(c.get(Calendar.YEAR), c.get(Calendar.MONTH)+1,c.get(Calendar.DAY_OF_MONTH));
+                dif.lunarDate = solarLunarJP.getLunar(dif.solarDate);
+
+                dif.l_bLeap=solarLunarJP.getLeap();
+                dif.rokuyoIdx = solarLunarJP.getRokuyo();
+                dif.rokuyo = Constants.ROKYO_NAME[dif.rokuyoIdx];
+                if ((holidayItem = holidaysMap.get(dif.solarDate)) != null) {
+                    dif.bHoliday = true;
+                    dif.setHolidayName(holidayItem.name);
+                } else {
+                    dif.setHolidayName(null);
+                }
+                if (dif.solarDate / 100 == currYM) {
+                    dif.bthisMonth = true;
+                }
+                dif.column = c.get(Calendar.DAY_OF_WEEK);
+                dif.row = c.get(Calendar.DAY_OF_WEEK_IN_MONTH);
+                if (today == dif.solarDate)
+                    dif.bToday = true;
+                dif.column = j;
+                dif.row = i;
+
+                dateInfos[dif.row][dif.column] = dif;
+                c.add(Calendar.DAY_OF_MONTH, 1);
+            }
+        }
+
+        // for debug
+//        for (int i = 0; i < 6; i++) {
+//            for (int j = 0; j < 7; j++) {
+//                Log.d(LOGTAG, "(" + i +","+ j + ")");
+//                Log.d(LOGTAG, "(" + i +","+ j + ")" + dateInfos[i][j].toString());
+//            }
+//        }
 
         // 年号を表示
         setYearMonth(currYM);
 
-        if (currYM % 100 == 1) {
-            // next month
-            nextYM = currYM + 1;
-            nextMonthDays = holidaysInfo.getHolidayCalendar(nextYM % 100);
+        // カレンダー表示
+        displayCalendar();
 
-            // prev month
-            myCalendar.setCalendar(year, month, 1);
-            myCalendar.add(Calendar.MONTH, -1);
-            Log.d(LOGTAG, "----->curr year month(1) :" + myCalendar.getCurrentYMD("-"));
-            prevYM = myCalendar.getCurrentYMD() / 100;
-            prevHolidayInfo = new HolidaysInfo();
-            prevHolidayInfo.setBaseHolidaysInfo(this.xmlPullParser);
-            prevHolidayInfo.setCountry(holidaysInfo.getCountry());
-            prevHolidayInfo.clearHolidays();
-            prevHolidayInfo.setHolidayYear(prevYM / 100);
-            prevHolidayInfo.setHolidayCalendar();
-            prevMonthDays = prevHolidayInfo.getHolidayCalendar(prevYM % 100);
+        displayRokuyo(bRokuyo);
 
-            Log.d(LOGTAG, "----->curr year month(1) :" + prevYM + " - " + currYM + " - " +  nextYM);
-        } else if (currYM % 100 == 12) {
-            prevYM = currYM - 1;
-            prevMonthDays = holidaysInfo.getHolidayCalendar(prevYM % 100);
+        // 今月へボタン
+        if (thisYearMonth != (year * 100 + month)) {
+            btnMoveThisMonth.setTextColor(getResources().getColor(R.color.colorCalcButtonNormal));
+            btnMoveThisMonth.setClickable(true);
 
-            myCalendar.setCalendar(year, month, 1);
-            myCalendar.add(Calendar.MONTH, 1);
-            nextYM = myCalendar.getCurrentYMD() / 100;
-
-            nextHolidayInfo = new HolidaysInfo();
-            nextHolidayInfo.setBaseHolidaysInfo(this.xmlPullParser);
-            nextHolidayInfo.setCountry(holidaysInfo.getCountry());
-            nextHolidayInfo.setHolidayYear(nextYM / 100);
-            nextHolidayInfo.setHolidayCalendar();
-            nextMonthDays = nextHolidayInfo.getHolidayCalendar(nextYM % 100);
-            Log.d(LOGTAG, "----->curr year month(2) :" + prevYM + " - " + currYM + " - " +  nextYM);
         } else {
-            prevYM = currYM - 1;
-            prevMonthDays = holidaysInfo.getHolidayCalendar(prevYM % 100);
-            nextYM = currYM + 1;
-            nextMonthDays = holidaysInfo.getHolidayCalendar(nextYM % 100);
-            Log.d(LOGTAG, "----->curr year month(3) :" + prevYM + " - " + currYM + " - " +  nextYM);
+            btnMoveThisMonth.setTextColor(getResources().getColor(R.color.colorCalcButton));
+            btnMoveThisMonth.setClickable(false);
         }
+    }
 
-        // for debug
-//        for (int j = 0; j < 6; j++) {
-//            String weekStr = "";
-//            for (int k = 0; k < 7; k++) {
-//                if (prevMonthDays[j][k] == 0) {
-//                    String s = String.format("    ");
-//                    weekStr = weekStr + "    ";
-//                } else {
-//                    String s = String.format("%4d", prevMonthDays[j][k]);
-//                    weekStr = weekStr + s;
-//                }
-//            }
-//            Log.d(LOGTAG, "Prev month :" + weekStr);
-//        }
+    private void displayCalendar() {
 
-        // for debug
-//        for (int j = 0; j < 6; j++) {
-//            String weekStr = "";
-//            for (int k = 0; k < 7; k++) {
-//                if (currMonthDays[j][k] == 0) {
-//                    String s = String.format("    ");
-//                    weekStr = weekStr + "    ";
-//                } else {
-//                    String s = String.format("%4d", currMonthDays[j][k]);
-//                    weekStr = weekStr + s;
-//                }
-//            }
-//            Log.d(LOGTAG, "Curr month :" + weekStr);
-//        }
-
-        int prevMonthStartIdx = 0;
-        for (int i = 5; i >= 0; i--) {
-            for (int j = 6; j >= 0; j--) {
-                if (prevMonthDays[i][j] != 0) {
-                    prevMonthStartIdx = i;
-                    break;
-                }
-            }
-            if (prevMonthStartIdx > 0) {
-                break;
-            }
-        }
-
-        int curMonthLatestIdx_i = 0;
-        int curMonthLatestIdx_j = 0;
-        for (int i = 5; i >= 0; i--) {
-            for (int j = 6; j >= 0; j--) {
-                if (currMonthDays[i][j] != 0) {
-                    curMonthLatestIdx_i = i;
-                    curMonthLatestIdx_j = j;
-
-                    break;
-                }
-            }
-            if (curMonthLatestIdx_i != 0 || curMonthLatestIdx_j != 0) {
-                if (curMonthLatestIdx_j == 6) {
-                    curMonthLatestIdx_i++;
-                    curMonthLatestIdx_j = 0;
-
-                }
-
-                break;
-            }
-        }
-
-        boolean includeToday = false;
-        int today = myCalendar.getTodayYMD();
-        if (today / 100 == currYM) {
-            includeToday = true;
-        }
         for (int i = 0; i < 6; i++) {
+            ThisMonthViewsWeek weekViews = thisMonthViews.get(i);
             for (int j = 0; j < 7; j++) {
-                textViews[i][j].setText("");
-                if (currMonthDays[i][j] == 0) {
-                    if (i == 0) {
-                        textViews[i][j].setText("" + prevMonthDays[prevMonthStartIdx][j] % 100);
-                        if (prevMonthDays[prevMonthStartIdx][j] > 100) {
-                            textViews[i][j].setTextColor(Color.rgb(215, 108, 108));
+                DateInfo dif = dateInfos[i][j];
+
+                View view = weekViews.getaView(j);
+                TextView tv = weekViews.getaWeekDays(j);
+                tv.setText("" + dif.day);
+
+                // 文字の色－今月　　：祝日・日曜日・土曜日・平日
+                // 　　　　　今月以外：祝日・以外
+                if (dif.bthisMonth) {
+                    if (dif.bHoliday) {
+                        if (dif.week == 1) { // sunday
+                            tv.setTextColor(Color.RED);
+                        } else if (dif.week == 7) { //saturday
+                            tv.setTextColor(Color.rgb(170, 0, 0));
                         } else {
-                            textViews[i][j].setTextColor(Color.rgb(128, 128, 128));
+                            tv.setTextColor(Color.rgb(170, 0, 0));
                         }
-                        textViews[i][j].setBackground(getResources().getDrawable(R.drawable.calendar_day_box_othermonth));
-                    } else if (i >= curMonthLatestIdx_i) {
-                        textViews[i][j].setText("" + nextMonthDays[i-curMonthLatestIdx_i][j] % 100);
-                        if (nextMonthDays[i-curMonthLatestIdx_i][j] > 100) {
-                            textViews[i][j].setTextColor(Color.rgb(215, 108, 108));
+                    } else {
+                        if (dif.week == 1) { // sunday
+                            tv.setTextColor(Color.RED);
+                        } else if (dif.week == 7) { //saturday
+                            tv.setTextColor(Color.BLUE);
                         } else {
-                            textViews[i][j].setTextColor(Color.rgb(128, 128, 128));
+                            tv.setTextColor(Color.BLACK);
                         }
-                        textViews[i][j].setBackground(getResources().getDrawable(R.drawable.calendar_day_box_othermonth));
                     }
                 } else {
-                    if (currMonthDays[i][j] > 100) {
-                        textViews[i][j].setText("" + currMonthDays[i][j] % 100);
-                        if (j == 0) {
-                            textViews[i][j].setTextColor(Color.RED);
-                        } else if (j == 6) {
-                            //textViews[i][j].setTextColor(Color.YELLOW);
-                            textViews[i][j].setTextColor(Color.rgb(170, 0, 0));
-                        } else {
-                            //textViews[i][j].setTextColor(Color.YELLOW);
-                            textViews[i][j].setTextColor(Color.rgb(170, 0, 0));
-                            //text color #50F03C
-                        }
+                    if (dif.bHoliday) {
+                        tv.setTextColor(Color.rgb(215, 108, 108));
                     } else {
-                        textViews[i][j].setText("" + currMonthDays[i][j]);
-                        if (j == 0) {
-                            textViews[i][j].setTextColor(Color.RED);
-                        } else if (j == 6) {
-                            textViews[i][j].setTextColor(Color.BLUE);
-                        } else {
-                            textViews[i][j].setTextColor(Color.BLACK);
-                        }
+                        tv.setTextColor(Color.rgb(128, 128, 128));
                     }
+                }
 
-
-                    // set today
-                    if (includeToday && textViews[i][j].getText().toString().equals("" + today % 100)) {
-                        //textViews[i][j].setBackgroundColor(Color.CYAN);
-                        textViews[i][j].setBackground(getResources().getDrawable(R.drawable.calendar_today_box));
+                // 背景　　－今月・以外、今日・以外
+                if (dif.bToday) {
+                    view.setBackground(getResources().getDrawable(R.drawable.calendar_today_box));
+                } else {
+                    if (dif.bthisMonth) {
+                        view.setBackground(getResources().getDrawable(R.drawable.calendar_day_box));
                     } else {
-                        textViews[i][j].setBackground(getResources().getDrawable(R.drawable.calendar_day_box));
+                        view.setBackground(getResources().getDrawable(R.drawable.calendar_day_box_othermonth));
                     }
-
                 }
             }
         }
+    }
 
-        // for debug
-//        for (int j = 0; j < 6; j++) {
-//            String weekStr = "";
-//            for (int k = 0; k < 7; k++) {
-//                if (nextMonthDays[j][k] == 0) {
-//                    String s = String.format("    ");
-//                    weekStr = weekStr + "    ";
-//                } else {
-//                    String s = String.format("%4d", nextMonthDays[j][k]);
-//                    weekStr = weekStr + s;
-//                }
-//            }
-//            Log.d(LOGTAG, "Next month :" + weekStr);
-//        }
+    private void displayRokuyo(boolean flag) {
+        for (int i = 0; i < 6; i++) {
+            ThisMonthViewsWeek weekViews = thisMonthViews.get(i);
+            for (int j = 0; j < 7; j++) {
+                DateInfo dif = dateInfos[i][j];
+
+                //View view = weekViews.getaView(j);
+                TextView tv = weekViews.getaWeekRokuyo(j);
+
+                if (dif.lunarDate <= SolarLunarJP.LUNAR_MIN_YEAR || dif.lunarDate >= solarLunarJP.LUNAR_MAX_YEAR) {
+                    tv.setText(" ");
+                } else {
+                    if (flag) {
+                        tv.setText("" + Constants.ROKYO_NAME[dif.rokuyoIdx]);
+                        Log.d(LOGTAG, "Sol:" + dif.solarDate + ", Lun:" + dif.lunarDate + ", roI:" + dif.rokuyoIdx + ", roNm:" + Constants.ROKYO_NAME[dif.rokuyoIdx]);
+                        if (dif.rokuyoIdx == 0) {
+                            tv.setTextColor(Color.rgb(170, 0, 0));
+                        } else {
+                            tv.setTextColor(Color.rgb(128, 128, 128));
+                        }
+                    } else {
+                        tv.setText(" ");
+                    }
+                }
+            }
+        }
     }
 
     private void getHolidayList(String country) {
@@ -621,72 +641,51 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
         }
     }
 
-    private void setTextViews(View view) {
-
+    private void setFragmentViews(View view) {
         tvYear = ((TextView)view.findViewById(R.id.this_year_solar));
         tvMonth = ((TextView)view.findViewById(R.id.this_month_solar));
         tvJpName = ((TextView)view.findViewById(R.id.this_year_jpname));
         tvJpYear = ((TextView)view.findViewById(R.id.this_year_japanes));
 
-        ((Button) view.findViewById(R.id.btnPrevMonth)).setOnClickListener(this);
-        ((Button) view.findViewById(R.id.btnNextMonth)).setOnClickListener(this);
-        ((TextView) view.findViewById(R.id.lbThisYear)).setOnClickListener(this);
-        ((TextView) view.findViewById(R.id.lbThisMonth)).setOnClickListener(this);
+        btnRokuyo = (Button)(view.findViewById(R.id.btnRokuyo));
+        btnMoveThisMonth = (Button)(view.findViewById(R.id.btnMoveThisMonth));
+        (view.findViewById(R.id.btnPrevMonth)).setOnClickListener(this);
+        (view.findViewById(R.id.btnNextMonth)).setOnClickListener(this);
+        (view.findViewById(R.id.lbThisYear)).setOnClickListener(this);
+        (view.findViewById(R.id.lbThisMonth)).setOnClickListener(this);
+        btnRokuyo.setOnClickListener(this);
+        btnMoveThisMonth.setOnClickListener(this);
 
         tvYear.setOnClickListener(this);
         tvMonth.setOnClickListener(this);
         tvJpName.setOnClickListener(this);
         tvJpYear.setOnClickListener(this);
+    }
 
-        textViews = new TextView[6][7];
+    private void setThisMonthViews(View view) {
+        setThisMonthViewsWeek(view.findViewById(R.id.week_0), 0);
+        setThisMonthViewsWeek(view.findViewById(R.id.week_1), 1);
+        setThisMonthViewsWeek(view.findViewById(R.id.week_2), 2);
+        setThisMonthViewsWeek(view.findViewById(R.id.week_3), 3);
+        setThisMonthViewsWeek(view.findViewById(R.id.week_4), 4);
+        setThisMonthViewsWeek(view.findViewById(R.id.week_5), 5);
 
-        textViews[0][0] =(TextView)(view.findViewById(R.id.week_0).findViewById(R.id.day_1));
-        textViews[0][0] = (TextView) (view.findViewById(R.id.week_0)).findViewById(R.id.day_1);
-        textViews[0][1] = (TextView) (view.findViewById(R.id.week_0)).findViewById(R.id.day_2);
-        textViews[0][2] = (TextView) (view.findViewById(R.id.week_0)).findViewById(R.id.day_3);
-        textViews[0][3] = (TextView) (view.findViewById(R.id.week_0)).findViewById(R.id.day_4);
-        textViews[0][4] = (TextView) (view.findViewById(R.id.week_0)).findViewById(R.id.day_5);
-        textViews[0][5] = (TextView) (view.findViewById(R.id.week_0)).findViewById(R.id.day_6);
-        textViews[0][6] = (TextView) (view.findViewById(R.id.week_0)).findViewById(R.id.day_7);
+    }
+    private void setThisMonthViewsWeek(View view, int index) {
+        ThisMonthViewsWeek aweek = new ThisMonthViewsWeek();
+        setThisMonthViewsDays(aweek, view.findViewById(R.id.day_0), 0);
+        setThisMonthViewsDays(aweek, view.findViewById(R.id.day_1), 1);
+        setThisMonthViewsDays(aweek, view.findViewById(R.id.day_2), 2);
+        setThisMonthViewsDays(aweek, view.findViewById(R.id.day_3), 3);
+        setThisMonthViewsDays(aweek, view.findViewById(R.id.day_4), 4);
+        setThisMonthViewsDays(aweek, view.findViewById(R.id.day_5), 5);
+        setThisMonthViewsDays(aweek, view.findViewById(R.id.day_6), 6);
 
-        textViews[1][0] = (TextView) (view.findViewById(R.id.week_1)).findViewById(R.id.day_1);
-        textViews[1][1] = (TextView) (view.findViewById(R.id.week_1)).findViewById(R.id.day_2);
-        textViews[1][2] = (TextView) (view.findViewById(R.id.week_1)).findViewById(R.id.day_3);
-        textViews[1][3] = (TextView) (view.findViewById(R.id.week_1)).findViewById(R.id.day_4);
-        textViews[1][4] = (TextView) (view.findViewById(R.id.week_1)).findViewById(R.id.day_5);
-        textViews[1][5] = (TextView) (view.findViewById(R.id.week_1)).findViewById(R.id.day_6);
-        textViews[1][6] = (TextView) (view.findViewById(R.id.week_1)).findViewById(R.id.day_7);
-
-        textViews[2][0] = (TextView) (view.findViewById(R.id.week_2)).findViewById(R.id.day_1);
-        textViews[2][1] = (TextView) (view.findViewById(R.id.week_2)).findViewById(R.id.day_2);
-        textViews[2][2] = (TextView) (view.findViewById(R.id.week_2)).findViewById(R.id.day_3);
-        textViews[2][3] = (TextView) (view.findViewById(R.id.week_2)).findViewById(R.id.day_4);
-        textViews[2][4] = (TextView) (view.findViewById(R.id.week_2)).findViewById(R.id.day_5);
-        textViews[2][5] = (TextView) (view.findViewById(R.id.week_2)).findViewById(R.id.day_6);
-        textViews[2][6] = (TextView) (view.findViewById(R.id.week_2)).findViewById(R.id.day_7);
-
-        textViews[3][0] = (TextView) (view.findViewById(R.id.week_3)).findViewById(R.id.day_1);
-        textViews[3][1] = (TextView) (view.findViewById(R.id.week_3)).findViewById(R.id.day_2);
-        textViews[3][2] = (TextView) (view.findViewById(R.id.week_3)).findViewById(R.id.day_3);
-        textViews[3][3] = (TextView) (view.findViewById(R.id.week_3)).findViewById(R.id.day_4);
-        textViews[3][4] = (TextView) (view.findViewById(R.id.week_3)).findViewById(R.id.day_5);
-        textViews[3][5] = (TextView) (view.findViewById(R.id.week_3)).findViewById(R.id.day_6);
-        textViews[3][6] = (TextView) (view.findViewById(R.id.week_3)).findViewById(R.id.day_7);
-
-        textViews[4][0] = (TextView) (view.findViewById(R.id.week_4)).findViewById(R.id.day_1);
-        textViews[4][1] = (TextView) (view.findViewById(R.id.week_4)).findViewById(R.id.day_2);
-        textViews[4][2] = (TextView) (view.findViewById(R.id.week_4)).findViewById(R.id.day_3);
-        textViews[4][3] = (TextView) (view.findViewById(R.id.week_4)).findViewById(R.id.day_4);
-        textViews[4][4] = (TextView) (view.findViewById(R.id.week_4)).findViewById(R.id.day_5);
-        textViews[4][5] = (TextView) (view.findViewById(R.id.week_4)).findViewById(R.id.day_6);
-        textViews[4][6] = (TextView) (view.findViewById(R.id.week_4)).findViewById(R.id.day_7);
-
-        textViews[5][0] = (TextView) (view.findViewById(R.id.week_5)).findViewById(R.id.day_1);
-        textViews[5][1] = (TextView) (view.findViewById(R.id.week_5)).findViewById(R.id.day_2);
-        textViews[5][2] = (TextView) (view.findViewById(R.id.week_5)).findViewById(R.id.day_3);
-        textViews[5][3] = (TextView) (view.findViewById(R.id.week_5)).findViewById(R.id.day_4);
-        textViews[5][4] = (TextView) (view.findViewById(R.id.week_5)).findViewById(R.id.day_5);
-        textViews[5][5] = (TextView) (view.findViewById(R.id.week_5)).findViewById(R.id.day_6);
-        textViews[5][6] = (TextView) (view.findViewById(R.id.week_5)).findViewById(R.id.day_7);
+        thisMonthViews.add(index, aweek);
+    }
+    private void setThisMonthViewsDays(ThisMonthViewsWeek aweek, View view, int index) {
+        aweek.setaView(view, index);
+        aweek.setaWeekDays((TextView) view.findViewById(R.id.dayNum), index);
+        aweek.setaWeekRokuyo((TextView) view.findViewById(R.id.rokuyoNum), index);
     }
 }

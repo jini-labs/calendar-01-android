@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutOneday2"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="20sp">
+    <TextView
+        android:id="@+id/dayNum"
+        android:gravity="end|top"
+        android:layout_weight="0.8"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+    <TextView
+        android:id="@+id/rokuyoNum"
+        android:text=""
+        android:textSize="10dp"
+        android:gravity="start|bottom"
+        android:layout_weight="0.2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+</LinearLayout>
