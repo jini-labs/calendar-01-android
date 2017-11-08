@@ -639,6 +639,29 @@ public class ThismonthFragment extends Fragment implements View.OnClickListener 
                 holidayListItems.add(hlItem);
             }
         }
+
+        int nextYmd = (toYmd / 10000 + 1) * 10000 + 100 + 0;
+        if (holidayListItems.size() < 15) {
+            hI.clearHolidays();
+            hI.setHolidayYear(nextYmd / 10000);
+            hI.setHolidayCalendar();
+            hdis = hI.getHolidays();
+            for (HolidayItem item : hdis) {
+                CalcDurationDate diffDate = new CalcDurationDate();
+                diffDate.setInitDate(toYmd/10000, (toYmd%10000)/100, toYmd%100,
+                        item.ymd/10000, (item.ymd%10000)/100, item.ymd%100);
+                diffDate.setDiffDays();
+
+                HolidayListItem hlItem = new HolidayListItem(
+                        item.ymd,
+                        MyCalendar.convertDateWeekName(getResources(), item.ymd, "/"),
+                        item.name,
+                        ((item.ymd == nextYmd)? constantStr[0] :diffDate.getTotalDays() + constantStr[1]));
+
+                holidayListItems.add(hlItem);
+                if (holidayListItems.size() > 15) break;
+            }
+        }
     }
 
     private void setFragmentViews(View view) {
