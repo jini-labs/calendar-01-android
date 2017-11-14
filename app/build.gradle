@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "com.doublesibi.utils.calc.datecalculator"
         minSdkVersion 18
         targetSdkVersion 24
-        versionCode 2
-        versionName "1.2"
+        versionCode 3
+        versionName "1.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
