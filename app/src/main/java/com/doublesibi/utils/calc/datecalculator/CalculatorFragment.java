@@ -1,7 +1,7 @@
 package com.doublesibi.utils.calc.datecalculator;
 
 
-import android.graphics.Color;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -23,8 +23,8 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
 
     private static final double CONSUMPTION_TAX_RATE = 0.08;
 
-    private EditText inputedStatement2;
-    private TextView currInputTxt;
+    private EditText result1;
+    private TextView result2;
     private ArrayList<Button> arrayNumBtnList;
 
     private Button btnDelete, btnClear;
@@ -35,23 +35,18 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
 
     private boolean bDotClicked = false;
     private boolean bCalculated = false;
-    private int nCalculatable = 0;
-
-    private String strTaxCalculate;
-    private boolean bTaxCalculated;
 
     public CalculatorFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_calculator, container, false);
-        inputedStatement2 = (EditText)view.findViewById(R.id.inputedStatement2);
-        currInputTxt = (TextView)view.findViewById(R.id.currInput);
+        result1 = (EditText)view.findViewById(R.id.result1);
+        result2 = (TextView)view.findViewById(R.id.result2);
         arrayNumBtnList = new ArrayList<>();
 
         setButtonId(view);
@@ -59,17 +54,26 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
         return view;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onClick(View v) {
-        String strTmp1, strTmp2;
-        String strRtn = null;
-        int nTmp1;
-        double dTmp1, dTmp2;
-        int clickedId = 0;
-        Button numBtn;
-        Button operBtn;
+        String strTmp2;
+        int clickedId = v.getId();;
 
-        clickedId = v.getId();
+        String strTmp1 = "";
+        String result1Str = result1.getText().toString();
+        String result2Str = result2.getText().toString();
+        int result1Len = result1Str.length();
+        int result2Len = result2Str.length();
+
+        Button clickedBtn = (Button) v.findViewById(clickedId);
+        String btnString = clickedBtn.getText().toString();
+        Log.d(LOG_TAG, "result 1 : [" + result1Len + "], [" + result1Str + "]");
+        Log.d(LOG_TAG, "result 2 : [" + result2Len + "], [" + result2Str + "]");
+        Log.d(LOG_TAG, "btn string : " + btnString);
+
+        if (bCalculated && clickedId != R.id.calcResult) bCalculated = false;
+
         switch(clickedId) {
             case R.id._1:
             case R.id._2:
@@ -80,123 +84,111 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
             case R.id._7:
             case R.id._8:
             case R.id._9:
-                numBtn = (Button) v.findViewById(clickedId);
-                numBtn.getText();
-                currInputTxt.setText(currInputTxt.getText().toString() + numBtn.getText().toString());
+                result2.setText("" + result2Str + btnString);
                 break;
             case R.id._0:
             case R.id._00:
-                if (currInputTxt.getText().length() > 0 || bDotClicked) {
-                    numBtn = (Button) v.findViewById(clickedId);
-                    numBtn.getText();
-                    currInputTxt.setText(currInputTxt.getText().toString() + numBtn.getText().toString());
+                if (result2Len > 0) {
+                    result2.setText(result2Str + btnString);
+                } else {
+                    break;
                 }
                 break;
             case R.id._dot:
-                if (!bDotClicked) {
-                    currInputTxt.setText("0");
+                if (result2Len > 0) {
+                    result2.setText(result2Str + ".");
+                } else {
+                    result2.setText(result2Str + "0.");
                 }
-                currInputTxt.setText(currInputTxt.getText().toString() + ".");
-                bDotClicked = true;
                 break;
             case R.id.clear:
-                inputedStatement2.setText("");
-                currInputTxt.setText("");
-                bDotClicked = false;
-                bCalculated = false;
+                if (result2Len > 0) {
+                    result2.setText("");
+                } else {
+                    result1.setText("");
+                }
                 break;
             case R.id.delete:
-                if (currInputTxt.getText().length() > 0) {
-                    if (bDotClicked || currInputTxt.getText().toString().equals("0.")) {
-                        currInputTxt.setText("");
-                        bDotClicked = false;
-                        break;
+                if (result2Len > 0) {
+                    if (result2Str.charAt(result2Len - 1) == '.') {
+                        strTmp1 = result2Str.substring(0, result2Len - 2);
+                    } else {
+                        strTmp1 = result2Str.substring(0, result2Len - 1);
                     }
-
-                    strTmp1 = currInputTxt.getText().toString();
-                    nTmp1 = strTmp1.length();
-                    strTmp2 = strTmp1.substring(0, nTmp1 - 1);
-
-                    currInputTxt.setText(strTmp2);
+                    result2.setText(strTmp1);
+                } else {
+                    break;
                 }
                 break;
             case R.id.calcPlus:
             case R.id.calcMinus:
             case R.id.calcDivide:
             case R.id.calcMultiply:
-                if (bCalculated) {
-                    inputedStatement2.setText("");
-                    bCalculated=false;
-                    nCalculatable=0;
-                }
-                operBtn = (Button) v.findViewById(clickedId);
-                if (currInputTxt.getText().length() > 0) {
-                    String tmp = inputedStatement2.getText().toString();
-                    inputedStatement2.setText(tmp + currInputTxt.getText().toString() + operBtn.getText().toString().trim());
-                    nCalculatable ++;
-                    currInputTxt.setText("");
+                if (result2Len > 0) {
+                    if (result1Len > 0) {
+                        if (bCalculated) {
+                            String param[] = result1Str.split("=");
+                            result1Str = param[1] + result2Str + btnString ;
+                            result1.setText(result1Str);
+                            result2.setText("");
+                        } else {
+                            result1.setText(result1Str + result2Str + btnString);
+                            result2.setText("");
+                        }
+                    } else {
+                        result1.setText(result2Str + btnString);
+                        result2.setText("");
+                    }
+                } else {
+                    if (result1Len > 0) {
+                        if (bCalculated) {
+                            break;
+                        } else {
+                            strTmp1 = result2Str.substring(0, result2Len - 1);
+                            result1.setText(strTmp1 + btnString);
+                        }
+                    }
                 }
                 break;
             case R.id.calcTaxInc:
-                if (currInputTxt.getText().length() > 0) {
-                    strTaxCalculate = currInputTxt.getText().toString();
-                    dTmp1 = Integer.parseInt(currInputTxt.getText().toString()) * (1 + CONSUMPTION_TAX_RATE);
-                    dTmp1 = Math.floor(dTmp1);
-                    currInputTxt.setText("" + (int) dTmp1);
 
-                    bTaxCalculated = true;
-                }
                 break;
             case R.id.calcTaxExc:
-                if (currInputTxt.getText().length() > 0) {
-                    strTaxCalculate = currInputTxt.getText().toString();
-                    dTmp1 = Integer.parseInt(currInputTxt.getText().toString()) / (1 + CONSUMPTION_TAX_RATE);
-                    currInputTxt.setText("" + (int) (dTmp1 + 0.5));
 
-                    bTaxCalculated = true;
-                }
                 break;
             case R.id.calcResult:
-                if (nCalculatable == 0) {
-                    break;
-                } else if (nCalculatable == 1) {
-                    if (currInputTxt.getText().length() > 0) {
-                        strTmp1 = inputedStatement2.getText().toString();
-                        inputedStatement2.setText(strTmp1 + currInputTxt.getText().toString() + "=");
+                if (result2Len > 0) {
+                    if (result1Len > 0) {
+                        if(bCalculated) {
+                            break;
+                        } else {
+                            strTmp1 = result1Str + result2Str + "=";
 
-                        currInputTxt.setText("");
-                        nCalculatable++;
+                            strTmp2 = calculate(strTmp1);
+                            bCalculated = true;
+
+                            result1.setText(strTmp1 + strTmp2);
+                            result2.setText("");
+                        }
                     } else {
                         break;
                     }
-                }
+                } else {
+                    if (result1Len > 0) {
+                        if (bCalculated) {
+                            break;
+                        } else {
+                            strTmp1 = result2Str.substring(0, result2Len - 1);
 
-                if (nCalculatable > 1) {
-                    if (currInputTxt.getText().length() > 0) {
-                        strTmp1 = inputedStatement2.getText().toString();
-                        inputedStatement2.setText(strTmp1 + currInputTxt.getText().toString() + "=");
-                        currInputTxt.setText("");
-                        nCalculatable++;
-                    }
+                            strTmp2 = calculate(strTmp1);
+                            bCalculated = true;
 
-                    strTmp1 = inputedStatement2.getText().toString();
-                    strTmp2 = strTmp1.substring(0, strTmp1.length()-1);
-                    inputedStatement2.setText(strTmp2 + "=");
-
-                    // ...
-                    strRtn = calculate(inputedStatement2.getText().toString());
-                    // ...
-
-                    dTmp1 = Double.parseDouble(strRtn);
-                    dTmp2 = dTmp1 % 1;
-                    if (dTmp2 == 0.0) {
-                        inputedStatement2.setText(inputedStatement2.getText().toString() + "  " + (int)dTmp1);
+                            result1.setText(strTmp1 + " = " + strTmp2);
+                            result2.setText("");
+                        }
                     } else {
-                        inputedStatement2.setText(inputedStatement2.getText().toString() + "  " + dTmp1);
+                        break;
                     }
-
-                    bCalculated = true;
-                    nCalculatable = 0;
                 }
                 break;
         }
