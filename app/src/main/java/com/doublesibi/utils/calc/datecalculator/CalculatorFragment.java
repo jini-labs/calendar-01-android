@@ -54,6 +54,15 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
         return view;
     }
 
+    private String getCalculatedValue(String result1Str) {
+        if (bCalculated) {
+            String param[] = result1Str.split("=");
+            return param[1];
+        } else {
+            return "";
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     @Override
     public void onClick(View v) {
@@ -72,8 +81,6 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
         Log.d(LOG_TAG, "result 2 : [" + result2Len + "], [" + result2Str + "]");
         Log.d(LOG_TAG, "btn string : " + btnString);
 
-        if (bCalculated && clickedId != R.id.calcResult) bCalculated = false;
-
         switch(clickedId) {
             case R.id._1:
             case R.id._2:
@@ -84,7 +91,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
             case R.id._7:
             case R.id._8:
             case R.id._9:
-                result2.setText("" + result2Str + btnString);
+                 result2.setText("" + result2Str + btnString);
                 break;
             case R.id._0:
             case R.id._00:
@@ -95,15 +102,21 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
                 }
                 break;
             case R.id._dot:
-                if (result2Len > 0) {
-                    result2.setText(result2Str + ".");
+                if (!bDotClicked) {
+                    bDotClicked = true;
+                    if (result2Len > 0) {
+                        result2.setText(result2Str + ".");
+                    } else {
+                        result2.setText(result2Str + "0.");
+                    }
                 } else {
-                    result2.setText(result2Str + "0.");
+                    // do nothing.
                 }
                 break;
             case R.id.clear:
                 if (result2Len > 0) {
                     result2.setText("");
+                    bDotClicked = false;
                 } else {
                     result1.setText("");
                 }
@@ -111,6 +124,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
             case R.id.delete:
                 if (result2Len > 0) {
                     if (result2Str.charAt(result2Len - 1) == '.') {
+                        bDotClicked = false;
                         strTmp1 = result2Str.substring(0, result2Len - 2);
                     } else {
                         strTmp1 = result2Str.substring(0, result2Len - 1);
@@ -124,28 +138,39 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
             case R.id.calcMinus:
             case R.id.calcDivide:
             case R.id.calcMultiply:
-                if (result2Len > 0) {
-                    if (result1Len > 0) {
-                        if (bCalculated) {
-                            String param[] = result1Str.split("=");
-                            result1Str = param[1] + result2Str + btnString ;
-                            result1.setText(result1Str);
+                if (result1Len > 0) {
+                    if (bCalculated) {
+                        strTmp1 = getCalculatedValue(result1Str);
+                        if (result2Len > 0) {
+                            result1.setText(result2Str + btnString);
                             result2.setText("");
-                        } else {
+                        } else /* result2Len <= 0 */ {
+                            result1.setText(strTmp1 + btnString);
+                        }
+                        bCalculated = false;
+                    } else /* bCalculated = false */ {
+                        if (result2Len > 0) {
                             result1.setText(result1Str + result2Str + btnString);
                             result2.setText("");
+                        } else /* result2Len <= 0 */ {
+                            Log.d(LOG_TAG, "result1Str:" + result1Str);
+                            Log.d(LOG_TAG, "result1Str(sub):" + result1Str.substring(0, result1Len - 1));
+                            result1.setText(result1Str.substring(0, result1Len - 1) + btnString);
                         }
-                    } else {
-                        result1.setText(result2Str + btnString);
-                        result2.setText("");
                     }
-                } else {
-                    if (result1Len > 0) {
-                        if (bCalculated) {
-                            break;
-                        } else {
-                            strTmp1 = result2Str.substring(0, result2Len - 1);
-                            result1.setText(strTmp1 + btnString);
+                } else  /* result1Len <= 0 */ {
+                    if (bCalculated) {
+                        /* impossible */
+                        Log.w(LOG_TAG,"case of impossible.(result1 is null, calculated is true.)");
+                        if (result2Len > 0) {
+                        } else /* result2Len <= 0 */ {
+                        }
+                    } else /* bCalculated = false */ {
+                        if (result2Len > 0) {
+                            result1.setText(result2Str + btnString);
+                            result2.setText("");
+                        } else /* result2Len <= 0 */ {
+                            /* do nothing */
                         }
                     }
                 }
@@ -166,6 +191,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
 
                             strTmp2 = calculate(strTmp1);
                             bCalculated = true;
+                            bDotClicked = false;
 
                             result1.setText(strTmp1 + strTmp2);
                             result2.setText("");
@@ -181,7 +207,9 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
                             strTmp1 = result2Str.substring(0, result2Len - 1);
 
                             strTmp2 = calculate(strTmp1);
+                            calculate(strTmp1);
                             bCalculated = true;
+                            bDotClicked = false;
 
                             result1.setText(strTmp1 + " = " + strTmp2);
                             result2.setText("");
