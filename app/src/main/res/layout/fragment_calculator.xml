@@ -13,7 +13,7 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/inputedStatement2"
+            android:id="@+id/result1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
@@ -28,10 +28,12 @@
             android:background="@color/calculator_result_bk_color"
             android:textSize="@dimen/calculator_result_text_size"
             android:inputType="numberDecimal|number"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:focusable="false"
+            android:focusableInTouchMode="false" />
 
         <TextView
-            android:id="@+id/currInput"
+            android:id="@+id/result2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
@@ -42,7 +44,7 @@
             android:background="@color/calculator_result_bk_color"
             android:gravity="end|center_vertical"
             android:textSize="@dimen/calculator_inputed_text_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <LinearLayout
             android:layout_width="match_parent"

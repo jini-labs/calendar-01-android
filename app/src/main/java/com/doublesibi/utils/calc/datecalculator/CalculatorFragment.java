@@ -35,6 +35,9 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
 
     private boolean bDotClicked = false;
     private boolean bCalculated = false;
+    private boolean bTaxCalc = false;
+
+    private String taxCalculatedResult = "";
 
     public CalculatorFragment() {
         // Required empty public constructor
@@ -80,6 +83,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
         Log.d(LOG_TAG, "result 1 : [" + result1Len + "], [" + result1Str + "]");
         Log.d(LOG_TAG, "result 2 : [" + result2Len + "], [" + result2Str + "]");
         Log.d(LOG_TAG, "btn string : " + btnString);
+        Log.d(LOG_TAG, "bCalculated: " + bCalculated + ", bDotClicked:" + bDotClicked);
 
         switch(clickedId) {
             case R.id._1:
@@ -119,6 +123,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
                     bDotClicked = false;
                 } else {
                     result1.setText("");
+                    bCalculated = false;
                 }
                 break;
             case R.id.delete:
@@ -220,6 +225,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
                 }
                 break;
         }
+        result1.setTextSize((float) 24);
     }
 
     private String calculate(String strExprssion) {
