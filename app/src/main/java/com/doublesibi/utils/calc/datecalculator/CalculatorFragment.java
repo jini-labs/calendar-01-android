@@ -181,10 +181,10 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
                 }
                 break;
             case R.id.calcTaxInc:
-
-                break;
             case R.id.calcTaxExc:
-
+                if (result2Len > 0) {
+                    result2.setText(this.calcTax(clickedId, result2Str));
+                }
                 break;
             case R.id.calcResult:
                 if (result2Len > 0) {
@@ -294,7 +294,16 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
             Log.d(LOG_TAG,"result: nums:[" +numsArray.toString() + "]" + opersArray.toString());
         }
 
-        return numsArray.get(0);
+        String[] strParam = numsArray.get(0).split("\\.", -1);
+        if (strParam.length == 2) {
+            String strSbubstr = strParam[1].substring(0, 1);
+            if (strSbubstr.equals("0"))
+                return strParam[0];
+            else
+                return strParam[0] + "." + strSbubstr;
+        } else {
+            return strParam[0];
+        }
     }
 
     private double calc(String oper, double left, double right) {
@@ -311,9 +320,20 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    private double calcTax(double orgValue, double taxRate) {
+    private String calcTax(int clickedId, String strNum) {
+        double dValue = 0.0;
+        switch(clickedId) {
+            case R.id.calcTaxInc:
+                dValue = Double.parseDouble(strNum) * (1 + CONSUMPTION_TAX_RATE);
+                break;
+            case R.id.calcTaxExc:
+                dValue = Double.parseDouble(strNum) / (1 + CONSUMPTION_TAX_RATE);
+                break;
+        }
 
-        return orgValue * this.CONSUMPTION_TAX_RATE;
+
+        String[] strParam = String.valueOf(dValue + 0.4).split("\\.", -1);
+        return strParam[0];
     }
 
     void setButtonId(View v) {
