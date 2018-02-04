@@ -48,8 +48,8 @@
 
     <color name="boxed_edittext_filled_color">#09742D</color>
 
-    <color name="calculator_input_bk_color">#BEBEBE</color>
-    <color name="calculator_result_bk_color">#BEBEBE</color>
+    <color name="calculator_input_bk_color">#CCFFCC</color>
+    <color name="calculator_result_bk_color">#CCFFCC</color>
 
     <color name="amber500">#FFC107</color>
     <color name="pink500">#E91E63</color>
