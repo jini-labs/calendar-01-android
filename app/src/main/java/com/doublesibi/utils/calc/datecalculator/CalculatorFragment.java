@@ -321,19 +321,17 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
     }
 
     private String calcTax(int clickedId, String strNum) {
-        double dValue = 0.0;
+        long lValue = 0L;
         switch(clickedId) {
             case R.id.calcTaxInc:
-                dValue = Double.parseDouble(strNum) * (1 + CONSUMPTION_TAX_RATE);
+                lValue =  (long)((Long.parseLong(strNum) * 100 * (1 + CONSUMPTION_TAX_RATE)) / 100);
                 break;
             case R.id.calcTaxExc:
-                dValue = Double.parseDouble(strNum) / (1 + CONSUMPTION_TAX_RATE);
+                lValue =  (long)(((Long.parseLong(strNum) * 100) / (1 + CONSUMPTION_TAX_RATE)) / 100);
                 break;
         }
 
-
-        String[] strParam = String.valueOf(dValue + 0.4).split("\\.", -1);
-        return strParam[0];
+        return String.valueOf(lValue);
     }
 
     void setButtonId(View v) {
