@@ -29,7 +29,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
 
     private Button btnDelete, btnClear;
 
-    private Button btnDot;
+//    private Button btnDot;
     private Button btnCalcPlus, btnCalcMinus, btnCalcDivide, btnCalcMultiply;
     private Button btnCalcTaxInc, btnCalcTaxExc, btnCalcResult;
 
@@ -92,6 +92,8 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
             case R.id._7:
             case R.id._8:
             case R.id._9:
+                if (result2Len > 10)
+                    break;
                 if (result2Len > 0) {
                     String param[] = result2Str.split("\\.");
                     if (param.length >= 2 && param[1].length() >= 2)
@@ -101,6 +103,8 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
                 break;
             case R.id._0:
             case R.id._00:
+                if (result2Len > 10)
+                    break;
                 if (result2Len > 0) {
                     String param1[] = result2Str.split("\\.");
                     if (param1.length >= 2 && param1[1].length() >= 2)
@@ -111,18 +115,18 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
                     break;
                 }
                 break;
-            case R.id._dot:
-                if (!bDotClicked) {
-                    bDotClicked = true;
-                    if (result2Len > 0) {
-                        result2.setText(result2Str + ".");
-                    } else {
-                        result2.setText(result2Str + "0.");
-                    }
-                } else {
-                    // do nothing.
-                }
-                break;
+//            case R.id._dot:
+//                if (!bDotClicked) {
+//                    bDotClicked = true;
+//                    if (result2Len > 0) {
+//                        result2.setText(result2Str + ".");
+//                    } else {
+//                        result2.setText(result2Str + "0.");
+//                    }
+//                } else {
+//                    // do nothing.
+//                }
+//                break;
             case R.id.clear:
                 if (result2Len > 0) {
                     result2.setText("");
@@ -389,7 +393,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
             btnItem.setOnClickListener(this);
         }
 
-        btnDot = (Button)v.findViewById(R.id._dot);
+//        btnDot = (Button)v.findViewById(R.id._dot);
         btnCalcPlus = (Button)v.findViewById(R.id.calcPlus);
         btnCalcMinus = (Button)v.findViewById(R.id.calcMinus);
         btnCalcDivide = (Button)v.findViewById(R.id.calcDivide);
@@ -397,7 +401,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
         btnCalcTaxInc = (Button)v.findViewById(R.id.calcTaxInc);
         btnCalcTaxExc= (Button)v.findViewById(R.id.calcTaxExc);
 
-        btnDot.setOnClickListener(this);
+//        btnDot.setOnClickListener(this);
         btnCalcPlus.setOnClickListener(this);
         btnCalcMinus.setOnClickListener(this);
         btnCalcDivide.setOnClickListener(this);
