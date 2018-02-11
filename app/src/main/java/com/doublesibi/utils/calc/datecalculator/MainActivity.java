@@ -126,6 +126,10 @@ public class MainActivity extends AppCompatActivity
                 selectedMenu = 2;
                 fragmentClass = EventdayFragment.class;
                 break;
+            case R.id.calculator__fragment:
+                fragmentClass = CalculatorFragment.class;
+                selectedMenu = 3;
+                break;
             default:
                 selectedMenu = 0;
                 this.mMenu.getItem(0).setVisible(false);

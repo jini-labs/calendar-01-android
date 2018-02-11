@@ -5,6 +5,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_vertical_half_margin">8dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="dur_table_label_textsize">16sp</dimen>
@@ -12,5 +13,14 @@
 
     <dimen name="eve_input_valuetextsize">16sp</dimen>
     <dimen name="eve_result_textsize">16sp</dimen>
+
+    <dimen name="calculator_num_text_size">32sp</dimen>
+    <dimen name="calculator_oper_text_size">28sp</dimen>
+    <dimen name="calculator_etc_text_size">24sp</dimen>
+    <dimen name="calculator_tex_text_size">12sp</dimen>
+    <dimen name="calculator_inputed_text_size">30sp</dimen>
+    <dimen name="calculator_result_text_size">18sp</dimen>
+    <dimen name="calculator_result2_text_size">14sp</dimen>
+    <dimen name="calculator_button_label_text_size">18sp</dimen>
 
 </resources>
