@@ -35,9 +35,6 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
 
     private boolean bDotClicked = false;
     private boolean bCalculated = false;
-    private boolean bTaxCalc = false;
-
-    private String taxCalculatedResult = "";
 
     public CalculatorFragment() {
         // Required empty public constructor
@@ -95,12 +92,21 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
             case R.id._7:
             case R.id._8:
             case R.id._9:
-                 result2.setText("" + result2Str + btnString);
+                if (result2Len > 0) {
+                    String param[] = result2Str.split("\\.");
+                    if (param.length >= 2 && param[1].length() >= 2)
+                        break;
+                }
+                result2.setText("" + result2Str + btnString);
                 break;
             case R.id._0:
             case R.id._00:
                 if (result2Len > 0) {
-                    result2.setText(result2Str + btnString);
+                    String param1[] = result2Str.split("\\.");
+                    if (param1.length >= 2 && param1[1].length() >= 2)
+                        break;
+                    else
+                        result2.setText(result2Str + btnString);
                 } else {
                     break;
                 }
@@ -179,6 +185,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
                         }
                     }
                 }
+                bDotClicked = false;
                 break;
             case R.id.calcTaxInc:
             case R.id.calcTaxExc:
@@ -231,6 +238,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
     private String calculate(String strExprssion) {
         String strTmp1, strTmp2, strTmp3, strTmp4;
         double dTmp1;
+        long lTmp1;
         String atoken = null;
         ArrayList<String> numsArray = new ArrayList<>();
         ArrayList<String> opersArray = new ArrayList<>();
@@ -256,10 +264,13 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
                 strTmp3 = numsArray.get(1);
 
                 dTmp1 = calc(strTmp1, Double.parseDouble(strTmp2), Double.parseDouble(strTmp3));
+                lTmp1 = calc(strTmp1, Long.parseLong(strTmp2), Long.parseLong(strTmp3));
+                //lTmp1 = calc(strTmp1, (long)((Double.parseDouble(strTmp2))*100), (long)((Double.parseDouble(strTmp3))*100));
 
                 opersArray.remove(0);
                 numsArray.remove(0);
-                numsArray.set(0, String.valueOf(dTmp1));
+                numsArray.set(0, String.valueOf(lTmp1));
+                //numsArray.set(0, String.valueOf((double)(lTmp1 / 10000.0)));
             } else if (strTmp1.equals("+") || strTmp1.equals("-")) {
                 strTmp2 = opersArray.get(1);
                 if (strTmp2.equals("+") || strTmp2.equals("-")) {
@@ -267,28 +278,37 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
                     strTmp4 = numsArray.get(1);
 
                     dTmp1 = calc(strTmp1, Double.parseDouble(strTmp3), Double.parseDouble(strTmp4));
+                    lTmp1 = calc(strTmp1, Long.parseLong(strTmp3), Long.parseLong(strTmp4));
+                    //lTmp1 = calc(strTmp1, (long)((Double.parseDouble(strTmp3))*100), (long)((Double.parseDouble(strTmp4))*100));
 
                     opersArray.remove(0);
                     numsArray.remove(0);
-                    numsArray.set(0, String.valueOf(dTmp1));
+                    numsArray.set(0, String.valueOf(lTmp1));
+                    //numsArray.set(0, String.valueOf((double)(lTmp1 / 10000.0)));
                 } else if (strTmp2.equals("x") || strTmp2.equals("÷")) {
                     strTmp3 = numsArray.get(1);
                     strTmp4 = numsArray.get(2);
 
                     dTmp1 = calc(strTmp2, Double.parseDouble(strTmp3), Double.parseDouble(strTmp4));
+                    lTmp1 = calc(strTmp2, Long.parseLong(strTmp3), Long.parseLong(strTmp4));
+                    //lTmp1 = calc(strTmp2, (long)((Double.parseDouble(strTmp3))*100), (long)((Double.parseDouble(strTmp4))*100));
 
                     opersArray.remove(1);
                     numsArray.remove(1);
-                    numsArray.set(1, String.valueOf(dTmp1));
+                    numsArray.set(1, String.valueOf(lTmp1));
+                    //numsArray.set(1, String.valueOf((double)(lTmp1 / 10000.0)));
                 } else if (strTmp2.equals("=")) {
                     strTmp3 = numsArray.get(0);
                     strTmp4 = numsArray.get(1);
 
                     dTmp1 = calc(strTmp1, Double.parseDouble(strTmp3), Double.parseDouble(strTmp4));
+                    lTmp1 = calc(strTmp1, Long.parseLong(strTmp3), Long.parseLong(strTmp4));
+                    //lTmp1 = calc(strTmp1, (long)((Double.parseDouble(strTmp3))*100), (long)((Double.parseDouble(strTmp4))*100));
 
                     opersArray.remove(0);
                     numsArray.remove(0);
-                    numsArray.set(0, String.valueOf(dTmp1));
+                    numsArray.set(0, String.valueOf(lTmp1));
+                    //numsArray.set(0, String.valueOf((double)(lTmp1 / 10000.0)));
                 }
             }
             Log.d(LOG_TAG,"result: nums:[" +numsArray.toString() + "]" + opersArray.toString());
@@ -306,7 +326,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    private double calc(String oper, double left, double right) {
+    private long calc(String oper, long left, long right) {
         if (oper.equals("+")) {
             return left + right;
         } else if (oper.equals("-")) {
@@ -315,6 +335,24 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
             return left * right;
         } else if (oper.equals("÷")) {
             return left / right;
+        } else {
+            return 0;
+        }
+    }
+
+    private double calc(String oper, double left, double right) {
+        long l1 = (long)(left * 100);
+        long r1 = (long)(right * 100);
+        if (oper.equals("+")) {
+            return left + right;
+        } else if (oper.equals("-")) {
+            return left - right;
+        } else if (oper.equals("x")) {
+            return (double)((l1 * r1) / 10000.0);
+            //return left * right;
+        } else if (oper.equals("÷")) {
+            return (double)((l1 / r1) / 10000.0);
+            //return left / right;
         } else {
             return 0.0;
         }
