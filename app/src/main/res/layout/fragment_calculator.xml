@@ -286,6 +286,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/calc_button_selector"
                     android:textSize="@dimen/calculator_button_label_text_size"
+                    android:enabled="false"
                     android:text="." />
 
                 <Button
