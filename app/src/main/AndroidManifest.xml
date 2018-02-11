@@ -20,13 +20,13 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".DurationHistActivity"
             android:label="@string/duration_activity_title"
-            android:screenOrientation="portrait"
-            android:name=".DurationHistActivity" />
+            android:screenOrientation="portrait" />
         <activity
+            android:name=".EventHistActivity"
             android:label="@string/eventday_activity_title"
-            android:screenOrientation="portrait"
-            android:name=".EventHistActivity"></activity>
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
