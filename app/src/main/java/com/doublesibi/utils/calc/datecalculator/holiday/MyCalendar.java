@@ -1,7 +1,6 @@
 package com.doublesibi.utils.calc.datecalculator.holiday;
 
 import android.content.res.Resources;
-import android.widget.TextView;
 
 import com.doublesibi.utils.calc.datecalculator.R;
 import com.doublesibi.utils.calc.datecalculator.common.Constants;
