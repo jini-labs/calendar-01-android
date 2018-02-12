@@ -2,6 +2,7 @@ package com.doublesibi.utils.calc.datecalculator;
 
 
 import android.annotation.SuppressLint;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -56,7 +57,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
 
     private String getCalculatedValue(String result1Str) {
         if (bCalculated) {
-            String param[] = result1Str.split("=");
+            String param[] = result1Str.split(getResources().getString(R.string.calc_oper_calc));
             return param[1];
         } else {
             return "";
@@ -203,7 +204,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
                         if(bCalculated) {
                             break;
                         } else {
-                            strTmp1 = result1Str + result2Str + "=";
+                            strTmp1 = result1Str + result2Str + getResources().getString(R.string.calc_oper_calc);
 
                             strTmp2 = calculate(strTmp1);
                             bCalculated = true;
@@ -227,7 +228,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
                             bCalculated = true;
                             bDotClicked = false;
 
-                            result1.setText(strTmp1 + " = " + strTmp2);
+                            result1.setText(strTmp1 + getResources().getString(R.string.calc_oper_calc) + strTmp2);
                             result2.setText("");
                         }
                     } else {
@@ -246,7 +247,12 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
         String atoken = null;
         ArrayList<String> numsArray = new ArrayList<>();
         ArrayList<String> opersArray = new ArrayList<>();
-        StringTokenizer token = new StringTokenizer(strExprssion, "+-x÷=");
+        String delimiter = getResources().getString(R.string.calc_oper_plus) +
+                getResources().getString(R.string.calc_oper_minus) +
+                getResources().getString(R.string.calc_oper_multi) +
+                getResources().getString(R.string.calc_oper_divid) +
+                getResources().getString(R.string.calc_oper_calc);
+        StringTokenizer token = new StringTokenizer(strExprssion, delimiter);
         while(token.hasMoreTokens()) {
             atoken = token.nextToken();
             numsArray.add(atoken);
@@ -261,9 +267,9 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
         while(opersArray.size() > 1) {
 
             strTmp1 = opersArray.get(0);
-            if (strTmp1.equals("=")) {
+            if (strTmp1.equals(getResources().getString(R.string.calc_oper_calc))) {
                 break;
-            } else if (strTmp1.equals("x") || strTmp1.equals("÷")) {
+            } else if (strTmp1.equals(getResources().getString(R.string.calc_oper_multi)) || strTmp1.equals(getResources().getString(R.string.calc_oper_divid))) {
                 strTmp2 = numsArray.get(0);
                 strTmp3 = numsArray.get(1);
 
@@ -275,9 +281,9 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
                 numsArray.remove(0);
                 numsArray.set(0, String.valueOf(lTmp1));
                 //numsArray.set(0, String.valueOf((double)(lTmp1 / 10000.0)));
-            } else if (strTmp1.equals("+") || strTmp1.equals("-")) {
+            } else if (strTmp1.equals(getResources().getString(R.string.calc_oper_plus)) || strTmp1.equals(getResources().getString(R.string.calc_oper_minus))) {
                 strTmp2 = opersArray.get(1);
-                if (strTmp2.equals("+") || strTmp2.equals("-")) {
+                if (strTmp2.equals(getResources().getString(R.string.calc_oper_plus)) || strTmp2.equals(getResources().getString(R.string.calc_oper_minus))) {
                     strTmp3 = numsArray.get(0);
                     strTmp4 = numsArray.get(1);
 
@@ -289,7 +295,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
                     numsArray.remove(0);
                     numsArray.set(0, String.valueOf(lTmp1));
                     //numsArray.set(0, String.valueOf((double)(lTmp1 / 10000.0)));
-                } else if (strTmp2.equals("x") || strTmp2.equals("÷")) {
+                } else if (strTmp2.equals(getResources().getString(R.string.calc_oper_multi)) || strTmp2.equals(getResources().getString(R.string.calc_oper_divid))) {
                     strTmp3 = numsArray.get(1);
                     strTmp4 = numsArray.get(2);
 
@@ -301,7 +307,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
                     numsArray.remove(1);
                     numsArray.set(1, String.valueOf(lTmp1));
                     //numsArray.set(1, String.valueOf((double)(lTmp1 / 10000.0)));
-                } else if (strTmp2.equals("=")) {
+                } else if (strTmp2.equals(getResources().getString(R.string.calc_oper_calc))) {
                     strTmp3 = numsArray.get(0);
                     strTmp4 = numsArray.get(1);
 
@@ -331,13 +337,13 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
     }
 
     private long calc(String oper, long left, long right) {
-        if (oper.equals("+")) {
+        if (oper.equals(getResources().getString(R.string.calc_oper_plus))) {
             return left + right;
-        } else if (oper.equals("-")) {
+        } else if (oper.equals(getResources().getString(R.string.calc_oper_minus))) {
             return left - right;
-        } else if (oper.equals("x")) {
+        } else if (oper.equals(getResources().getString(R.string.calc_oper_multi))) {
             return left * right;
-        } else if (oper.equals("÷")) {
+        } else if (oper.equals(getResources().getString(R.string.calc_oper_divid))) {
             return left / right;
         } else {
             return 0;
@@ -347,14 +353,14 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
     private double calc(String oper, double left, double right) {
         long l1 = (long)(left * 100);
         long r1 = (long)(right * 100);
-        if (oper.equals("+")) {
+        if (oper.equals(getResources().getString(R.string.calc_oper_plus))) {
             return left + right;
-        } else if (oper.equals("-")) {
+        } else if (oper.equals(getResources().getString(R.string.calc_oper_minus))) {
             return left - right;
-        } else if (oper.equals("x")) {
+        } else if (oper.equals(getResources().getString(R.string.calc_oper_multi))) {
             return (double)((l1 * r1) / 10000.0);
             //return left * right;
-        } else if (oper.equals("÷")) {
+        } else if (oper.equals(getResources().getString(R.string.calc_oper_divid))) {
             return (double)((l1 / r1) / 10000.0);
             //return left / right;
         } else {
