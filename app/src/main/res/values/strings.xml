@@ -69,5 +69,6 @@
     <string name="calc_oper_calc"  >＝</string>
     <string name="calc_oper_inctax">税込</string>
     <string name="calc_oper_exttax">税抜</string>
+    <string name="calc_value_2zero">00</string>
 
 </resources>

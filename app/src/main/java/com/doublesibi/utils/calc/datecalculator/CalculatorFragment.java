@@ -23,6 +23,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
     private static String LOG_TAG = "DayCalc";
 
     private static final double CONSUMPTION_TAX_RATE = 0.08;
+    private static final long   MULTIPLE_V = 10000;
 
     private EditText result1;
     private TextView result2;
@@ -30,7 +31,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
 
     private Button btnDelete, btnClear;
 
-//    private Button btnDot;
+    private Button btnDot;
     private Button btnCalcPlus, btnCalcMinus, btnCalcDivide, btnCalcMultiply;
     private Button btnCalcTaxInc, btnCalcTaxExc, btnCalcResult;
 
@@ -116,18 +117,18 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
                     break;
                 }
                 break;
-//            case R.id._dot:
-//                if (!bDotClicked) {
-//                    bDotClicked = true;
-//                    if (result2Len > 0) {
-//                        result2.setText(result2Str + ".");
-//                    } else {
-//                        result2.setText(result2Str + "0.");
-//                    }
-//                } else {
-//                    // do nothing.
-//                }
-//                break;
+            case R.id._dot:
+                if (!bDotClicked) {
+                    bDotClicked = true;
+                    if (result2Len > 0) {
+                        result2.setText(result2Str + ".");
+                    } else {
+                        result2.setText(result2Str + "0.");
+                    }
+                } else {
+                    // do nothing.
+                }
+                break;
             case R.id.clear:
                 if (result2Len > 0) {
                     result2.setText("");
@@ -241,6 +242,8 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
     }
 
     private String calculate(String strExprssion) {
+        Log.d(LOG_TAG, "[calc expre] " + strExprssion);
+
         String strTmp1, strTmp2, strTmp3, strTmp4;
         double dTmp1;
         long lTmp1;
@@ -273,67 +276,95 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
                 strTmp2 = numsArray.get(0);
                 strTmp3 = numsArray.get(1);
 
-                dTmp1 = calc(strTmp1, Double.parseDouble(strTmp2), Double.parseDouble(strTmp3));
-                lTmp1 = calc(strTmp1, Long.parseLong(strTmp2), Long.parseLong(strTmp3));
-                //lTmp1 = calc(strTmp1, (long)((Double.parseDouble(strTmp2))*100), (long)((Double.parseDouble(strTmp3))*100));
+//                dTmp1 = calc(strTmp1, Double.parseDouble(strTmp2), Double.parseDouble(strTmp3));
+//                lTmp1 = calc(strTmp1, Long.parseLong(strTmp2), Long.parseLong(strTmp3));
+//                //lTmp1 = calc(strTmp1, (long)((Double.parseDouble(strTmp2))*100), (long)((Double.parseDouble(strTmp3))*100));
+//
+//                opersArray.remove(0);
+//                numsArray.remove(0);
+//                numsArray.set(0, String.valueOf(lTmp1));
+//                //numsArray.set(0, String.valueOf((double)(lTmp1 / 10000.0)));
 
+                dTmp1 = calc(strTmp1, Double.parseDouble(strTmp2), Double.parseDouble(strTmp3), MULTIPLE_V);
                 opersArray.remove(0);
                 numsArray.remove(0);
-                numsArray.set(0, String.valueOf(lTmp1));
-                //numsArray.set(0, String.valueOf((double)(lTmp1 / 10000.0)));
+                numsArray.set(0, String.valueOf(dTmp1));
+                Log.d(LOG_TAG, "[step1] " + strTmp2 + " " + strTmp1 + " " + strTmp3 + " = " + dTmp1);
             } else if (strTmp1.equals(getResources().getString(R.string.calc_oper_plus)) || strTmp1.equals(getResources().getString(R.string.calc_oper_minus))) {
                 strTmp2 = opersArray.get(1);
                 if (strTmp2.equals(getResources().getString(R.string.calc_oper_plus)) || strTmp2.equals(getResources().getString(R.string.calc_oper_minus))) {
                     strTmp3 = numsArray.get(0);
                     strTmp4 = numsArray.get(1);
 
-                    dTmp1 = calc(strTmp1, Double.parseDouble(strTmp3), Double.parseDouble(strTmp4));
-                    lTmp1 = calc(strTmp1, Long.parseLong(strTmp3), Long.parseLong(strTmp4));
-                    //lTmp1 = calc(strTmp1, (long)((Double.parseDouble(strTmp3))*100), (long)((Double.parseDouble(strTmp4))*100));
+//                    dTmp1 = calc(strTmp1, Double.parseDouble(strTmp3), Double.parseDouble(strTmp4));
+//                    lTmp1 = calc(strTmp1, Long.parseLong(strTmp3), Long.parseLong(strTmp4));
+//                    //lTmp1 = calc(strTmp1, (long)((Double.parseDouble(strTmp3))*100), (long)((Double.parseDouble(strTmp4))*100));
+//
+//                    opersArray.remove(0);
+//                    numsArray.remove(0);
+//                    numsArray.set(0, String.valueOf(lTmp1));
+//                    //numsArray.set(0, String.valueOf((double)(lTmp1 / 10000.0)));
 
+                    dTmp1 = calc(strTmp1, Double.parseDouble(strTmp3), Double.parseDouble(strTmp4), MULTIPLE_V);
                     opersArray.remove(0);
                     numsArray.remove(0);
-                    numsArray.set(0, String.valueOf(lTmp1));
-                    //numsArray.set(0, String.valueOf((double)(lTmp1 / 10000.0)));
-                } else if (strTmp2.equals(getResources().getString(R.string.calc_oper_multi)) || strTmp2.equals(getResources().getString(R.string.calc_oper_divid))) {
+                    numsArray.set(0, String.valueOf(dTmp1));
+                    Log.d(LOG_TAG, "[step2] " + strTmp3 + " " + strTmp1 + " " + strTmp4 + " = " + dTmp1);
+                } else if (strTmp2.equals(getResources().getString(R.string.calc_oper_multi))) {
                     strTmp3 = numsArray.get(1);
                     strTmp4 = numsArray.get(2);
 
-                    dTmp1 = calc(strTmp2, Double.parseDouble(strTmp3), Double.parseDouble(strTmp4));
-                    lTmp1 = calc(strTmp2, Long.parseLong(strTmp3), Long.parseLong(strTmp4));
-                    //lTmp1 = calc(strTmp2, (long)((Double.parseDouble(strTmp3))*100), (long)((Double.parseDouble(strTmp4))*100));
+//                    dTmp1 = calc(strTmp2, Double.parseDouble(strTmp3), Double.parseDouble(strTmp4));
+//                    lTmp1 = calc(strTmp2, Long.parseLong(strTmp3), Long.parseLong(strTmp4));
+//                    //lTmp1 = calc(strTmp2, (long)((Double.parseDouble(strTmp3))*100), (long)((Double.parseDouble(strTmp4))*100));
+//
+//                    opersArray.remove(1);
+//                    numsArray.remove(1);
+//                    numsArray.set(1, String.valueOf(lTmp1));
+//                    //numsArray.set(1, String.valueOf((double)(lTmp1 / 10000.0)));
 
-                    opersArray.remove(1);
-                    numsArray.remove(1);
-                    numsArray.set(1, String.valueOf(lTmp1));
-                    //numsArray.set(1, String.valueOf((double)(lTmp1 / 10000.0)));
+                    dTmp1 = calc(strTmp2, Double.parseDouble(strTmp3), Double.parseDouble(strTmp4), MULTIPLE_V);
+                    opersArray.remove(0);
+                    numsArray.remove(0);
+                    numsArray.set(0, String.valueOf(dTmp1));
+                    Log.d(LOG_TAG, "[step3] " + strTmp3 + " " + strTmp2 + " " + strTmp4 + " = " + dTmp1);
+                }  if (strTmp2.equals(getResources().getString(R.string.calc_oper_divid))) {
+
                 } else if (strTmp2.equals(getResources().getString(R.string.calc_oper_calc))) {
                     strTmp3 = numsArray.get(0);
                     strTmp4 = numsArray.get(1);
 
-                    dTmp1 = calc(strTmp1, Double.parseDouble(strTmp3), Double.parseDouble(strTmp4));
-                    lTmp1 = calc(strTmp1, Long.parseLong(strTmp3), Long.parseLong(strTmp4));
-                    //lTmp1 = calc(strTmp1, (long)((Double.parseDouble(strTmp3))*100), (long)((Double.parseDouble(strTmp4))*100));
+//                    dTmp1 = calc(strTmp1, Double.parseDouble(strTmp3), Double.parseDouble(strTmp4));
+//                    lTmp1 = calc(strTmp1, Long.parseLong(strTmp3), Long.parseLong(strTmp4));
+//                    //lTmp1 = calc(strTmp1, (long)((Double.parseDouble(strTmp3))*100), (long)((Double.parseDouble(strTmp4))*100));
+//
+//                    opersArray.remove(0);
+//                    numsArray.remove(0);
+//                    numsArray.set(0, String.valueOf(lTmp1));
+//                    //numsArray.set(0, String.valueOf((double)(lTmp1 / 10000.0)));
 
+                    dTmp1 = calc(strTmp1, Double.parseDouble(strTmp3), Double.parseDouble(strTmp4), MULTIPLE_V);
                     opersArray.remove(0);
                     numsArray.remove(0);
-                    numsArray.set(0, String.valueOf(lTmp1));
-                    //numsArray.set(0, String.valueOf((double)(lTmp1 / 10000.0)));
+                    numsArray.set(0, String.valueOf(dTmp1));
+                    Log.d(LOG_TAG, "[step5] " + strTmp3 + " " + strTmp1 + " " + strTmp4 + " = " + dTmp1);
                 }
             }
             Log.d(LOG_TAG,"result: nums:[" +numsArray.toString() + "]" + opersArray.toString());
         }
 
-        String[] strParam = numsArray.get(0).split("\\.", -1);
-        if (strParam.length == 2) {
-            String strSbubstr = strParam[1].substring(0, 1);
-            if (strSbubstr.equals("0"))
-                return strParam[0];
-            else
-                return strParam[0] + "." + strSbubstr;
-        } else {
-            return strParam[0];
-        }
+        return numsArray.get(0);
+//
+//        String[] strParam = numsArray.get(0).split("\\.", -1);
+//        if (strParam.length == 2) {
+//            String strSbubstr = strParam[1].substring(0, 1);
+//            if (strSbubstr.equals("0"))
+//                return strParam[0];
+//            else
+//                return strParam[0] + "." + strSbubstr;
+//        } else {
+//            return strParam[0];
+//        }
     }
 
     private long calc(String oper, long left, long right) {
@@ -350,6 +381,22 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
         }
     }
 
+    private double calc(String oper, double param1, double param2, long multiValue) {
+        long left = (long)(param1 * multiValue);
+        long right = (long)(param2 * multiValue);
+
+        if (oper.equals(getResources().getString(R.string.calc_oper_plus))) {
+            return (double)((left + right) / multiValue);
+        } else if (oper.equals(getResources().getString(R.string.calc_oper_minus))) {
+            return (double)((left - right) / multiValue);
+        } else if (oper.equals(getResources().getString(R.string.calc_oper_multi))) {
+            return (double)((left * right) / (multiValue * multiValue));
+        } else if (oper.equals(getResources().getString(R.string.calc_oper_divid))) {
+            return (double)((left / right) / (multiValue * multiValue));
+        } else {
+            return 0.0;
+        }
+    }
     private double calc(String oper, double left, double right) {
         long l1 = (long)(left * 100);
         long r1 = (long)(right * 100);
@@ -399,7 +446,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
             btnItem.setOnClickListener(this);
         }
 
-//        btnDot = (Button)v.findViewById(R.id._dot);
+        btnDot = (Button)v.findViewById(R.id._dot);
         btnCalcPlus = (Button)v.findViewById(R.id.calcPlus);
         btnCalcMinus = (Button)v.findViewById(R.id.calcMinus);
         btnCalcDivide = (Button)v.findViewById(R.id.calcDivide);
@@ -407,7 +454,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
         btnCalcTaxInc = (Button)v.findViewById(R.id.calcTaxInc);
         btnCalcTaxExc= (Button)v.findViewById(R.id.calcTaxExc);
 
-//        btnDot.setOnClickListener(this);
+        btnDot.setOnClickListener(this);
         btnCalcPlus.setOnClickListener(this);
         btnCalcMinus.setOnClickListener(this);
         btnCalcDivide.setOnClickListener(this);
