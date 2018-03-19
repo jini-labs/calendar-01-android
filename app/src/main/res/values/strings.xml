@@ -60,4 +60,15 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="calc_value_dot">.</string>
+
+    <string name="calc_oper_plus"  >＋</string>
+    <string name="calc_oper_minus" >－</string>
+    <string name="calc_oper_multi" >×</string>
+    <string name="calc_oper_divid" >÷</string>
+    <string name="calc_oper_calc"  >＝</string>
+    <string name="calc_oper_inctax">税込</string>
+    <string name="calc_oper_exttax">税抜</string>
+    <string name="calc_value_2zero">00</string>
+
 </resources>

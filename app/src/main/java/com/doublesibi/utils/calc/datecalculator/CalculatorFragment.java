@@ -1,6 +1,5 @@
 package com.doublesibi.utils.calc.datecalculator;
 
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +21,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
     private static String LOG_TAG = "DayCalc";
 
     private static final double CONSUMPTION_TAX_RATE = 0.08;
+    private static final int MULTI_COUNT = 2;
 
     private EditText result1;
     private TextView result2;
@@ -29,7 +29,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
 
     private Button btnDelete, btnClear;
 
-//    private Button btnDot;
+    private Button btnDot;
     private Button btnCalcPlus, btnCalcMinus, btnCalcDivide, btnCalcMultiply;
     private Button btnCalcTaxInc, btnCalcTaxExc, btnCalcResult;
 
@@ -56,7 +56,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
 
     private String getCalculatedValue(String result1Str) {
         if (bCalculated) {
-            String param[] = result1Str.split("=");
+            String param[] = result1Str.split(getResources().getString(R.string.calc_oper_calc));
             return param[1];
         } else {
             return "";
@@ -77,10 +77,10 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
 
         Button clickedBtn = (Button) v.findViewById(clickedId);
         String btnString = clickedBtn.getText().toString();
-        Log.d(LOG_TAG, "result 1 : [" + result1Len + "], [" + result1Str + "]");
-        Log.d(LOG_TAG, "result 2 : [" + result2Len + "], [" + result2Str + "]");
-        Log.d(LOG_TAG, "btn string : " + btnString);
-        Log.d(LOG_TAG, "bCalculated: " + bCalculated + ", bDotClicked:" + bDotClicked);
+//        Log.d(LOG_TAG, "result 1 : [" + result1Len + "], [" + result1Str + "]");
+//        Log.d(LOG_TAG, "result 2 : [" + result2Len + "], [" + result2Str + "]");
+//        Log.d(LOG_TAG, "btn string : " + btnString);
+//        Log.d(LOG_TAG, "bCalculated: " + bCalculated + ", bDotClicked:" + bDotClicked);
 
         switch(clickedId) {
             case R.id._1:
@@ -115,18 +115,18 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
                     break;
                 }
                 break;
-//            case R.id._dot:
-//                if (!bDotClicked) {
-//                    bDotClicked = true;
-//                    if (result2Len > 0) {
-//                        result2.setText(result2Str + ".");
-//                    } else {
-//                        result2.setText(result2Str + "0.");
-//                    }
-//                } else {
-//                    // do nothing.
-//                }
-//                break;
+            case R.id._dot:
+                if (!bDotClicked) {
+                    bDotClicked = true;
+                    if (result2Len > 0) {
+                        result2.setText(result2Str + ".");
+                    } else {
+                        result2.setText(result2Str + "0.");
+                    }
+                } else {
+                    // do nothing.
+                }
+                break;
             case R.id.clear:
                 if (result2Len > 0) {
                     result2.setText("");
@@ -203,7 +203,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
                         if(bCalculated) {
                             break;
                         } else {
-                            strTmp1 = result1Str + result2Str + "=";
+                            strTmp1 = result1Str + result2Str + getResources().getString(R.string.calc_oper_calc);
 
                             strTmp2 = calculate(strTmp1);
                             bCalculated = true;
@@ -223,11 +223,10 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
                             strTmp1 = result2Str.substring(0, result2Len - 1);
 
                             strTmp2 = calculate(strTmp1);
-                            calculate(strTmp1);
                             bCalculated = true;
                             bDotClicked = false;
 
-                            result1.setText(strTmp1 + " = " + strTmp2);
+                            result1.setText(strTmp1 + getResources().getString(R.string.calc_oper_calc) + strTmp2);
                             result2.setText("");
                         }
                     } else {
@@ -239,14 +238,19 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
         result1.setTextSize((float) 24);
     }
 
-    private String calculate(String strExprssion) {
+    public String calculate(String strExprssion) {
+        boolean bExistDot = false;
         String strTmp1, strTmp2, strTmp3, strTmp4;
-        double dTmp1;
-        long lTmp1;
         String atoken = null;
-        ArrayList<String> numsArray = new ArrayList<>();
-        ArrayList<String> opersArray = new ArrayList<>();
-        StringTokenizer token = new StringTokenizer(strExprssion, "+-x÷=");
+        ArrayList<String> numsArray = new ArrayList<String>();
+        ArrayList<String> opersArray = new ArrayList<String>();
+        String delimiter = getResources().getString(R.string.calc_oper_plus) +
+                getResources().getString(R.string.calc_oper_minus) +
+                getResources().getString(R.string.calc_oper_multi) +
+                getResources().getString(R.string.calc_oper_divid) +
+                getResources().getString(R.string.calc_oper_calc);
+
+        StringTokenizer token = new StringTokenizer(strExprssion, delimiter);
         while(token.hasMoreTokens()) {
             atoken = token.nextToken();
             numsArray.add(atoken);
@@ -258,69 +262,51 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
             opersArray.add(atoken);
         }
 
+        bExistDot = strExprssion.contains(getResources().getString(R.string.calc_value_dot));
+
         while(opersArray.size() > 1) {
 
             strTmp1 = opersArray.get(0);
-            if (strTmp1.equals("=")) {
+            if (strTmp1.equals(getResources().getString(R.string.calc_oper_calc))) {
                 break;
-            } else if (strTmp1.equals("x") || strTmp1.equals("÷")) {
+            } else if (strTmp1.equals(getResources().getString(R.string.calc_oper_multi)) || strTmp1.equals(getResources().getString(R.string.calc_oper_divid))) {
                 strTmp2 = numsArray.get(0);
                 strTmp3 = numsArray.get(1);
-
-                dTmp1 = calc(strTmp1, Double.parseDouble(strTmp2), Double.parseDouble(strTmp3));
-                lTmp1 = calc(strTmp1, Long.parseLong(strTmp2), Long.parseLong(strTmp3));
-                //lTmp1 = calc(strTmp1, (long)((Double.parseDouble(strTmp2))*100), (long)((Double.parseDouble(strTmp3))*100));
-
+                String tmp = calc(strTmp1, bExistDot, strTmp2, strTmp3, MULTI_COUNT);
                 opersArray.remove(0);
                 numsArray.remove(0);
-                numsArray.set(0, String.valueOf(lTmp1));
-                //numsArray.set(0, String.valueOf((double)(lTmp1 / 10000.0)));
-            } else if (strTmp1.equals("+") || strTmp1.equals("-")) {
+                numsArray.set(0, tmp);
+            } else if (strTmp1.equals(getResources().getString(R.string.calc_oper_plus)) || strTmp1.equals(getResources().getString(R.string.calc_oper_minus))) {
                 strTmp2 = opersArray.get(1);
-                if (strTmp2.equals("+") || strTmp2.equals("-")) {
-                    strTmp3 = numsArray.get(0);
+                if (strTmp2.equals(getResources().getString(R.string.calc_oper_plus)) || strTmp2.equals(getResources().getString(R.string.calc_oper_minus))) {
+                     strTmp3 = numsArray.get(0);
                     strTmp4 = numsArray.get(1);
-
-                    dTmp1 = calc(strTmp1, Double.parseDouble(strTmp3), Double.parseDouble(strTmp4));
-                    lTmp1 = calc(strTmp1, Long.parseLong(strTmp3), Long.parseLong(strTmp4));
-                    //lTmp1 = calc(strTmp1, (long)((Double.parseDouble(strTmp3))*100), (long)((Double.parseDouble(strTmp4))*100));
-
+                    String tmp = calc(strTmp1, bExistDot, strTmp3, strTmp4, MULTI_COUNT);
                     opersArray.remove(0);
                     numsArray.remove(0);
-                    numsArray.set(0, String.valueOf(lTmp1));
-                    //numsArray.set(0, String.valueOf((double)(lTmp1 / 10000.0)));
-                } else if (strTmp2.equals("x") || strTmp2.equals("÷")) {
+                    numsArray.set(0, tmp);
+                } else if (strTmp2.equals(getResources().getString(R.string.calc_oper_multi)) || strTmp2.equals(getResources().getString(R.string.calc_oper_divid))) {
                     strTmp3 = numsArray.get(1);
                     strTmp4 = numsArray.get(2);
-
-                    dTmp1 = calc(strTmp2, Double.parseDouble(strTmp3), Double.parseDouble(strTmp4));
-                    lTmp1 = calc(strTmp2, Long.parseLong(strTmp3), Long.parseLong(strTmp4));
-                    //lTmp1 = calc(strTmp2, (long)((Double.parseDouble(strTmp3))*100), (long)((Double.parseDouble(strTmp4))*100));
-
-                    opersArray.remove(1);
-                    numsArray.remove(1);
-                    numsArray.set(1, String.valueOf(lTmp1));
-                    //numsArray.set(1, String.valueOf((double)(lTmp1 / 10000.0)));
-                } else if (strTmp2.equals("=")) {
-                    strTmp3 = numsArray.get(0);
-                    strTmp4 = numsArray.get(1);
-
-                    dTmp1 = calc(strTmp1, Double.parseDouble(strTmp3), Double.parseDouble(strTmp4));
-                    lTmp1 = calc(strTmp1, Long.parseLong(strTmp3), Long.parseLong(strTmp4));
-                    //lTmp1 = calc(strTmp1, (long)((Double.parseDouble(strTmp3))*100), (long)((Double.parseDouble(strTmp4))*100));
-
+                    String tmp = calc(strTmp2, bExistDot, strTmp3, strTmp4, MULTI_COUNT);
                     opersArray.remove(0);
                     numsArray.remove(0);
-                    numsArray.set(0, String.valueOf(lTmp1));
-                    //numsArray.set(0, String.valueOf((double)(lTmp1 / 10000.0)));
+                    numsArray.set(0, tmp);
+                } else if (strTmp2.equals(getResources().getString(R.string.calc_oper_calc))) {
+                    strTmp3 = numsArray.get(0);
+                    strTmp4 = numsArray.get(1);
+                    String tmp = calc(strTmp1, bExistDot, strTmp3, strTmp4, MULTI_COUNT);
+                    opersArray.remove(0);
+                    numsArray.remove(0);
+                    numsArray.set(0, tmp);
                 }
             }
-            Log.d(LOG_TAG,"result: nums:[" +numsArray.toString() + "]" + opersArray.toString());
+            Log.d(LOG_TAG, "result: nums:[" + numsArray.toString() + "]" + opersArray.toString());
         }
 
         String[] strParam = numsArray.get(0).split("\\.", -1);
         if (strParam.length == 2) {
-            String strSbubstr = strParam[1].substring(0, 1);
+            String strSbubstr = strParam[1].substring(0, MULTI_COUNT);
             if (strSbubstr.equals("0"))
                 return strParam[0];
             else
@@ -330,36 +316,101 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    private long calc(String oper, long left, long right) {
-        if (oper.equals("+")) {
-            return left + right;
-        } else if (oper.equals("-")) {
-            return left - right;
-        } else if (oper.equals("x")) {
-            return left * right;
-        } else if (oper.equals("÷")) {
-            return left / right;
-        } else {
-            return 0;
+    private long _calcLong(String strExpr, int MULTICount) {
+        String atoken = null;
+        StringTokenizer token = null;
+        ArrayList<String> tokenized = new ArrayList<String>();
+        long ret = 0;
+
+        // check left
+        token = new StringTokenizer(strExpr, ".");
+        while(token.hasMoreTokens()) {
+            atoken = token.nextToken();
+            tokenized.add(atoken);
         }
+
+        if (tokenized.size() == 2) {
+            String firstStr = tokenized.get(0);
+            String secondStr = tokenized.get(1);
+
+            if (secondStr.length() > MULTICount) {
+                String tmp = secondStr.substring(0, MULTICount-1);
+                ret = Long.parseLong(firstStr) * (long)(Math.pow(10, MULTICount)) + Long.parseLong(tmp);
+            }  else if (secondStr.length() == MULTICount){
+                ret = Long.parseLong(firstStr) * (long)(Math.pow(10, MULTICount)) + Long.parseLong(secondStr);
+            } else {
+                String tmp = "";
+                for(int i = 0; i< MULTICount - secondStr.length(); i++) {
+                    tmp = tmp + "0";
+                }
+                tmp = secondStr + tmp;
+                ret = Long.parseLong(firstStr) * (long)(Math.pow(10, MULTICount)) + Long.parseLong(tmp);
+            }
+        } else {
+            ret = Long.parseLong(strExpr) * (long)(Math.pow(10, MULTICount));
+        }
+
+        Log.d(LOG_TAG, "strExpr : " + strExpr + " -> to long:" + ret);
+        return ret;
     }
 
-    private double calc(String oper, double left, double right) {
-        long l1 = (long)(left * 100);
-        long r1 = (long)(right * 100);
-        if (oper.equals("+")) {
-            return left + right;
-        } else if (oper.equals("-")) {
-            return left - right;
-        } else if (oper.equals("x")) {
-            return (double)((l1 * r1) / 10000.0);
-            //return left * right;
-        } else if (oper.equals("÷")) {
-            return (double)((l1 / r1) / 10000.0);
-            //return left / right;
+    private String calc(String oper, boolean bDoted, String left, String right, int MULTICount) {
+        String resultString = null;
+        long resultLong = 0;
+        long leftLong = 0, rightLong = 0;
+
+        if(bDoted) {
+            leftLong = _calcLong(left, MULTICount);
+            rightLong = _calcLong(right, MULTICount);
         } else {
-            return 0.0;
+            leftLong = Long.parseLong(left);
+            rightLong = Long.parseLong(right);
         }
+
+        if (oper.equals(getResources().getString(R.string.calc_oper_plus))) {
+            resultLong = leftLong + rightLong;
+        } else if (oper.equals(getResources().getString(R.string.calc_oper_minus))) {
+            resultLong = leftLong - rightLong;
+        } else if (oper.equals(getResources().getString(R.string.calc_oper_multi))) {
+            resultLong = leftLong * rightLong ;
+        } else if (oper.equals(getResources().getString(R.string.calc_oper_divid))) {
+            if (bDoted) {
+                resultLong = (leftLong * (long) Math.pow(10, MULTICount * 1)) / rightLong;
+            } else {
+                resultLong = leftLong / rightLong;
+            }
+        } else {
+            Log.e(LOG_TAG, "Operation is unknown.(" + oper + ")");
+            return "";
+        }
+        Log.d(LOG_TAG, " (long)" + leftLong + " " + oper + " " + rightLong + " = " + resultLong);
+
+        if (bDoted) {
+            if (oper.equals(getResources().getString(R.string.calc_oper_multi))) {
+                resultLong = (long)(resultLong / ((long)Math.pow(10, MULTICount * 1)));
+                Log.d(LOG_TAG, " case * = " + resultLong);
+            }
+
+            String tmp = String.valueOf(resultLong);
+            if (tmp.length() > MULTICount) {
+                resultString = tmp.substring(0, tmp.length() - MULTICount) +
+                        "." +
+                        tmp.substring(tmp.length() - MULTICount, tmp.length());
+            } else if (tmp.length() == MULTICount) {
+                resultString = "0." + tmp;
+            } else {
+                String tmp0 = "";
+                for (int i = 0; i < MULTICount - tmp.length(); i++) {
+                    tmp0 = tmp0 + "0";
+                }
+                resultString = "0." + tmp0 + tmp;
+            }
+        } else {
+            resultString = String.valueOf(resultLong);
+        }
+
+        Log.d(LOG_TAG, " (long)" + leftLong + " " + oper + " " + rightLong + " = (string) " + resultString);
+        return resultString;
     }
 
     private String calcTax(int clickedId, String strNum) {
@@ -393,7 +444,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
             btnItem.setOnClickListener(this);
         }
 
-//        btnDot = (Button)v.findViewById(R.id._dot);
+        btnDot = (Button)v.findViewById(R.id._dot);
         btnCalcPlus = (Button)v.findViewById(R.id.calcPlus);
         btnCalcMinus = (Button)v.findViewById(R.id.calcMinus);
         btnCalcDivide = (Button)v.findViewById(R.id.calcDivide);
@@ -401,7 +452,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
         btnCalcTaxInc = (Button)v.findViewById(R.id.calcTaxInc);
         btnCalcTaxExc= (Button)v.findViewById(R.id.calcTaxExc);
 
-//        btnDot.setOnClickListener(this);
+        btnDot.setOnClickListener(this);
         btnCalcPlus.setOnClickListener(this);
         btnCalcMinus.setOnClickListener(this);
         btnCalcDivide.setOnClickListener(this);
