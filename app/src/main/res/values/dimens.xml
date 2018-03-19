@@ -21,6 +21,7 @@
     <dimen name="calculator_inputed_text_size">30sp</dimen>
     <dimen name="calculator_result_text_size">18sp</dimen>
     <dimen name="calculator_result2_text_size">14sp</dimen>
-    <dimen name="calculator_button_label_text_size">18sp</dimen>
+    <dimen name="calculator_button_label_text_size">24sp</dimen>
+    <dimen name="calculator_button_label_text_size2">20sp</dimen>
 
 </resources>
