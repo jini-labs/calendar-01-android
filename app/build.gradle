@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.doublesibi.utils.calc.datecalculator"
         minSdkVersion 18
@@ -29,5 +29,5 @@ dependencies {
     compile 'com.android.support:support-v4:24.2.1'
     testCompile 'junit:junit:4.12'
 
-    compile group: 'com.ibm.icu', name: 'icu4j', version: '4.6'
+//    compile "com.ibm.icu:icu4j:60.2"
 }
