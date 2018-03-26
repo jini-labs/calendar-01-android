@@ -77,10 +77,6 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
 
         Button clickedBtn = (Button) v.findViewById(clickedId);
         String btnString = clickedBtn.getText().toString();
-//        Log.d(LOG_TAG, "result 1 : [" + result1Len + "], [" + result1Str + "]");
-//        Log.d(LOG_TAG, "result 2 : [" + result2Len + "], [" + result2Str + "]");
-//        Log.d(LOG_TAG, "btn string : " + btnString);
-//        Log.d(LOG_TAG, "bCalculated: " + bCalculated + ", bDotClicked:" + bDotClicked);
 
         switch(clickedId) {
             case R.id._1:
@@ -289,9 +285,9 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
                     strTmp3 = numsArray.get(1);
                     strTmp4 = numsArray.get(2);
                     String tmp = calc(strTmp2, bExistDot, strTmp3, strTmp4, MULTI_COUNT);
-                    opersArray.remove(0);
-                    numsArray.remove(0);
-                    numsArray.set(0, tmp);
+                    opersArray.remove(1);
+                    numsArray.remove(1);
+                    numsArray.set(1, tmp);
                 } else if (strTmp2.equals(getResources().getString(R.string.calc_oper_calc))) {
                     strTmp3 = numsArray.get(0);
                     strTmp4 = numsArray.get(1);
