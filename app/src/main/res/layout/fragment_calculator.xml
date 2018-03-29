@@ -103,8 +103,9 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@drawable/calc_button_selector"
-                        android:textSize="@dimen/calculator_button_label_text_size2"
-                        android:text="@string/calc_oper_inctax" />
+                        android:fontFamily="monospace"
+                        android:text="@string/calc_oper_inctax"
+                        android:textSize="@dimen/calculator_button_label_text_size2" />
 
                     <Button
                         android:id="@+id/calcTaxExc"
@@ -112,8 +113,9 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@drawable/calc_button_selector"
-                        android:textSize="@dimen/calculator_button_label_text_size2"
-                        android:text="@string/calc_oper_exttax" />
+                        android:fontFamily="monospace"
+                        android:text="@string/calc_oper_exttax"
+                        android:textSize="@dimen/calculator_button_label_text_size2" />
                 </LinearLayout>
 
                 <Button
@@ -122,8 +124,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/calc_button_selector"
-                    android:textSize="@dimen/calculator_button_label_text_size"
-                    android:text="@string/calc_oper_divid" />
+                    android:fontFamily="monospace"
+                    android:text="@string/calc_oper_divid"
+                    android:textSize="@dimen/calculator_button_label_text_size" />
             </LinearLayout>
 
             <LinearLayout
@@ -165,8 +168,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/calc_button_selector"
-                    android:textSize="@dimen/calculator_button_label_text_size"
-                    android:text="@string/calc_oper_multi" />
+                    android:fontFamily="monospace"
+                    android:text="@string/calc_oper_multi"
+                    android:textSize="@dimen/calculator_button_label_text_size" />
             </LinearLayout>
 
             <LinearLayout
@@ -208,8 +212,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/calc_button_selector"
-                    android:textSize="@dimen/calculator_button_label_text_size"
-                    android:text="@string/calc_oper_minus" />
+                    android:fontFamily="monospace"
+                    android:text="@string/calc_oper_minus"
+                    android:textSize="@dimen/calculator_button_label_text_size" />
             </LinearLayout>
 
             <LinearLayout
@@ -251,8 +256,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/calc_button_selector"
-                    android:textSize="@dimen/calculator_button_label_text_size"
-                    android:text="@string/calc_oper_plus" />
+                    android:fontFamily="monospace"
+                    android:text="@string/calc_oper_plus"
+                    android:textSize="@dimen/calculator_button_label_text_size" />
             </LinearLayout>
 
             <LinearLayout
@@ -294,8 +300,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/calc_button_selector"
-                    android:textSize="@dimen/calculator_button_label_text_size"
-                    android:text="@string/calc_oper_calc" />
+                    android:fontFamily="monospace"
+                    android:text="@string/calc_oper_calc"
+                    android:textSize="@dimen/calculator_button_label_text_size" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
