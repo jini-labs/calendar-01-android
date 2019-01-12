@@ -56,15 +56,33 @@
             <startDate>20070101</startDate>
         </item>
         <item>
-            <name>憲法記念日</name>
-            <date>503</date>
-            <startDate>19480101</startDate>
-        </item>
-        <item>
             <name>みどりの日</name>
             <date>429</date>
             <startDate>19890101</startDate>
             <endDate>20061231</endDate>
+        </item>
+        <item>
+            <name>国民の休日</name>
+            <date>430</date>
+            <startDate>20190101</startDate>
+            <endDate>20191231</endDate>
+        </item>
+        <item>
+            <name>天皇の即位の日</name>
+            <date>501</date>
+            <startDate>20190101</startDate>
+            <endDate>20191231</endDate>
+        </item>
+        <item>
+            <name>国民の休日</name>
+            <date>502</date>
+            <startDate>20190101</startDate>
+            <endDate>20191231</endDate>
+        </item>
+        <item>
+            <name>憲法記念日</name>
+            <date>503</date>
+            <startDate>19480101</startDate>
         </item>
         <item>
             <name>みどりの日</name>
@@ -133,6 +151,12 @@
             <dayOfWeek>2</dayOfWeek>
         </item>
         <item>
+            <name>即位礼正殿の儀の行われる日</name>
+            <date>20191022</date>
+            <startDate>20190101</startDate>
+            <endDate>20191231</endDate>
+        </item>
+        <item>
             <name>天長節</name>
             <date>1103</date>
             <startDate>18730101</startDate>
@@ -164,6 +188,7 @@
             <name>天皇誕生日</name>
             <date>1223</date>
             <startDate>19890101</startDate>
+            <endDate>20181231</endDate>
         </item>
     </holidays>
     <substitutes>
