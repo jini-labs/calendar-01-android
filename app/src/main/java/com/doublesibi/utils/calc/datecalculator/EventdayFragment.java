@@ -301,6 +301,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
                             Integer.valueOf(resultEveDate.getText().toString());
                     histItem.enDate = "" + saveDate;
 
+                    Log.d(LOGTAG, " for save data : " + histItem.toString());
                     // input memo of eventday.
                     LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getContext());
                     View mView = layoutInflaterAndroid.inflate(R.layout.input_dialogbox, null);
@@ -319,6 +320,7 @@ public class EventdayFragment extends Fragment implements View.OnClickListener {
 
                                     long ret = helper.insertEventday(db, histItem);
                                     Log.d(LOGTAG, "(eventday) name:" + histItem.name + ", insertedId:" + ret);
+                                    Log.d(LOGTAG, "               :" + histItem.toString());
                                     //Toast.makeText(getContext(), "(eventday) name:" + histItem.name + ", insertedId:" + ret, Toast.LENGTH_SHORT).show();
                                     helper.close();
 

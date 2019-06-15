@@ -215,6 +215,12 @@ public class EventHistActivity extends AppCompatActivity {
 
         boolean mov = c.moveToFirst();
         while (mov) {
+            String message = null;
+            int count = c.getColumnCount();
+            for(int i=0; i < count; i++) {
+                message += ", " + i + ":" + c.getString(i);
+            }
+            Log.d(LOGTAG, "message : " + message);
             selectKey = Integer.parseInt(c.getString(1));
 
             recordCount ++;
@@ -226,6 +232,7 @@ public class EventHistActivity extends AppCompatActivity {
             String temp2 = MyCalendar.convertDateWeekName(getResources(), Integer.parseInt(temp1), "/");
             item.setStartDate(temp2);
 
+            Log.d(LOGTAG, ">>>>>> "+item.toString());
             if (StrToInt(c.getString(5)) > 0) {
                 item.setEveDayMonWeeYea(c.getString(5) + constantStr[8]);
             }

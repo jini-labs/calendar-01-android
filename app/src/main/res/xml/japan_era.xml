@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <era>
     <ears>
-        <item><name>平成</name><startDate>19890108</startDate><endDate>30010101</endDate><pronunciation>へいせい    </pronunciation></item>
+        <item><name>令和</name><startDate>20190501</startDate><endDate>20990101</endDate><pronunciation>れいわ      </pronunciation></item>
+        <item><name>平成</name><startDate>19890108</startDate><endDate>20190430</endDate><pronunciation>へいせい    </pronunciation></item>
         <item><name>昭和</name><startDate>19261225</startDate><endDate>19890107</endDate><pronunciation>しょうわ    </pronunciation></item>
         <item><name>大正</name><startDate>19120730</startDate><endDate>19261224</endDate><pronunciation>たいしょう  </pronunciation></item>
         <item><name>明治</name><startDate>18680125</startDate><endDate>19120729</endDate><pronunciation>めいじ      </pronunciation></item>
